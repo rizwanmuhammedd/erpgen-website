@@ -8,7 +8,7 @@ interface SEOProps {
 }
 
 export const SEO: React.FC<SEOProps> = ({
-  title = 'ERPGen | Modular Business Management, Invoice & POS System',
+  title = 'ERPGen | Smarter Business. Simpler ERP.',
   description = 'ERPGen is the flexible business management platform. Choose standalone Invoice, high-speed POS, or configure a combined solution around your exact business requirements.',
   image = '/erpgen-logo.png',
 }) => {
