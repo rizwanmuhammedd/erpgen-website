@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+
+  /* Official ERPGen Purple & Emerald Brand Identity Tokens */
+  --color-brand-purple: #6D57A5;         /* Primary Brand Purple */
+  --color-brand-purple-dark: #584488;    /* Dark Purple Accent */
+  --color-brand-purple-light: #8E78CA;   /* Light Purple Accent */
+  --color-brand-purple-tint: #FAF8FC;    /* Very Light ERPGen Lavender/Pink Tint */
+  --color-brand-purple-surface: #F5F1FA; /* Slightly stronger soft lavender tint */
+
+  --color-brand-green: #17B681;          /* Secondary ERPGen Emerald */
+  --color-brand-green-dark: #129267;     /* Dark Emerald Accent */
+  --color-brand-green-light: #38D9A2;    /* Light Emerald Accent */
+  --color-brand-green-tint: #E4F8F0;     /* Soft Green Tint */
+
+  /* Neutral Light Surfaces & Typography */
+  --color-brand-text-primary: #1F1B2D;   /* Primary Text */
+  --color-brand-text-secondary: #625D6B; /* Secondary Text */
+  --color-brand-surface: #FFFFFF;        /* Main White Card Surface */
+  --color-brand-elevated: #FAF8FC;       /* Very Light Tint Surface */
+  --color-brand-border: #E9E4F1;         /* Very Light Border */
+}
+
+/* Custom Base Utilities & Background Systems */
+@layer base {
+  body {
+    background-color: #FFFFFF;
+    color: #1F1B2D;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+}
+
+/* Purple & Emerald Gradient Text Utility for Light SaaS Theme */
+.text-gradient-purple {
+  background: linear-gradient(135deg, #1F1B2D 0%, #6D57A5 60%, #8E78CA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #1F1B2D 0%, #6D57A5 45%, #17B681 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Light Ambient Radial Glow Patterns */
+.bg-radial-brand-hero {
+  background: radial-gradient(circle at 50% 0%, rgba(109, 87, 165, 0.05) 0%, rgba(250, 248, 252, 0.9) 45%, #FFFFFF 85%);
+}
+
+.bg-radial-brand-card {
+  background: radial-gradient(circle at top right, rgba(109, 87, 165, 0.04) 0%, rgba(23, 182, 129, 0.03) 50%, transparent 80%);
+}
+
+/* White SaaS Glass Panel Effect */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #E9E4F1;
+}
+
+.glass-panel-brand {
+  background: #FFFFFF;
+  border: 1px solid #E9E4F1;
+  box-shadow: 0 4px 24px -4px rgba(109, 87, 165, 0.06);
+}
+
+/* Light Grid Overlay Utility */
+.bg-grid-pattern {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, rgba(109, 87, 165, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(109, 87, 165, 0.03) 1px, transparent 1px);
+}
+
+/* Focus Ring Customization */
+.focus-ring-purple {
+  outline: none;
+}
+.focus-ring-purple:focus-visible {
+  outline: 2px solid #6D57A5;
+  outline-offset: 2px;
+}
