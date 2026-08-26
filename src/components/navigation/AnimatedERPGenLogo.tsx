@@ -26,7 +26,7 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
   }, []);
 
   // Handle click / tap interaction
-  const handleLogoClick = () => {
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // 1. Toggle desktop logo state (Blue -> Normal -> Blue -> Normal...)
     setIsDesktopBlueLogo((prev) => !prev);
 
@@ -40,6 +40,7 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
 
     // 4. Handle smooth React Router navigation to homepage
     if (location.pathname === '/') {
+      e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       navigate('/');
@@ -50,7 +51,7 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
     <Link
       to="/"
       onClick={handleLogoClick}
-      className="relative flex items-center justify-start focus-ring-purple rounded-lg p-1 transition-transform active:scale-95 shrink-0 group cursor-pointer min-w-[170px] sm:min-w-[195px] lg:min-w-[230px] h-10 sm:h-11 lg:h-12"
+      className="relative flex items-center justify-start focus-ring-purple rounded-lg p-1 transition-transform active:scale-95 shrink-0 group cursor-pointer select-none min-w-[170px] sm:min-w-[195px] lg:min-w-[230px] h-10 sm:h-11 lg:h-12"
       aria-label="ERPGen — Smarter Business. Simpler ERP."
       title="ERPGen — Smarter Business. Simpler ERP."
     >
@@ -64,7 +65,8 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
         <img
           src="/erpgen-logo-blue.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
-          className={`h-10 sm:h-11 lg:h-12 w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[260px] object-contain transition-all duration-500 ease-in-out ${
+          draggable={false}
+          className={`h-10 sm:h-11 lg:h-12 w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[260px] object-contain transition-all duration-500 ease-in-out select-none ${
             isDesktopBlueLogo
               ? 'opacity-100 scale-100 pointer-events-auto'
               : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
@@ -75,7 +77,8 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
         <img
           src="/erpgen-logo.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
-          className={`h-10 sm:h-11 lg:h-12 w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[260px] object-contain transition-all duration-500 ease-in-out ${
+          draggable={false}
+          className={`h-10 sm:h-11 lg:h-12 w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[260px] object-contain transition-all duration-500 ease-in-out select-none ${
             !isDesktopBlueLogo
               ? 'opacity-100 scale-100 pointer-events-auto'
               : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
@@ -85,26 +88,29 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
 
       {/* =========================================================================
           2. MOBILE LOGO DISPLAY (visible below lg:)
-          - Initial State on load: /erpgen-logo.png
-          - On tap/click: toggles to /erpgen-logo-blue.png, then back on next tap
+          - Initial State on load: /erpgen-logo.png (isMobileBlueLogo === false)
+          - On tap/click: toggles to /erpgen-logo-blue.png (isMobileBlueLogo === true)
+          - On next tap/click: toggles back to /erpgen-logo.png
           ========================================================================= */}
       <div className="flex lg:hidden items-center relative w-full h-full">
         {/* Mobile Normal Logo Asset (Initial on mobile) */}
         <img
           src="/erpgen-logo.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
-          className={`h-10 sm:h-11 w-auto max-w-[185px] sm:max-w-[210px] object-contain transition-all duration-300 ease-in-out ${
+          draggable={false}
+          className={`h-10 sm:h-11 w-auto max-w-[185px] sm:max-w-[210px] object-contain transition-all duration-300 ease-in-out select-none ${
             !isMobileBlueLogo
               ? 'opacity-100 scale-100 pointer-events-auto'
               : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
           }`}
         />
 
-        {/* Mobile Blue Logo Asset (Secondary on mobile) */}
+        {/* Mobile Blue Logo Asset (Toggled state on mobile) */}
         <img
           src="/erpgen-logo-blue.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
-          className={`h-10 sm:h-11 w-auto max-w-[185px] sm:max-w-[210px] object-contain transition-all duration-300 ease-in-out ${
+          draggable={false}
+          className={`h-10 sm:h-11 w-auto max-w-[185px] sm:max-w-[210px] object-contain transition-all duration-300 ease-in-out select-none ${
             isMobileBlueLogo
               ? 'opacity-100 scale-100 pointer-events-auto'
               : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
