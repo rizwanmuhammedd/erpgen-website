@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 interface AnimatedERPGenLogoProps {
-  isMobileMenuOpen?: boolean;
   onNavigateHome?: () => void;
 }
 
 export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
-  isMobileMenuOpen = false,
   onNavigateHome,
 }) => {
-  // Desktop logo toggle state (Blue <-> Normal on user click)
+  // Desktop logo toggle state: Starts with Blue Logo (true = /erpgen-logo-blue.png, false = /erpgen-logo.png)
   const [isDesktopBlueLogo, setIsDesktopBlueLogo] = useState(true);
+
+  // Mobile logo toggle state: Starts with Normal Logo (false = /erpgen-logo.png, true = /erpgen-logo-blue.png)
+  const [isMobileBlueLogo, setIsMobileBlueLogo] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,28 +25,26 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
     imgNormal.src = '/erpgen-logo.png';
   }, []);
 
-  // Handle click interaction
+  // Handle click / tap interaction
   const handleLogoClick = () => {
-    // 1. Toggle desktop logo state (blue -> normal -> blue -> normal...)
+    // 1. Toggle desktop logo state (Blue -> Normal -> Blue -> Normal...)
     setIsDesktopBlueLogo((prev) => !prev);
 
-    // 2. If mobile callback provided (e.g. close mobile drawer if open)
+    // 2. Toggle mobile logo state (Normal -> Blue -> Normal -> Blue...)
+    setIsMobileBlueLogo((prev) => !prev);
+
+    // 3. If mobile callback provided (e.g. close mobile drawer if open)
     if (onNavigateHome) {
       onNavigateHome();
     }
 
-    // 3. Handle smooth React Router navigation to homepage
+    // 4. Handle smooth React Router navigation to homepage
     if (location.pathname === '/') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       navigate('/');
     }
   };
-
-  // Mobile logo asset synchronization:
-  // Closed mobile menu (false) -> shows Blue logo (/erpgen-logo-blue.png)
-  // Open mobile menu (true) -> shows Normal logo (/erpgen-logo.png)
-  const isMobileBlueLogo = !isMobileMenuOpen;
 
   return (
     <Link
@@ -57,10 +56,11 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
     >
       {/* =========================================================================
           1. DESKTOP LOGO DISPLAY (visible on lg: and above)
-          Controlled by desktop click toggle state: isDesktopBlueLogo
+          - Initial State on load: /erpgen-logo-blue.png
+          - On click: toggles to /erpgen-logo.png, then back on next click
           ========================================================================= */}
       <div className="hidden lg:flex items-center relative w-full h-full">
-        {/* Desktop Blue Logo Asset */}
+        {/* Desktop Blue Logo Asset (Initial on desktop) */}
         <img
           src="/erpgen-logo-blue.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
@@ -71,7 +71,7 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
           }`}
         />
 
-        {/* Desktop Normal Logo Asset */}
+        {/* Desktop Normal Logo Asset (Secondary on desktop) */}
         <img
           src="/erpgen-logo.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
@@ -85,28 +85,27 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
 
       {/* =========================================================================
           2. MOBILE LOGO DISPLAY (visible below lg:)
-          Strictly synchronized with mobileMenuOpen state:
-          - isMobileMenuOpen === false -> isMobileBlueLogo === true -> Blue Logo
-          - isMobileMenuOpen === true -> isMobileBlueLogo === false -> Normal Logo
+          - Initial State on load: /erpgen-logo.png
+          - On tap/click: toggles to /erpgen-logo-blue.png, then back on next tap
           ========================================================================= */}
       <div className="flex lg:hidden items-center relative w-full h-full">
-        {/* Mobile Blue Logo Asset */}
-        <img
-          src="/erpgen-logo-blue.png"
-          alt="ERPGen — Smarter Business. Simpler ERP."
-          className={`h-10 sm:h-11 w-auto max-w-[185px] sm:max-w-[210px] object-contain transition-all duration-300 ease-in-out ${
-            isMobileBlueLogo
-              ? 'opacity-100 scale-100 pointer-events-auto'
-              : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
-          }`}
-        />
-
-        {/* Mobile Normal Logo Asset */}
+        {/* Mobile Normal Logo Asset (Initial on mobile) */}
         <img
           src="/erpgen-logo.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
           className={`h-10 sm:h-11 w-auto max-w-[185px] sm:max-w-[210px] object-contain transition-all duration-300 ease-in-out ${
             !isMobileBlueLogo
+              ? 'opacity-100 scale-100 pointer-events-auto'
+              : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
+          }`}
+        />
+
+        {/* Mobile Blue Logo Asset (Secondary on mobile) */}
+        <img
+          src="/erpgen-logo-blue.png"
+          alt="ERPGen — Smarter Business. Simpler ERP."
+          className={`h-10 sm:h-11 w-auto max-w-[185px] sm:max-w-[210px] object-contain transition-all duration-300 ease-in-out ${
+            isMobileBlueLogo
               ? 'opacity-100 scale-100 pointer-events-auto'
               : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
           }`}

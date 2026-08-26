@@ -43,9 +43,8 @@ export const Navbar: React.FC = () => {
     >
       <Container size="xl">
         <div className="flex items-center justify-between">
-          {/* Reusable Animated ERPGen Logo Component synchronized with mobile menu */}
+          {/* Reusable Animated ERPGen Logo Component */}
           <AnimatedERPGenLogo
-            isMobileMenuOpen={mobileMenuOpen}
             onNavigateHome={() => setMobileMenuOpen(false)}
           />
 
