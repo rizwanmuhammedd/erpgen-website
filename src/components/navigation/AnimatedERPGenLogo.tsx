@@ -51,7 +51,7 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
     <Link
       to="/"
       onClick={handleLogoClick}
-      className="relative flex items-center justify-start focus-ring-purple rounded-lg p-1 transition-transform active:scale-95 shrink-0 group cursor-pointer select-none min-w-[160px] sm:min-w-[175px] lg:min-w-[175px] h-10 sm:h-11 lg:h-9"
+      className="relative flex items-center justify-start focus-ring-purple rounded-lg p-1 transition-transform active:scale-95 shrink-0 group cursor-pointer select-none min-w-[160px] sm:min-w-[175px] lg:min-w-[135px] h-10 sm:h-11 lg:h-7"
       aria-label="ERPGen — Smarter Business. Simpler ERP."
       title="ERPGen — Smarter Business. Simpler ERP."
     >
@@ -66,7 +66,7 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
           src="/erpgen-logo-blue.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
           draggable={false}
-          className={`h-10 sm:h-11 lg:h-[33px] w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[180px] object-contain transition-all duration-500 ease-in-out select-none ${
+          className={`h-10 sm:h-11 lg:h-[24px] w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[135px] object-contain transition-all duration-500 ease-in-out select-none ${
             isDesktopBlueLogo
               ? 'opacity-100 scale-100 pointer-events-auto'
               : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
@@ -78,7 +78,7 @@ export const AnimatedERPGenLogo: React.FC<AnimatedERPGenLogoProps> = ({
           src="/erpgen-logo.png"
           alt="ERPGen — Smarter Business. Simpler ERP."
           draggable={false}
-          className={`h-10 sm:h-11 lg:h-[33px] w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[180px] object-contain transition-all duration-500 ease-in-out select-none ${
+          className={`h-10 sm:h-11 lg:h-[24px] w-auto max-w-[200px] sm:max-w-[230px] lg:max-w-[135px] object-contain transition-all duration-500 ease-in-out select-none ${
             !isDesktopBlueLogo
               ? 'opacity-100 scale-100 pointer-events-auto'
               : 'opacity-0 scale-95 pointer-events-none absolute left-0 top-0'
