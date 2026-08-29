@@ -2,7 +2,6 @@ import React from 'react';
 import { Utensils, Scissors, ShoppingCart, Shirt, Check } from 'lucide-react';
 import type { PosBusinessType } from '../../types';
 import { Card } from '../ui/Card';
-import { Badge } from '../ui/Badge';
 
 interface BusinessTypeCardProps {
   id: PosBusinessType;
@@ -39,7 +38,7 @@ export const BusinessTypeCard: React.FC<BusinessTypeCardProps> = ({
       className={`cursor-pointer transition-all duration-300 relative group select-none p-5 sm:p-6 ${
         isSelected
           ? 'bg-white ring-2 ring-[#6D57A5] shadow-md -translate-y-1 border-[#6D57A5]/30'
-          : 'bg-white hover:border-[#6D57A5]/40 hover:shadow-md hover:-translate-y-0.5 border-[#E9E4F1]'
+          : 'bg-[#FAF8FC] hover:bg-white hover:border-[#6D57A5]/40 hover:shadow-md hover:-translate-y-0.5 border-[#E9E4F1]'
       }`}
       role="tab"
       aria-selected={isSelected}
@@ -85,10 +84,10 @@ export const BusinessTypeCard: React.FC<BusinessTypeCardProps> = ({
       </div>
 
       <div className="mt-4 pt-3 border-t border-[#E9E4F1] flex items-center justify-between text-[11px] text-[#625D6B] font-medium">
-        <span>{isSelected ? 'Active Context' : 'Click to preview'}</span>
-        <Badge variant={isSelected ? 'brand' : 'neutral'} size="sm" className="text-[9px] py-0 px-1.5">
-          POS Mode
-        </Badge>
+        <span>{isSelected ? 'Active Workflow' : 'Click to preview'}</span>
+        <span className="font-mono text-[10px] text-[#6D57A5] font-semibold uppercase">
+          {isSelected ? 'Selected' : 'Pre-Configured'}
+        </span>
       </div>
     </Card>
   );

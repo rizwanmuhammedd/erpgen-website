@@ -86,7 +86,7 @@ export const ModulesSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="modules"
-      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 border-y border-[#E9E4F1] bg-[#FAF8FC]"
+      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 border-b border-[#E9E4F1] bg-white"
       aria-label="Module Selection Section"
     >
       <Container size="xl" className="space-y-16">

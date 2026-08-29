@@ -99,7 +99,7 @@ export const PosFeaturesSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="pos-features"
-      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 bg-[#FAF8FC] border-y border-[#E9E4F1]"
+      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 bg-[#FAF8FC] border-b border-[#E9E4F1]"
       aria-label="POS Capabilities Section"
     >
       <Container size="xl" className="space-y-12 lg:space-y-16">

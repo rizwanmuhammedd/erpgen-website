@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FileText, ShoppingBag, ShieldCheck } from 'lucide-react';
+import { prefersReducedMotion } from '../../lib/gsap';
 
 interface HeroProductVisualProps {
   imageSrc?: string;
@@ -10,13 +11,44 @@ export const HeroProductVisual: React.FC<HeroProductVisualProps> = ({
   imageSrc = '/images/erpgen-app-preview.jpg',
   className = '',
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion() || !containerRef.current || !frameRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -2; // max 2 deg
+    const rotateY = ((x - centerX) / centerX) * 2;
+
+    frameRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (!frameRef.current) return;
+    frameRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+  };
+
   return (
-    <div className={`relative w-full max-w-2xl mx-auto lg:max-w-none group ${className}`}>
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative w-full max-w-2xl mx-auto lg:max-w-none group ${className}`}
+    >
       {/* Background Ambient Glow Behind Frame */}
       <div className="absolute -inset-1.5 bg-gradient-to-r from-[#6D57A5]/15 via-[#6D57A5]/5 to-[#17B681]/15 rounded-[28px] blur-xl opacity-60 group-hover:opacity-90 transition-opacity duration-700 pointer-events-none" />
 
       {/* Main Application Window Frame */}
-      <div className="relative rounded-2xl sm:rounded-3xl bg-white border border-[#E9E4F1] shadow-2xl shadow-[#6D57A5]/10 overflow-hidden backdrop-blur-xl">
+      <div
+        ref={frameRef}
+        className="relative rounded-2xl sm:rounded-3xl bg-white border border-[#E9E4F1] shadow-2xl shadow-[#6D57A5]/10 overflow-hidden backdrop-blur-xl transition-transform duration-500 ease-out"
+        style={{ willChange: 'transform' }}
+      >
         {/* macOS Style Window Titlebar */}
         <div className="flex items-center justify-between px-4 py-3 bg-[#FAF8FC] border-b border-[#E9E4F1] text-xs">
           <div className="flex items-center gap-2">

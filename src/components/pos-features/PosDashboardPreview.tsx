@@ -133,35 +133,27 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                 {selectedFeatureId === 'reports' && 'POS Analytics & Daily Summary'}
               </span>
             </div>
-            <span className="text-[#625D6B] text-[11px] hidden sm:inline">Demo Application View</span>
+            <span className="text-[#625D6B] text-[11px] font-mono hidden sm:inline">Active Terminal</span>
           </div>
 
-          {/* Confirmed Real POS Application Metric Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 my-6">
-            <div className="p-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
-              <span className="text-[10px] text-[#625D6B] font-medium block">Total Receipts</span>
-              <span className="text-lg font-bold text-[#1F1B2D] font-heading mt-0.5 block">142</span>
+          {/* Confirmed Real POS Application Metric Cards (High-Level Summary) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-5">
+            <div className="p-3.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
+              <span className="text-[10px] text-[#625D6B] font-medium block uppercase tracking-wider">Today's Transactions</span>
+              <span className="text-xl font-bold text-[#1F1B2D] font-heading mt-0.5 block">142 Processed</span>
             </div>
-            <div className="p-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
-              <span className="text-[10px] text-[#129267] font-semibold block">Paid Receipts</span>
-              <span className="text-lg font-bold text-[#17B681] font-heading mt-0.5 block">138</span>
+            <div className="p-3.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
+              <span className="text-[10px] text-[#6D57A5] font-semibold block uppercase tracking-wider">Active Terminals</span>
+              <span className="text-xl font-bold text-[#6D57A5] font-heading mt-0.5 block">4 Registers Synced</span>
             </div>
-            <div className="p-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
-              <span className="text-[10px] text-[#6D57A5] font-semibold block">Open Receipts</span>
-              <span className="text-lg font-bold text-[#6D57A5] font-heading mt-0.5 block">3</span>
-            </div>
-            <div className="p-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
-              <span className="text-[10px] text-[#625D6B] font-medium block">Cancelled</span>
-              <span className="text-lg font-bold text-[#625D6B] font-heading mt-0.5 block">1</span>
-            </div>
-            <div className="col-span-2 sm:col-span-1 p-3 rounded-xl bg-[#E4F8F0] border border-[#17B681]/30">
-              <span className="text-[10px] text-[#129267] font-semibold block">Total Revenue</span>
-              <span className="text-lg font-bold text-[#17B681] font-heading mt-0.5 block">$4,280.50</span>
+            <div className="p-3.5 rounded-xl bg-[#E4F8F0] border border-[#17B681]/30">
+              <span className="text-[10px] text-[#129267] font-semibold block uppercase tracking-wider">Net Sales Revenue</span>
+              <span className="text-xl font-bold text-[#17B681] font-heading mt-0.5 block">$4,280.50</span>
             </div>
           </div>
 
           {/* Dynamic Targeted View Based on Selected Feature */}
-          <div className="space-y-4 my-2">
+          <div key={selectedFeatureId} className="space-y-4 my-2 animate-in fade-in slide-in-from-bottom-1 duration-200">
             {/* 1. POS / BILLING VIEW */}
             {selectedFeatureId === 'pos-billing' && (
               <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
@@ -286,9 +278,9 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
           <div className="pt-4 border-t border-[#E9E4F1] flex items-center justify-between text-xs text-[#625D6B]">
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681]" />
-              <span>Confirmed ERPGen POS workflow navigation structure</span>
+              <span>Real-time counter and back-office synchronization</span>
             </div>
-            <span className="text-[11px] text-[#6D57A5] font-mono font-medium">ERPGen Counter Engine</span>
+            <span className="text-[11px] text-[#6D57A5] font-mono font-medium">ERPGen Core Engine</span>
           </div>
         </div>
       </div>

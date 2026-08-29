@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MessageSquare } from 'lucide-react';
 import { Container } from '../ui/Container';
-import { Badge } from '../ui/Badge';
 import { SITE_DATA, getWhatsAppUrl } from '../../data/siteData';
 
 export const Footer: React.FC = () => {
@@ -22,10 +21,10 @@ export const Footer: React.FC = () => {
             <p className="text-[#625D6B] text-xs sm:text-sm leading-relaxed max-w-sm">
               The flexible business management platform. Choose standalone Invoice, high-speed POS, or configure a combined solution around your exact business requirements.
             </p>
-            <div className="flex items-center gap-2 pt-1">
-              <Badge variant="brand" size="sm">
-                Enterprise Modular ERP
-              </Badge>
+            <div className="pt-1">
+              <span className="text-[11px] font-mono text-[#6D57A5] font-semibold tracking-wider uppercase">
+                One Connected Business Platform
+              </span>
             </div>
           </div>
 

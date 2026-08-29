@@ -65,10 +65,10 @@ export const BusinessTypesSection: React.FC = () => {
       <Container size="xl" className="space-y-12">
         {/* Section Intro */}
         <SectionHeading
-          eyebrow="BUILT AROUND YOUR BUSINESS"
-          title="One POS. Different ways to"
-          titleGradient="do business."
-          description="ERPGen POS adapts to the needs of different business types, giving each business a workflow that fits the way it operates."
+          eyebrow="ADAPTABLE BY INDUSTRY"
+          title="One connected engine."
+          titleGradient="Tailored business workflows."
+          description="ERPGen POS adapts to the exact operational needs of different business models, providing pre-configured workflows that fit the way you work."
         />
 
         {/* 4 Interactive Business Selector Cards Grid */}

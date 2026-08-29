@@ -1,6 +1,5 @@
 import React from 'react';
-import { FileText, ShoppingBag, ArrowRightLeft, Layers, CheckCircle2, ShieldAlert } from 'lucide-react';
-import { Badge } from '../ui/Badge';
+import { FileText, ShoppingBag, ArrowRightLeft, CheckCircle2, ShieldAlert } from 'lucide-react';
 
 interface ModuleConfiguratorProps {
   invoiceSelected: boolean;
@@ -136,9 +135,9 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
 
         {/* Configuration Summary Callout */}
         {!isNone && (
-          <div className="pt-4 border-t border-[#E9E4F1] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-[#FAF8FC] p-4 rounded-xl border border-[#E9E4F1]">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-[#FAF8FC] p-4 rounded-xl border border-[#E9E4F1] shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#E4F8F0] text-[#129267] border border-[#17B681]/30 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[#E4F8F0] text-[#129267] border border-[#17B681]/30 flex items-center justify-center shrink-0">
                 <CheckCircle2 className="w-4 h-4" />
               </div>
               <div>
@@ -151,15 +150,15 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
                 </p>
                 <p className="text-[11px] text-[#625D6B]">
                   {isBoth
-                    ? 'Both modules communicate seamlessly in one screen.'
+                    ? 'Both modules communicate seamlessly in one synchronized workspace.'
                     : 'Focused deployment tailored exclusively for your current operation.'}
                 </p>
               </div>
             </div>
 
-            <Badge variant="brand" size="sm" icon={<Layers className="w-3 h-3" />}>
-              Tailored Setup
-            </Badge>
+            <span className="text-[11px] font-mono font-semibold text-[#6D57A5] shrink-0">
+              {isBoth ? '2 Modules Active' : '1 Module Active'}
+            </span>
           </div>
         )}
       </div>

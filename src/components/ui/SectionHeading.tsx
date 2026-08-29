@@ -30,7 +30,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       )}
     >
       {eyebrow && (
-        <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#6D57A5] bg-[#FAF8FC] px-3.5 py-1.5 rounded-full border border-[#E9E4F1] font-bold">
+        <span className="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#6D57A5] bg-[#FAF8FC] px-3.5 py-1.5 rounded-full border border-[#E9E4F1] shadow-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-[#17B681] animate-pulse" />
           {eyebrow}
         </span>

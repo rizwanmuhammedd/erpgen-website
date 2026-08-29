@@ -4,7 +4,6 @@ import { Container } from '../ui/Container';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 import { SITE_DATA, getWhatsAppUrl } from '../../data/siteData';
 
@@ -56,7 +55,7 @@ export const ContactSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="contact"
-      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 border-t border-[#E9E4F1] bg-[#FAF8FC]"
+      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 border-b border-[#E9E4F1] bg-white"
       aria-label="Contact & Consultation Section"
     >
       <Container size="xl" className="space-y-16">
@@ -73,12 +72,10 @@ export const ContactSection: React.FC = () => {
           {/* Left Column: Direct Contact Info & WhatsApp CTA */}
           <div className="lg:col-span-5 space-y-6">
             <Card variant="brand-border" className="p-6 sm:p-8 space-y-6 bg-white border border-[#E9E4F1] shadow-sm">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Badge variant="brand" size="sm">
-                    Verified Contact Channel
-                  </Badge>
-                </div>
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
+                  Direct Channels
+                </span>
                 <h3 className="text-2xl font-bold text-[#1F1B2D] font-heading">
                   Get in Touch with ERPGen
                 </h3>

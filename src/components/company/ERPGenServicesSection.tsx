@@ -17,7 +17,6 @@ import {
 import { Container } from '../ui/Container';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Card } from '../ui/Card';
-import { Badge } from '../ui/Badge';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 export const ERPGenServicesSection: React.FC = () => {
@@ -128,7 +127,7 @@ export const ERPGenServicesSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="services"
-      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 border-b border-[#E9E4F1] bg-white"
+      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 border-b border-[#E9E4F1] bg-[#FAF8FC]"
       aria-label="ERPGen Technology Services Section"
     >
       <Container size="xl" className="space-y-16">
@@ -157,12 +156,12 @@ export const ERPGenServicesSection: React.FC = () => {
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center group-hover:bg-[#6D57A5] group-hover:text-white transition-all">
+                    <div className="w-10 h-10 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center group-hover:bg-[#6D57A5] group-hover:text-white transition-all shadow-xs">
                       <IconComponent className="w-5 h-5" />
                     </div>
-                    <Badge variant="neutral" size="sm" className="text-[9px]">
-                      Technology Service
-                    </Badge>
+                    <span className="text-[10px] font-mono text-[#625D6B]/60 uppercase tracking-wider font-semibold">
+                      Support Ecosystem
+                    </span>
                   </div>
 
                   <div>
@@ -186,14 +185,14 @@ export const ERPGenServicesSection: React.FC = () => {
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-[#E9E4F1] flex items-center justify-between text-xs text-[#625D6B]">
-                  <span className="text-[11px] font-mono text-[#6D57A5] font-semibold">ERPGen Ecosystem</span>
+                  <span className="text-[11px] font-mono text-[#6D57A5] font-semibold">ERPGen Infrastructure</span>
                   <Link
                     to={`/services/${service.slug}`}
                     className="inline-flex items-center gap-1 text-[#17B681] hover:text-[#129267] font-semibold transition-colors focus-ring-purple rounded"
                     aria-label={`Explore ${service.title} service`}
                   >
                     <span>Explore Service</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 </div>
               </Card>
@@ -202,27 +201,27 @@ export const ERPGenServicesSection: React.FC = () => {
         </div>
 
         {/* Technology Pillars Bar */}
-        <div ref={pillarsRef} className="pt-6">
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#FAF8FC] border border-[#E9E4F1]">
+        <div ref={pillarsRef} className="pt-4">
+          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E9E4F1] shadow-xs">
             <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-[#E9E4F1]">
               <div>
-                <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
-                  ERPGen Infrastructure Standards
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
+                  Infrastructure Standards
                 </span>
                 <h4 className="text-xl font-bold text-[#1F1B2D] font-heading mt-0.5">
                   Built on Enterprise Technology Pillars
                 </h4>
               </div>
-              <Badge variant="brand" size="sm">
-                Engineering Commitment
-              </Badge>
+              <span className="text-xs text-[#625D6B] font-medium">
+                High-Availability Foundation
+              </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {technologyPillars.map((pillar) => {
                 const PillarIcon = pillar.icon;
                 return (
-                  <div key={pillar.title} className="p-4 rounded-xl bg-white border border-[#E9E4F1] shadow-sm space-y-2">
+                  <div key={pillar.title} className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-2">
                     <div className="flex items-center gap-2 text-[#6D57A5]">
                       <PillarIcon className="w-4 h-4 shrink-0" />
                       <h5 className="text-xs font-bold text-[#1F1B2D] font-heading leading-tight">{pillar.title}</h5>
