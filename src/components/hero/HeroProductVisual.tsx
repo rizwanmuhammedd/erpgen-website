@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, ShoppingBag, Sliders, ShieldCheck } from 'lucide-react';
+import { FileText, ShoppingBag, ShieldCheck } from 'lucide-react';
 
 interface HeroProductVisualProps {
   imageSrc?: string;
@@ -60,36 +60,28 @@ export const HeroProductVisual: React.FC<HeroProductVisualProps> = ({
         </div>
       </div>
 
-      {/* Floating Module Badges (Subtle Visual Cues) */}
+      {/* Floating Status Badges (Clean, Minimal Enterprise Cues) */}
       
       {/* Top Left: Invoice Module Badge */}
-      <div className="hero-floating-card absolute -top-4 -left-4 sm:-top-6 sm:-left-6 bg-white rounded-xl p-3 shadow-xl border border-[#E9E4F1] flex items-center gap-2.5 z-20 hidden xs:flex">
-        <div className="w-8 h-8 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-center text-[#6D57A5]">
-          <FileText className="w-4 h-4" />
+      <div className="hero-floating-card absolute -top-3 -left-3 sm:-top-5 sm:-left-5 bg-white/95 backdrop-blur-md rounded-xl p-2.5 sm:p-3 shadow-lg border border-[#E9E4F1] flex items-center gap-2.5 z-20 hidden xs:flex">
+        <div className="w-7 h-7 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-center text-[#6D57A5] shrink-0">
+          <FileText className="w-3.5 h-3.5" />
         </div>
         <div>
-          <p className="text-xs font-bold text-[#1F1B2D] leading-none">Invoice Module</p>
-          <p className="text-[10px] text-[#17B681] font-semibold mt-0.5">Standalone or Combined</p>
+          <p className="text-xs font-bold text-[#1F1B2D] leading-none">ERPGen Invoice</p>
+          <p className="text-[10px] text-[#17B681] font-semibold mt-0.5">Billing & Accounts</p>
         </div>
       </div>
 
       {/* Bottom Right: POS Module Badge */}
-      <div className="hero-floating-card absolute -bottom-5 -right-4 sm:-bottom-6 sm:-right-6 bg-white rounded-xl p-3 shadow-xl border border-[#E9E4F1] flex items-center gap-2.5 z-20">
-        <div className="w-8 h-8 rounded-lg bg-[#E4F8F0] border border-[#17B681]/30 flex items-center justify-center text-[#17B681]">
-          <ShoppingBag className="w-4 h-4" />
+      <div className="hero-floating-card absolute -bottom-4 -right-3 sm:-bottom-5 sm:-right-5 bg-white/95 backdrop-blur-md rounded-xl p-2.5 sm:p-3 shadow-lg border border-[#E9E4F1] flex items-center gap-2.5 z-20">
+        <div className="w-7 h-7 rounded-lg bg-[#E4F8F0] border border-[#17B681]/30 flex items-center justify-center text-[#17B681] shrink-0">
+          <ShoppingBag className="w-3.5 h-3.5" />
         </div>
         <div>
-          <p className="text-xs font-bold text-[#1F1B2D] leading-none">POS Counter</p>
-          <p className="text-[10px] text-[#6D57A5] font-semibold mt-0.5">High-Speed Checkout</p>
+          <p className="text-xs font-bold text-[#1F1B2D] leading-none">ERPGen POS</p>
+          <p className="text-[10px] text-[#6D57A5] font-semibold mt-0.5">High-Speed Register</p>
         </div>
-      </div>
-
-      {/* Top Right: Custom Configuration Badge */}
-      <div className="hero-floating-card absolute top-1/2 -right-6 -translate-y-1/2 bg-white rounded-xl py-2 px-3 shadow-xl border border-[#E9E4F1] items-center gap-2 z-20 hidden lg:flex">
-        <div className="w-6 h-6 rounded-md bg-[#FAF8FC] flex items-center justify-center text-[#17B681]">
-          <Sliders className="w-3.5 h-3.5" />
-        </div>
-        <span className="text-[11px] font-bold text-[#1F1B2D]">Flexible Module Selection</span>
       </div>
     </div>
   );

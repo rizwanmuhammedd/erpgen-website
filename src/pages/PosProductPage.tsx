@@ -26,7 +26,7 @@ export const PosProductPage: React.FC = () => {
         eyebrow="CORE ERP MODULE"
         title="ERPGen POS —"
         titleGradient="Next-Gen Counter & Store Checkout"
-        description="Fast, touch-optimized point-of-sale system built for modern counters. Features 7 core operational modules, industry-specific workflows, and seamless live inventory synchronization."
+        description="High-speed, touch-optimized point-of-sale engine built for modern counter operations. Features real-time stock sync, industry-tailored workflows, and centralized sales intelligence."
         breadcrumbs={[
           { label: 'Home', path: '/' },
           { label: 'Products', path: '/products' },

@@ -80,7 +80,7 @@ export const Hero: React.FC = () => {
             {/* Small Eyebrow Badge */}
             <div ref={eyebrowRef} className="inline-flex items-start">
               <Badge variant="brand" icon={<Sparkles className="w-3.5 h-3.5 text-[#17B681]" />}>
-                Modular Business Management
+                ONE CONNECTED BUSINESS PLATFORM
               </Badge>
             </div>
 
@@ -89,9 +89,9 @@ export const Hero: React.FC = () => {
               ref={headlineRef}
               className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#1F1B2D] tracking-tight leading-[1.12] font-heading"
             >
-              ERP that{' '}
+              The modular ERP platform for{' '}
               <span className="text-gradient-brand block sm:inline">
-                fits the way you work.
+                modern business.
               </span>
             </h1>
 
@@ -100,7 +100,7 @@ export const Hero: React.FC = () => {
               ref={paragraphRef}
               className="text-base sm:text-lg lg:text-xl text-[#625D6B] font-normal leading-relaxed max-w-2xl"
             >
-              ERPGen brings the tools your business needs into one flexible platform. Choose standalone Invoice, high-speed POS, or configure a combined solution around your exact business requirements.
+              Unify your point of sale, customer billing, live inventory, and financial reporting into one synchronized workspace. Deploy standalone modules or combine them into a full enterprise suite.
             </p>
 
             {/* Primary & Secondary CTAs */}
@@ -112,7 +112,7 @@ export const Hero: React.FC = () => {
                   icon={<ArrowRight className="w-5 h-5" />}
                   className="w-full sm:w-auto"
                 >
-                  Explore ERPGen
+                  Explore Platform
                 </Button>
               </a>
               <a href="#custom-config">
@@ -122,7 +122,7 @@ export const Hero: React.FC = () => {
                   icon={<Sliders className="w-5 h-5 text-[#17B681]" />}
                   className="w-full sm:w-auto"
                 >
-                  See how it works
+                  Configure Solution
                 </Button>
               </a>
             </div>
@@ -134,15 +134,15 @@ export const Hero: React.FC = () => {
             >
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#17B681] shrink-0" />
-                <span>Invoice & POS Modules</span>
+                <span>Invoice & POS Core Modules</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#17B681] shrink-0" />
-                <span>Custom Subscription Plans</span>
+                <span>Zero Bloat — Modular by Design</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#17B681] shrink-0" />
-                <span>Restaurant, Barbershop, Supermarket & Laundry Ready</span>
+                <span>Restaurant, Retail, Barbershop & Laundry Workflows</span>
               </div>
             </div>
           </div>

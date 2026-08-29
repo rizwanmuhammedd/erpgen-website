@@ -3,7 +3,6 @@ import { Container } from '../ui/Container';
 import { SectionHeading } from '../ui/SectionHeading';
 import { PosFeatureCard } from './PosFeatureCard';
 import { PosDashboardPreview } from './PosDashboardPreview';
-import { POS_REAL_FEATURES } from '../../data/productData';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 export const PosFeaturesSection: React.FC = () => {
@@ -13,10 +12,37 @@ export const PosFeaturesSection: React.FC = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  // Filter 7 primary POS features
-  const primaryFeatures = POS_REAL_FEATURES.filter((f) =>
-    ['pos-billing', 'returns', 'inventory', 'damaged-products', 'customers', 'sales-history', 'reports'].includes(f.id)
-  );
+  // 4 High-Level Enterprise Capability Groups
+  const capabilities = [
+    {
+      id: 'sales-billing',
+      previewId: 'pos-billing',
+      name: 'Sales & Fast Checkout',
+      subtitle: 'Counter Velocity',
+      description: 'Rapid barcode scanning, dine-in/takeaway tickets, split billing, and instant thermal receipt printing.',
+    },
+    {
+      id: 'inventory-ops',
+      previewId: 'inventory',
+      name: 'Inventory & Operations',
+      subtitle: 'Real-Time Sync',
+      description: 'Live stock tracking across registers, variant management, returns, and damaged product controls.',
+    },
+    {
+      id: 'customers-management',
+      previewId: 'customers',
+      name: 'Customers & Accounts',
+      subtitle: 'Client Profiles',
+      description: 'Centralized customer profiles, complete purchase histories, and credit account tracking.',
+    },
+    {
+      id: 'reports-insights',
+      previewId: 'reports',
+      name: 'Reports & Insights',
+      subtitle: 'Live Visibility',
+      description: 'Real-time sales summaries, cashier register balancing, and daily business performance analytics.',
+    },
+  ];
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -59,43 +85,54 @@ export const PosFeaturesSection: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+  // Determine if a capability group is currently active based on preview feature ID
+  const isCapabilityActive = (cap: typeof capabilities[0]) => {
+    if (cap.previewId === selectedFeatureId) return true;
+    if (cap.id === 'sales-billing' && ['pos-billing', 'returns', 'sales-history'].includes(selectedFeatureId)) return true;
+    if (cap.id === 'inventory-ops' && ['inventory', 'damaged-products'].includes(selectedFeatureId)) return true;
+    if (cap.id === 'customers-management' && selectedFeatureId === 'customers') return true;
+    if (cap.id === 'reports-insights' && selectedFeatureId === 'reports') return true;
+    return false;
+  };
+
   return (
     <section
       ref={sectionRef}
       id="pos-features"
       className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 bg-[#FAF8FC] border-y border-[#E9E4F1]"
-      aria-label="POS Features Section"
+      aria-label="POS Capabilities Section"
     >
-      <Container size="xl" className="space-y-16">
+      <Container size="xl" className="space-y-12 lg:space-y-16">
         {/* Section Intro */}
         <SectionHeading
-          eyebrow="POS BUILT FOR DAILY OPERATIONS"
-          title="Everything your POS needs,"
-          titleGradient="in one workflow."
-          description="From billing and returns to inventory, customers and reporting, ERPGen POS brings the essential tools for running your counter into one connected workspace."
+          eyebrow="ENGINEERED FOR DAILY COMMERCE"
+          title="Point-of-sale capabilities built for"
+          titleGradient="high-velocity operations."
+          description="ERPGen POS unifies counter billing, real-time inventory synchronization, customer records, and daily financial reporting into one intuitive workspace."
         />
 
-        {/* 7 Primary Feature Cards Grid */}
+        {/* 4 Premium Capability Cards Grid */}
         <div
           ref={cardsRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           role="region"
-          aria-label="POS Primary Features Grid"
+          aria-label="POS Capabilities Overview"
         >
-          {primaryFeatures.map((feature) => (
+          {capabilities.map((cap) => (
             <PosFeatureCard
-              key={feature.id}
-              id={feature.id}
-              name={feature.name}
-              description={feature.description}
-              isSelected={selectedFeatureId === feature.id}
-              onSelect={() => setSelectedFeatureId(feature.id)}
+              key={cap.id}
+              id={cap.id}
+              name={cap.name}
+              subtitle={cap.subtitle}
+              description={cap.description}
+              isSelected={isCapabilityActive(cap)}
+              onSelect={() => setSelectedFeatureId(cap.previewId)}
             />
           ))}
         </div>
 
-        {/* Interactive POS Application & Sidebar Preview */}
-        <div ref={previewRef} className="pt-4">
+        {/* Interactive POS Application Workspace Visual (High Priority Showcase) */}
+        <div ref={previewRef} className="pt-2">
           <PosDashboardPreview
             selectedFeatureId={selectedFeatureId}
             onSelectFeature={(id) => setSelectedFeatureId(id)}

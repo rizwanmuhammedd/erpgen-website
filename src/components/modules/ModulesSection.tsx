@@ -92,10 +92,10 @@ export const ModulesSection: React.FC = () => {
       <Container size="xl" className="space-y-16">
         {/* Section Intro */}
         <SectionHeading
-          eyebrow="MODULAR BY DESIGN"
-          title="Choose the tools your business"
-          titleGradient="actually needs."
-          description="Your business doesn't have to adopt everything at once. Start with standalone Invoice, standalone POS, or combine them into a single connected platform as your requirements evolve."
+          eyebrow="CORE PRODUCT PILLARS"
+          title="Deploy standalone modules, or"
+          titleGradient="connect them all."
+          description="Start with standalone Invoicing for billing, standalone POS for your counter registers, or unify them into a single connected platform as your business operations grow."
         />
 
         {/* 2 Core Module Selection Cards */}
