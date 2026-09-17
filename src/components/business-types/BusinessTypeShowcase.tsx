@@ -7,8 +7,10 @@ import {
   Shirt,
   ArrowRight,
   ShieldCheck,
+  CheckCircle2,
 } from 'lucide-react';
 import type { PosBusinessType } from '../../types';
+import { BUSINESS_TYPE_SPECS } from '../../data/businessTypeData';
 import { Button } from '../ui/Button';
 
 interface BusinessTypeShowcaseProps {
@@ -58,6 +60,7 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
   };
 
   const data = businessData[businessId];
+  const spec = BUSINESS_TYPE_SPECS.find((s) => s.id === businessId);
   const IconComponent = data.icon;
 
   return (
@@ -127,7 +130,7 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
               <div className="flex items-center justify-between">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#625D6B] block">
-                    Connected Architecture
+                    Tailored Operational Mode
                   </span>
                   <span className="text-base font-bold text-[#1F1B2D] font-heading mt-0.5 block">
                     {data.title} Register
@@ -138,7 +141,22 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-between text-xs">
+              {/* Verified High-Level Capabilities Grid */}
+              <div className="space-y-2 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {spec?.keyCapabilities.map((cap) => (
+                    <div
+                      key={cap}
+                      className="flex items-center gap-2 p-2.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs text-[#1F1B2D]"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
+                      <span className="font-medium text-[11px] leading-tight">{cap}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
                   <span className="font-semibold text-[#1F1B2D]">Live Data Continuity</span>
@@ -148,7 +166,7 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
                 </span>
               </div>
 
-              <div className="flex items-center justify-between pt-2 text-xs text-[#625D6B]">
+              <div className="flex items-center justify-between pt-1 text-xs text-[#625D6B]">
                 <span className="flex items-center gap-1.5 text-[#17B681]">
                   <ShieldCheck className="w-4 h-4" />
                   <span>Pre-configured out of the box</span>

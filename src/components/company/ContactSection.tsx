@@ -28,24 +28,33 @@ export const ContactSection: React.FC = () => {
   };
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardRef.current,
-        { opacity: 0, y: 35 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: cardRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+      if (cardRef.current) {
+        gsap.fromTo(
+          cardRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 10,
+            y: 35,
+            opacity: 0,
           },
-        }
-      );
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            stagger: 0.12,
+            duration: 0.75,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();

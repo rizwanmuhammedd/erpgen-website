@@ -45,38 +45,57 @@ export const PosFeaturesSection: React.FC = () => {
   ];
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
+      // 3D perspective fold-to-unfold for the POS capability cards
       gsap.fromTo(
         cardsRef.current,
-        { opacity: 0, y: 35 },
         {
-          opacity: 1,
+          transformPerspective: 1200,
+          rotateX: 12,
+          scale: 0.95,
+          y: 35,
+          opacity: 0,
+        },
+        {
+          rotateX: 0,
+          scale: 1,
           y: 0,
+          opacity: 1,
           duration: 0.8,
-          ease: 'power3.out',
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: cardsRef.current,
             start: 'top 85%',
-            toggleActions: 'play none none none',
+            end: 'top 45%',
+            scrub: 0.6,
           },
         }
       );
 
+      // Settle preview dashboard with perspective
       gsap.fromTo(
         previewRef.current,
-        { opacity: 0, y: 30 },
         {
-          opacity: 1,
+          transformPerspective: 1200,
+          rotateX: 10,
+          scale: 0.96,
+          y: 30,
+          opacity: 0.5,
+        },
+        {
+          rotateX: 0,
+          scale: 1,
           y: 0,
+          opacity: 1,
           duration: 0.8,
-          delay: 0.15,
-          ease: 'power3.out',
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: previewRef.current,
             start: 'top 85%',
-            toggleActions: 'play none none none',
+            end: 'top 40%',
+            scrub: 0.6,
           },
         }
       );
@@ -84,6 +103,16 @@ export const PosFeaturesSection: React.FC = () => {
 
     return () => ctx.revert();
   }, []);
+
+  // Perspective settle when selected feature changes
+  useEffect(() => {
+    if (prefersReducedMotion() || typeof window === 'undefined' || !previewRef.current) return;
+    gsap.fromTo(
+      previewRef.current,
+      { opacity: 0.75, y: 6, scale: 0.99, rotateX: 2, transformPerspective: 1000 },
+      { opacity: 1, y: 0, scale: 1, rotateX: 0, duration: 0.3, ease: 'power2.out' }
+    );
+  }, [selectedFeatureId]);
 
   // Determine if a capability group is currently active based on preview feature ID
   const isCapabilityActive = (cap: typeof capabilities[0]) => {
@@ -132,7 +161,7 @@ export const PosFeaturesSection: React.FC = () => {
         </div>
 
         {/* Interactive POS Application Workspace Visual (High Priority Showcase) */}
-        <div ref={previewRef} className="pt-2">
+        <div ref={previewRef} className="pt-2 will-change-[transform,opacity]">
           <PosDashboardPreview
             selectedFeatureId={selectedFeatureId}
             onSelectFeature={(id) => setSelectedFeatureId(id)}

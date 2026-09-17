@@ -39,18 +39,28 @@ export const PlatformValueSection: React.FC = () => {
     if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
+      // Staggered 3D unfolding of the 4 pillar cards as user scrolls into view
       gsap.fromTo(
-        gridRef.current,
-        { opacity: 0, y: 30 },
+        '.platform-pillar-card',
         {
-          opacity: 1,
+          transformPerspective: 1000,
+          rotateX: 16,
+          y: 45,
+          opacity: 0.3,
+          scale: 0.95,
+        },
+        {
+          rotateX: 0,
           y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
+          opacity: 1,
+          scale: 1,
+          stagger: 0.1,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: gridRef.current,
             start: 'top 85%',
-            toggleActions: 'play none none none',
+            end: 'top 40%',
+            scrub: 0.6,
           },
         }
       );
@@ -84,7 +94,7 @@ export const PlatformValueSection: React.FC = () => {
             return (
               <div
                 key={pillar.title}
-                className="pt-6 border-t border-[#E9E4F1] hover:border-[#6D57A5] transition-colors duration-300 group flex flex-col justify-between"
+                className="platform-pillar-card pt-6 border-t border-[#E9E4F1] hover:border-[#6D57A5] transition-colors duration-300 group flex flex-col justify-between"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">

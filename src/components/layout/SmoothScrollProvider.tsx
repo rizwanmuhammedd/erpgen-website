@@ -34,7 +34,7 @@ export const SmoothScrollProvider: React.FC<SmoothScrollProviderProps> = ({ chil
     };
 
     gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
 
     // Support smooth anchor navigation (e.g. href="#modules")
     const handleAnchorClick = (e: MouseEvent) => {

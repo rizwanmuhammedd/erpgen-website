@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navbar } from '../navigation/Navbar';
-import { DesktopCursor } from '../ui/DesktopCursor';
 import { SmoothScrollProvider } from './SmoothScrollProvider';
 
 interface AppShellProps {
@@ -11,8 +10,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   return (
     <SmoothScrollProvider>
       <div className="min-h-screen bg-white text-[#1F1B2D] relative selection:bg-[#6D57A5]/15 selection:text-[#6D57A5] overflow-hidden flex flex-col">
-        {/* Refined Desktop Custom Pointer Treatment */}
-        <DesktopCursor />
 
         {/* Subtle light ambient atmosphere (ERPGen Purple & Emerald subtle accents) */}
         <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">

@@ -1,286 +1,288 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
+  ShoppingBag,
   CreditCard,
-  RotateCcw,
-  Package,
-  AlertTriangle,
-  Users,
-  History,
-  BarChart3,
+  Printer,
   CheckCircle2,
+  Sparkles,
+  Layers,
+  Coins,
 } from 'lucide-react';
 import { Badge } from '../ui/Badge';
+import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 interface PosDashboardPreviewProps {
-  selectedFeatureId: string;
-  onSelectFeature: (id: string) => void;
+  selectedFeatureId?: string;
+  onSelectFeature?: (id: string) => void;
 }
 
 export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
-  selectedFeatureId,
-  onSelectFeature,
+  selectedFeatureId = 'pos-billing',
 }) => {
-  const posNavItems = [
-    { id: 'pos-billing', label: 'POS / Billing', icon: CreditCard },
-    { id: 'returns', label: 'Returns', icon: RotateCcw },
-    { id: 'inventory', label: 'Inventory', icon: Package },
-    { id: 'damaged-products', label: 'Damaged Products', icon: AlertTriangle },
-    { id: 'customers', label: 'Customers', icon: Users },
-    { id: 'sales-history', label: 'Sales History', icon: History },
-    { id: 'reports', label: 'Reports', icon: BarChart3 },
-  ];
+  const containerRef = useRef<HTMLDivElement>(null);
+  const layerBaseRef = useRef<HTMLDivElement>(null);
+  const layerMidRef = useRef<HTMLDivElement>(null);
+  const layerTopRef = useRef<HTMLDivElement>(null);
 
-  const settingsNavItems = [
-    { id: 'variants', label: 'Variants' },
-    { id: 'warranties', label: 'Warranties' },
-    { id: 'receipts', label: 'Receipts' },
-    { id: 'products', label: 'Products' },
-    { id: 'category', label: 'Category' },
-    { id: 'pdf-custom', label: 'PDF Custom' },
-    { id: 'points', label: 'Points' },
-    { id: 'printer', label: 'Printer' },
-  ];
+  useEffect(() => {
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
+
+    const ctx = gsap.context(() => {
+      // Signature "STACK → UNSTACK" animation scrubbed with scroll
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 85%',
+          end: 'top 25%',
+          scrub: 0.6,
+        },
+      });
+
+      // Initially layers are stacked tightly together
+      tl.fromTo(
+        layerBaseRef.current,
+        {
+          y: 25,
+          scale: 0.96,
+          transformPerspective: 1200,
+          rotateX: 6,
+        },
+        {
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          ease: 'power2.out',
+        }
+      );
+
+      // Middle layer separates and floats into position
+      tl.fromTo(
+        layerMidRef.current,
+        {
+          y: 50,
+          x: 25,
+          scale: 0.92,
+          opacity: 0.6,
+          transformPerspective: 1200,
+          rotateZ: 2,
+        },
+        {
+          y: 0,
+          x: 0,
+          scale: 1,
+          opacity: 1,
+          rotateZ: 0,
+          ease: 'power2.out',
+        },
+        '-=0.4'
+      );
+
+      // Top layer separates and floats to its corner anchor
+      tl.fromTo(
+        layerTopRef.current,
+        {
+          y: 65,
+          x: -25,
+          scale: 0.88,
+          opacity: 0.5,
+          transformPerspective: 1200,
+          rotateZ: -2,
+        },
+        {
+          y: 0,
+          x: 0,
+          scale: 1,
+          opacity: 1,
+          rotateZ: 0,
+          ease: 'power2.out',
+        },
+        '-=0.3'
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className="w-full rounded-2xl sm:rounded-3xl border border-[#E9E4F1] shadow-xl overflow-hidden bg-white">
-      {/* macOS Style Window Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-[#FAF8FC] border-b border-[#E9E4F1] text-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-[#6D57A5]/40 inline-block" />
-            <span className="w-3 h-3 rounded-full bg-[#17B681]/40 inline-block" />
-            <span className="w-3 h-3 rounded-full bg-[#6D57A5]/20 inline-block" />
-          </div>
-          <span className="text-[#625D6B] font-mono text-[11px] ml-2 hidden sm:inline-block">
-            ERPGen POS / Workspace
-          </span>
-        </div>
+    <div
+      ref={containerRef}
+      className="w-full relative py-6 px-2 sm:px-4 select-none"
+      aria-label="ERPGen POS Layered Composition"
+    >
+      {/* Background Spatial Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#6D57A5]/5 blur-[100px] rounded-full pointer-events-none" />
 
-        <div className="flex items-center gap-2">
-          <Badge variant="brand" size="sm" className="text-[10px]">
-            Live Counter Session
-          </Badge>
-        </div>
-      </div>
-
-      {/* Main Application Workspace Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[460px]">
-        {/* Left Sidebar Navigation */}
-        <div className="lg:col-span-3 bg-[#FAF8FC] border-r border-[#E9E4F1] p-4 space-y-6">
-          {/* POS Area Grouping */}
-          <div>
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold px-2 block mb-2">
-              POS Modules
-            </span>
-            <div className="space-y-1">
-              {posNavItems.map((item) => {
-                const IconComponent = item.icon;
-                const isActive = selectedFeatureId === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => onSelectFeature(item.id)}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all text-left cursor-pointer focus-ring-purple ${
-                      isActive
-                        ? 'bg-[#6D57A5] text-white font-bold shadow-md shadow-[#6D57A5]/20'
-                        : 'text-[#1F1B2D] hover:text-[#6D57A5] hover:bg-white'
-                    }`}
-                    aria-current={isActive ? 'page' : undefined}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <IconComponent className="w-4 h-4 shrink-0" />
-                      <span>{item.label}</span>
-                    </div>
-                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#17B681]" />}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Settings Area Grouping */}
-          <div className="pt-3 border-t border-[#E9E4F1]">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#625D6B] font-semibold px-2 block mb-2">
-              Settings & Config
-            </span>
-            <div className="grid grid-cols-2 lg:grid-cols-1 gap-1">
-              {settingsNavItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="px-3 py-1.5 rounded-lg text-[11px] text-[#625D6B] font-medium hover:text-[#6D57A5] hover:bg-white/80 transition-colors flex items-center gap-2"
-                >
-                  <span className="w-1 h-1 rounded-full bg-[#6D57A5]/40" />
-                  <span>{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Main Dashboard / Targeted Context Viewport */}
-        <div className="lg:col-span-9 p-4 sm:p-6 lg:p-8 bg-white flex flex-col justify-between text-[#1F1B2D]">
-          {/* Top Bar Status */}
-          <div className="flex items-center justify-between pb-4 border-b border-[#E9E4F1] text-xs">
+      {/* Layer Container */}
+      <div className="relative max-w-4xl mx-auto">
+        {/* LAYER 1 (BASE): Clean Terminal Register Canvas */}
+        <div
+          ref={layerBaseRef}
+          className="w-full rounded-2xl sm:rounded-3xl border border-[#E9E4F1] shadow-md overflow-hidden bg-white will-change-transform"
+        >
+          {/* Window Header */}
+          <div className="flex items-center justify-between px-5 py-3.5 bg-[#FAF8FC] border-b border-[#E9E4F1] text-xs">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-[#1F1B2D] font-heading text-sm sm:text-base">
-                {selectedFeatureId === 'pos-billing' && 'POS / Billing Checkout'}
-                {selectedFeatureId === 'returns' && 'Returns & Refunds Workspace'}
-                {selectedFeatureId === 'inventory' && 'Connected Live Inventory'}
-                {selectedFeatureId === 'damaged-products' && 'Damaged Products Register'}
-                {selectedFeatureId === 'customers' && 'Customer Database'}
-                {selectedFeatureId === 'sales-history' && 'Sales & Transaction History'}
-                {selectedFeatureId === 'reports' && 'POS Analytics & Daily Summary'}
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/40 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#17B681]/40 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/20 inline-block" />
+              </div>
+              <span className="text-[#625D6B] font-mono text-[11px] ml-2">
+                erpgen.pos / {selectedFeatureId}
               </span>
             </div>
-            <span className="text-[#625D6B] text-[11px] font-mono hidden sm:inline">Active Terminal</span>
-          </div>
 
-          {/* Confirmed Real POS Application Metric Cards (High-Level Summary) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-5">
-            <div className="p-3.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
-              <span className="text-[10px] text-[#625D6B] font-medium block uppercase tracking-wider">Today's Transactions</span>
-              <span className="text-xl font-bold text-[#1F1B2D] font-heading mt-0.5 block">142 Processed</span>
-            </div>
-            <div className="p-3.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
-              <span className="text-[10px] text-[#6D57A5] font-semibold block uppercase tracking-wider">Active Terminals</span>
-              <span className="text-xl font-bold text-[#6D57A5] font-heading mt-0.5 block">4 Registers Synced</span>
-            </div>
-            <div className="p-3.5 rounded-xl bg-[#E4F8F0] border border-[#17B681]/30">
-              <span className="text-[10px] text-[#129267] font-semibold block uppercase tracking-wider">Net Sales Revenue</span>
-              <span className="text-xl font-bold text-[#17B681] font-heading mt-0.5 block">$4,280.50</span>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
+              <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold">
+                REGISTER ONLINE
+              </Badge>
             </div>
           </div>
 
-          {/* Dynamic Targeted View Based on Selected Feature */}
-          <div key={selectedFeatureId} className="space-y-4 my-2 animate-in fade-in slide-in-from-bottom-1 duration-200">
-            {/* 1. POS / BILLING VIEW */}
-            {selectedFeatureId === 'pos-billing' && (
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#1F1B2D]">
-                  <span>Current Transaction #REC-9842</span>
-                  <Badge variant="brand" size="sm">Touch Billing</Badge>
-                </div>
-                <div className="space-y-1.5 text-xs text-[#625D6B]">
-                  <div className="flex justify-between py-1 border-b border-[#E9E4F1]">
-                    <span>Counter Billing Item #1</span>
-                    <span className="font-mono text-[#17B681] font-semibold">$34.00</span>
-                  </div>
-                  <div className="flex justify-between py-1">
-                    <span>Counter Billing Item #2</span>
-                    <span className="font-mono text-[#17B681] font-semibold">$18.50</span>
-                  </div>
-                </div>
-                <div className="pt-2 flex justify-between items-center text-xs border-t border-[#E9E4F1] text-[#1F1B2D] font-bold">
-                  <span>Subtotal</span>
-                  <span className="text-[#17B681] font-mono text-sm">$52.50</span>
-                </div>
+          {/* Clean Abstract Product Surface */}
+          <div className="p-6 sm:p-8 lg:p-10 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E9E4F1]">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
+                  Touch Catalog
+                </span>
+                <h4 className="text-lg sm:text-xl font-extrabold text-[#1F1B2D] font-heading mt-0.5">
+                  Counter Speed & Item Modifiers
+                </h4>
               </div>
-            )}
 
-            {/* 2. RETURNS VIEW */}
-            {selectedFeatureId === 'returns' && (
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#1F1B2D]">
-                  <span>Return Request #RET-104</span>
-                  <Badge variant="neutral" size="sm">Inspection Passed</Badge>
-                </div>
-                <p className="text-xs text-[#625D6B]">Receipt #REC-9800 • Customer Refund Processed</p>
-                <div className="flex justify-between text-xs pt-2 border-t border-[#E9E4F1] text-[#6D57A5] font-mono font-semibold">
-                  <span>Refund Amount</span>
-                  <span>-$24.00</span>
-                </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#FAF8FC] border border-[#E9E4F1] text-[#625D6B]">
+                  Catalog Ready
+                </span>
+                <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#E4F8F0] border border-[#17B681]/30 text-[#129267]">
+                  Instant Add
+                </span>
               </div>
-            )}
+            </div>
 
-            {/* 3. INVENTORY VIEW */}
-            {selectedFeatureId === 'inventory' && (
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#1F1B2D]">
-                  <span>Live Stock Level Monitor</span>
-                  <span className="text-[#17B681] text-[11px] font-semibold">Synced Across Counters</span>
+            {/* Abstract Touch Grid (Clean marketing cards, zero fake transaction tables) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#6D57A5]/30 hover:border-[#6D57A5] transition-all duration-200 group cursor-pointer shadow-2xs">
+                <div className="w-9 h-9 rounded-lg bg-white border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-3 shadow-2xs group-hover:scale-105 transition-transform">
+                  <ShoppingBag className="w-4 h-4" />
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E9E4F1]">
-                    <span className="text-[#625D6B] text-[10px] block">Active SKUs</span>
-                    <span className="text-[#1F1B2D] font-bold text-sm">1,240 Items</span>
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E9E4F1]">
-                    <span className="text-[#6D57A5] text-[10px] block font-medium">Low-Stock Alerts</span>
-                    <span className="text-[#17B681] font-bold text-sm">4 Items Remaining</span>
-                  </div>
-                </div>
+                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                  Beverage Selection
+                </span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">Custom Modifiers</span>
               </div>
-            )}
 
-            {/* 4. DAMAGED PRODUCTS VIEW */}
-            {selectedFeatureId === 'damaged-products' && (
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#1F1B2D]">
-                  <span>Damaged & Expired Item Log</span>
-                  <Badge variant="brand" size="sm">Audit Register</Badge>
+              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
+                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-4 h-4" />
                 </div>
-                <p className="text-xs text-[#625D6B]">Item #SKU-402 • 1 Unit Reported Damaged • Separated from Sales Stock</p>
+                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                  Bakery & Dining
+                </span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">Kitchen Routing</span>
               </div>
-            )}
 
-            {/* 5. CUSTOMERS VIEW */}
-            {selectedFeatureId === 'customers' && (
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#1F1B2D]">
-                  <span>Customer Profile #CUST-410</span>
-                  <span className="text-[#17B681] font-mono text-[11px] font-semibold">150 Loyalty Points</span>
+              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
+                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
+                  <Layers className="w-4 h-4" />
                 </div>
-                <p className="text-xs text-[#625D6B]">Order History: 12 Visits • Total Spent: $840.00</p>
+                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                  Packaged Retail
+                </span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">Barcode Scanned</span>
               </div>
-            )}
 
-            {/* 6. SALES HISTORY VIEW */}
-            {selectedFeatureId === 'sales-history' && (
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#1F1B2D]">
-                  <span>Recent Transaction Audit Log</span>
-                  <span className="text-[#625D6B] text-[11px]">Today 13:42 PM</span>
+              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
+                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
+                  <CreditCard className="w-4 h-4" />
                 </div>
-                <div className="space-y-1 text-xs text-[#625D6B]">
-                  <div className="flex justify-between py-1 border-b border-[#E9E4F1]">
-                    <span>#REC-9841 • Cash Tender</span>
-                    <span className="font-mono text-[#17B681] font-semibold">$45.00</span>
-                  </div>
-                  <div className="flex justify-between py-1">
-                    <span>#REC-9840 • Card Payment</span>
-                    <span className="font-mono text-[#17B681] font-semibold">$128.50</span>
-                  </div>
-                </div>
+                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                  Express Service
+                </span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">Direct Checkout</span>
               </div>
-            )}
+            </div>
 
-            {/* 7. REPORTS VIEW */}
-            {selectedFeatureId === 'reports' && (
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#1F1B2D]">
-                  <span>Receipt Summary & Daily Analytics</span>
-                  <Badge variant="brand" size="sm">Daily Total</Badge>
-                </div>
-                <div className="w-full bg-[#E9E4F1] h-2.5 rounded-full overflow-hidden flex border border-[#E9E4F1]">
-                  <div className="bg-[#17B681] h-full w-[97%]" title="Paid Receipts (97%)" />
-                  <div className="bg-[#6D57A5] h-full w-[3%]" title="Cancelled Receipts (3%)" />
-                </div>
-                <div className="flex justify-between text-[11px] text-[#625D6B] font-medium">
-                  <span className="text-[#17B681]">97% Paid Receipts</span>
-                  <span className="text-[#6D57A5]">3% Cancelled/Void</span>
-                </div>
-              </div>
-            )}
+            {/* Subtle base footer indicator */}
+            <div className="flex items-center justify-between text-xs text-[#625D6B] pt-2">
+              <span className="flex items-center gap-1.5 text-[#129267] font-medium">
+                <CheckCircle2 className="w-4 h-4 text-[#17B681]" />
+                <span>Synchronized with Central Operational Ledger</span>
+              </span>
+              <span className="font-mono text-[10px] text-[#6D57A5] font-semibold">ERPGen POS</span>
+            </div>
+          </div>
+        </div>
+
+        {/* LAYER 2 (MIDDLE): Floating Active Order & Settlement Card (Unstacks to bottom-right) */}
+        <div
+          ref={layerMidRef}
+          className="mt-4 sm:mt-0 sm:absolute sm:-bottom-8 sm:-right-4 w-full sm:w-80 rounded-2xl bg-white border border-[#6D57A5]/30 shadow-xl p-5 space-y-3.5 will-change-transform z-20"
+        >
+          <div className="flex items-center justify-between pb-2.5 border-b border-[#E9E4F1]">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
+              <span className="text-xs font-bold text-[#1F1B2D] font-heading">
+                Active Order Session
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-[#6D57A5] font-semibold">#ORDER-READY</span>
           </div>
 
-          {/* Footer Callout */}
-          <div className="pt-4 border-t border-[#E9E4F1] flex items-center justify-between text-xs text-[#625D6B]">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681]" />
-              <span>Real-time counter and back-office synchronization</span>
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center justify-between text-[#1F1B2D]">
+              <span className="font-medium">Selected Items</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5]">
+                3 Items
+              </span>
             </div>
-            <span className="text-[11px] text-[#6D57A5] font-mono font-medium">ERPGen Core Engine</span>
+            <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
+              <span>Tax & VAT</span>
+              <span className="text-[#17B681] font-semibold">Auto-Reconciled</span>
+            </div>
+          </div>
+
+          {/* Quick settlement action buttons */}
+          <div className="pt-2 border-t border-[#E9E4F1] space-y-2">
+            <div className="flex justify-between items-baseline">
+              <span className="text-xs font-bold text-[#1F1B2D]">Settlement:</span>
+              <span className="text-xs font-mono font-bold text-[#17B681]">Instant Clearing</span>
+            </div>
+
+            <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+              <div className="p-1.5 rounded-lg bg-[#FAF8FC] border border-[#6D57A5]/30 text-[#6D57A5] font-semibold text-center flex items-center justify-center gap-1">
+                <CreditCard className="w-3 h-3" />
+                <span>Card</span>
+              </div>
+              <div className="p-1.5 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
+                <Coins className="w-3 h-3" />
+                <span>Cash</span>
+              </div>
+              <div className="p-1.5 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
+                <Layers className="w-3 h-3" />
+                <span>Split</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* LAYER 3 (TOP): Floating Hardware & Sync Assurance (Unstacks to top-left) */}
+        <div
+          ref={layerTopRef}
+          className="mt-4 sm:mt-0 sm:absolute sm:-top-5 sm:-left-4 rounded-xl bg-white border border-[#17B681]/40 shadow-lg px-4 py-2.5 flex items-center gap-3 will-change-transform z-30"
+        >
+          <div className="w-8 h-8 rounded-lg bg-[#E4F8F0] text-[#129267] flex items-center justify-center shrink-0">
+            <Printer className="w-4 h-4 text-[#17B681]" />
+          </div>
+          <div>
+            <span className="text-xs font-bold text-[#1F1B2D] block leading-tight">
+              Thermal Print Ready
+            </span>
+            <span className="text-[10px] text-[#129267] font-mono font-medium block">
+              Live Stock Updated
+            </span>
           </div>
         </div>
       </div>

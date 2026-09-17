@@ -83,41 +83,60 @@ export const ERPGenServicesSection: React.FC = () => {
   ];
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardsRef.current,
-        { opacity: 0, y: 35 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+      // 3D perspective stagger reveal for service cards
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 12,
+            y: 35,
+            opacity: 0,
           },
-        }
-      );
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            stagger: 0.08,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
 
-      gsap.fromTo(
-        pillarsRef.current,
-        { opacity: 0, y: 25 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.15,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: pillarsRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+      // Technology pillars reveal
+      if (pillarsRef.current) {
+        gsap.fromTo(
+          pillarsRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 8,
+            y: 20,
+            opacity: 0,
           },
-        }
-      );
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            stagger: 0.06,
+            duration: 0.6,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: pillarsRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();

@@ -56,13 +56,20 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
 
           <div className="flex items-center gap-2">
             <span
-              className={`text-xs font-semibold px-3 py-1 rounded-full border transition-all ${
+              className={`text-xs font-semibold px-3 py-1 rounded-full border transition-all inline-flex items-center gap-1.5 ${
                 isSelected
                   ? 'bg-[#E4F8F0] text-[#129267] border-[#17B681]/30 font-bold'
                   : 'bg-white text-[#625D6B] border-[#E9E4F1] group-hover:border-[#6D57A5]/40'
               }`}
             >
-              {isSelected ? '? Active in Suite' : '+ Select Module'}
+              {isSelected ? (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681]" />
+                  <span>Active in Suite</span>
+                </>
+              ) : (
+                <span>+ Select Module</span>
+              )}
             </span>
           </div>
         </div>

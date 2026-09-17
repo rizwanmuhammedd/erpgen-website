@@ -11,11 +11,11 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 items-start">
           {/* COLUMN 1: Company & Product Brand */}
           <div className="lg:col-span-4 space-y-4">
-            <Link to="/" className="inline-block focus-ring-purple rounded-lg p-0.5" aria-label="ERPGen Home">
+            <Link to="/" className="inline-block focus-ring-purple rounded-lg p-0.5 hover:opacity-90 transition-opacity" aria-label="ERPGen Home">
               <img
-                src="/erpgen-logo.png"
+                src="/erpgen-logo-blue.png"
                 alt="ERPGen — Smarter Business. Simpler ERP."
-                className="h-10 w-auto object-contain"
+                className="h-8 sm:h-9 w-auto object-contain"
               />
             </Link>
             <p className="text-[#625D6B] text-xs sm:text-sm leading-relaxed max-w-sm">

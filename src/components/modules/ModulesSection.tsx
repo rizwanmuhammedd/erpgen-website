@@ -3,6 +3,7 @@ import { FileText, ShoppingBag } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { SectionHeading } from '../ui/SectionHeading';
 import { ModuleCard } from './ModuleCard';
+import { ModuleLifecycleSimulator } from './ModuleLifecycleSimulator';
 import { ModuleConfigurator } from './ModuleConfigurator';
 import { CustomConfiguration } from './CustomConfiguration';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
@@ -12,6 +13,7 @@ export const ModulesSection: React.FC = () => {
   const [selectedModules, setSelectedModules] = useState<string[]>(['invoice', 'pos']);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const simulatorRef = useRef<HTMLDivElement>(null);
   const configuratorRef = useRef<HTMLDivElement>(null);
   const customRef = useRef<HTMLDivElement>(null);
 
@@ -25,58 +27,87 @@ export const ModulesSection: React.FC = () => {
   const posSelected = selectedModules.includes('pos');
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardsRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+      // 3D perspective fold-to-unfold for the core module cards
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 14,
+            scale: 0.95,
+            y: 40,
+            opacity: 0,
           },
-        }
-      );
+          {
+            rotateX: 0,
+            scale: 1,
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 85%',
+              end: 'top 45%',
+              scrub: 0.6,
+            },
+          }
+        );
+      }
 
-      gsap.fromTo(
-        configuratorRef.current,
-        { opacity: 0, y: 35 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: configuratorRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+      // Configurator and custom panels
+      if (configuratorRef.current) {
+        gsap.fromTo(
+          configuratorRef.current,
+          {
+            transformPerspective: 1200,
+            rotateX: 10,
+            scale: 0.97,
+            y: 30,
+            opacity: 0.6,
           },
-        }
-      );
+          {
+            rotateX: 0,
+            scale: 1,
+            y: 0,
+            opacity: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: configuratorRef.current,
+              start: 'top 85%',
+              end: 'top 50%',
+              scrub: 0.6,
+            },
+          }
+        );
+      }
 
-      gsap.fromTo(
-        customRef.current,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.15,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: customRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+      if (customRef.current) {
+        gsap.fromTo(
+          customRef.current,
+          {
+            transformPerspective: 1200,
+            rotateX: 8,
+            y: 25,
+            opacity: 0,
           },
-        }
-      );
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: customRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -123,6 +154,11 @@ export const ModulesSection: React.FC = () => {
               onToggle={() => toggleModule('pos')}
             />
           </div>
+        </div>
+
+        {/* Interactive Simulated Lifecycle Walkthrough */}
+        <div ref={simulatorRef}>
+          <ModuleLifecycleSimulator />
         </div>
 
         {/* Interactive System Configurator Preview */}
