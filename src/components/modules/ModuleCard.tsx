@@ -24,6 +24,7 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
   return (
     <Card
       variant={isSelected ? 'brand-border' : 'default'}
+      spotlight={true}
       onClick={onToggle}
       className={`cursor-pointer transition-all duration-300 relative group flex flex-col justify-between select-none p-6 sm:p-8 ${
         isSelected

@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MessageSquare } from 'lucide-react';
+import { Mail, Phone, MessageSquare, ArrowUpRight } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { SITE_DATA, getWhatsAppUrl } from '../../data/siteData';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const Footer: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-[#FAF8FC] border-t border-[#E9E4F1] pt-16 pb-12 relative z-10 text-[#625D6B] text-sm">
       <Container size="xl" className="space-y-12">
@@ -19,11 +22,11 @@ export const Footer: React.FC = () => {
               />
             </Link>
             <p className="text-[#625D6B] text-xs sm:text-sm leading-relaxed max-w-sm">
-              The flexible business management platform. Choose standalone Invoice, high-speed POS, or configure a combined solution around your exact business requirements.
+              {t('footer.brandDesc')}
             </p>
             <div className="pt-1">
               <span className="text-[11px] font-mono text-[#6D57A5] font-semibold tracking-wider uppercase">
-                One Connected Business Platform
+                {t('footer.slogan')}
               </span>
             </div>
           </div>
@@ -31,87 +34,84 @@ export const Footer: React.FC = () => {
           {/* COLUMN 2: PRODUCTS */}
           <div className="lg:col-span-2 space-y-3">
             <h5 className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-              Products
+              {t('footer.products')}
             </h5>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link to="/products" className="hover:text-[#6D57A5] transition-colors">
-                  Products Overview
+                  {t('nav.products')}
                 </Link>
               </li>
               <li>
                 <Link to="/products/invoice" className="hover:text-[#6D57A5] transition-colors">
-                  ERPGen Invoice
+                  {t('nav.invoice')}
                 </Link>
               </li>
               <li>
                 <Link to="/products/pos" className="hover:text-[#6D57A5] transition-colors">
-                  ERPGen POS
+                  {t('nav.pos')}
                 </Link>
               </li>
               <li>
                 <Link to="/products/pos/restaurant" className="hover:text-[#6D57A5] transition-colors">
-                  Restaurant POS
+                  {t('nav.restaurantPos')}
                 </Link>
               </li>
               <li>
                 <Link to="/products/pos/barbershop" className="hover:text-[#6D57A5] transition-colors">
-                  Barbershop POS
+                  {t('nav.barbershopPos')}
                 </Link>
               </li>
               <li>
                 <Link to="/products/pos/supermarket" className="hover:text-[#6D57A5] transition-colors">
-                  Supermarket POS
+                  {t('nav.supermarketPos')}
                 </Link>
               </li>
               <li>
                 <Link to="/products/pos/laundry" className="hover:text-[#6D57A5] transition-colors">
-                  Laundry POS
+                  {t('nav.laundryPos')}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* COLUMN 3: SERVICES */}
+          {/* COLUMN 3: ERP TIERS & SOLUTIONS */}
           <div className="lg:col-span-3 space-y-3">
             <h5 className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-              Services
+              {t('footer.solutions')}
             </h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link to="/services" className="hover:text-[#6D57A5] transition-colors">
-                  Services Overview
+                <a href="/#erp-tiers" className="hover:text-[#6D57A5] transition-colors flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#17B681]" />
+                  <span>{t('tiers.liteTitle')} • {t('tiers.liteTag')}</span>
+                </a>
+              </li>
+              <li>
+                <a href="/#erp-tiers" className="hover:text-[#6D57A5] transition-colors flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#6D57A5]" />
+                  <span>{t('tiers.proTitle')} • {t('tiers.proTag')}</span>
+                </a>
+              </li>
+              <li>
+                <a href="/#erp-tiers" className="hover:text-[#6D57A5] transition-colors">
+                  {t('tiers.compareTitle')}
+                </a>
+              </li>
+              <li>
+                <Link to="/contact?tier=lite" className="hover:text-[#6D57A5] transition-colors">
+                  {t('tiers.liteCta')}
                 </Link>
               </li>
               <li>
-                <Link to="/services/ai-software-development" className="hover:text-[#6D57A5] transition-colors">
-                  AI Software Development
+                <Link to="/contact?tier=pro" className="hover:text-[#6D57A5] transition-colors">
+                  {t('tiers.proCta')}
                 </Link>
               </li>
               <li>
-                <Link to="/services/web-app-development" className="hover:text-[#6D57A5] transition-colors">
-                  Web & App Development
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/ip-telephony-voip" className="hover:text-[#6D57A5] transition-colors">
-                  IP Telephony & VoIP
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/cybersecurity" className="hover:text-[#6D57A5] transition-colors">
-                  Cybersecurity Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/enterprise-email" className="hover:text-[#6D57A5] transition-colors">
-                  Enterprise Email Hosting
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/managed-it-support" className="hover:text-[#6D57A5] transition-colors">
-                  Managed IT Support
-                </Link>
+                <a href="/#core-modules" className="hover:text-[#6D57A5] transition-colors">
+                  {t('hero.highlight3')}
+                </a>
               </li>
             </ul>
           </div>
@@ -119,17 +119,17 @@ export const Footer: React.FC = () => {
           {/* COLUMN 4: COMPANY & CONTACT */}
           <div className="lg:col-span-3 space-y-3">
             <h5 className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-              Company & Contact
+              {t('footer.company')}
             </h5>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link to="/about" className="hover:text-[#6D57A5] transition-colors">
-                  About / Why Us
+                  {t('nav.whyUs')}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="hover:text-[#6D57A5] transition-colors">
-                  Contact & Consultation
+                  {t('nav.contact')}
                 </Link>
               </li>
             </ul>
@@ -143,7 +143,8 @@ export const Footer: React.FC = () => {
                 aria-label="Chat with ERPGen on WhatsApp"
               >
                 <MessageSquare className="w-3.5 h-3.5 shrink-0" />
-                <span>WhatsApp Us</span>
+                <span>{t('contact.whatsAppUs')}</span>
+                <ArrowUpRight className="w-3 h-3 rtl:rotate-90 opacity-60" />
               </a>
 
               <a
@@ -152,7 +153,7 @@ export const Footer: React.FC = () => {
                 aria-label={`Call ERPGen at ${SITE_DATA.contact.phone}`}
               >
                 <Phone className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                <span>{SITE_DATA.contact.phone}</span>
+                <span dir="ltr">{SITE_DATA.contact.phone}</span>
               </a>
 
               <a
@@ -170,16 +171,16 @@ export const Footer: React.FC = () => {
         {/* Bottom Copyright & Status Bar */}
         <div className="pt-8 border-t border-[#E9E4F1] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#625D6B]">
           <div className="flex items-center gap-2">
-            <span>© {new Date().getFullYear()} ERPGen. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} ERPGen. {t('footer.rights')}</span>
           </div>
 
           <div className="flex items-center gap-4">
             <span className="inline-flex items-center gap-1.5 text-[#129267] font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-[#17B681] animate-pulse" />
-              ERPGen Cloud & Enterprise Platform
+              {t('footer.status')}
             </span>
             <span className="text-[#625D6B]/50">•</span>
-            <span>Smarter Business. Simpler ERP.</span>
+            <span>{t('footer.slogan')}</span>
           </div>
         </div>
       </Container>

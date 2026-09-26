@@ -109,3 +109,102 @@ export const MODULE_COMBINATIONS = [
     recommendedFor: 'Multi-operation Businesses'
   }
 ];
+
+export interface CoreErpModule {
+  id: string;
+  name: string;
+  category: string;
+  valueStatement: string;
+  iconName: 'ShoppingBag' | 'Truck' | 'Package' | 'Users' | 'FolderKanban' | 'Coins';
+}
+
+export const CORE_ERP_MODULES: CoreErpModule[] = [
+  {
+    id: 'sales',
+    name: 'Sales',
+    category: 'Commercial Stream',
+    valueStatement: 'Customer quotes, direct counter sales, and unified order processing.',
+    iconName: 'ShoppingBag',
+  },
+  {
+    id: 'purchase',
+    name: 'Purchase',
+    category: 'Procurement',
+    valueStatement: 'Supplier orders, automated receiving records, and purchase cost control.',
+    iconName: 'Truck',
+  },
+  {
+    id: 'inventory',
+    name: 'Inventory',
+    category: 'Supply Operations',
+    valueStatement: 'Live multi-location balances, stock adjustments, and item categorization.',
+    iconName: 'Package',
+  },
+  {
+    id: 'hr',
+    name: 'HR',
+    category: 'Workforce',
+    valueStatement: 'Staff records, role-based access management, and shift assignments.',
+    iconName: 'Users',
+  },
+  {
+    id: 'projects',
+    name: 'Projects',
+    category: 'Execution',
+    valueStatement: 'Task coordination, operational milestones, and project delivery tracking.',
+    iconName: 'FolderKanban',
+  },
+  {
+    id: 'finance',
+    name: 'Finance',
+    category: 'Accounting',
+    valueStatement: 'Ledger posting, automated VAT schedules, and cash-flow visibility.',
+    iconName: 'Coins',
+  },
+];
+
+export interface WhyErpGenItem {
+  id: string;
+  number: string;
+  title: string;
+  subtitle: string;
+  description: string;
+}
+
+export const WHY_ERPGEN_ITEMS: WhyErpGenItem[] = [
+  {
+    id: 'one-platform',
+    number: '01',
+    title: 'One Connected Platform',
+    subtitle: 'Unified Operational Core',
+    description: 'Replaces scattered standalone tools with a cohesive business engine that keeps front counters and back-office teams in continuous sync.',
+  },
+  {
+    id: 'configurable',
+    number: '02',
+    title: 'Configurable by Design',
+    subtitle: 'Modular Architecture',
+    description: 'Deploy standalone Invoice or POS today, then expand into a complete multi-department ERP suite without painful data migrations.',
+  },
+  {
+    id: 'connected-operations',
+    number: '03',
+    title: 'Connected Core Operations',
+    subtitle: 'Real-Time Continuity',
+    description: 'Every sale, return, and stock change instantly reflects in your central ledger, removing siloed data and blind spots.',
+  },
+  {
+    id: 'reduced-repetitive-work',
+    number: '04',
+    title: 'Reduced Repetitive Work',
+    subtitle: 'Operational Velocity',
+    description: 'Eliminate duplicate entries, manual spreadsheet reconciliation, and paperwork delays with streamlined automated document generation.',
+  },
+  {
+    id: 'business-focused',
+    number: '05',
+    title: 'Business-Focused Experience',
+    subtitle: 'Zero Bloat',
+    description: 'Intuitive touch registers and crisp document workspaces tailored to actual business workflows without unnecessary enterprise complexity.',
+  },
+];

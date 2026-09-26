@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { Badge } from '../ui/Badge';
+import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 interface Breadcrumb {
   label: string;
@@ -28,8 +29,44 @@ export const PageHero: React.FC<PageHeroProps> = ({
   badgeText,
   children,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      tl.fromTo(
+        '.page-hero-eyebrow',
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.5 }
+      )
+        .fromTo(
+          '.page-hero-title',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.75, ease: 'power4.out' },
+          '-=0.3'
+        )
+        .fromTo(
+          '.page-hero-desc',
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.65 },
+          '-=0.4'
+        )
+        .fromTo(
+          '.page-hero-actions',
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          '-=0.3'
+        );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [title]);
+
   return (
-    <div className="relative py-16 sm:py-20 lg:py-24 border-b border-[#E9E4F1] bg-radial-brand-hero overflow-hidden">
+    <div ref={containerRef} className="relative py-16 sm:py-20 lg:py-24 border-b border-[#E9E4F1] bg-radial-brand-hero overflow-hidden">
       <Container size="xl" className="space-y-6 relative z-10">
         {/* Breadcrumb Trail */}
         {breadcrumbs.length > 0 && (
@@ -46,7 +83,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
         )}
 
         {/* Eyebrow & Badges */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="page-hero-eyebrow flex flex-wrap items-center gap-3">
           {eyebrow && (
             <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold bg-[#FAF8FC] px-3 py-1 rounded-full border border-[#E9E4F1]">
               {eyebrow}
@@ -60,7 +97,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
         </div>
 
         {/* Page Main Headline */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#1F1B2D] tracking-tight leading-[1.12] font-heading max-w-4xl">
+        <h1 className="page-hero-title text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#1F1B2D] tracking-tight leading-[1.12] font-heading max-w-4xl">
           {title}{' '}
           {titleGradient && (
             <span className="text-gradient-brand block sm:inline">{titleGradient}</span>
@@ -68,11 +105,11 @@ export const PageHero: React.FC<PageHeroProps> = ({
         </h1>
 
         {/* Supporting Description */}
-        <p className="text-base sm:text-lg lg:text-xl text-[#625D6B] font-normal leading-relaxed max-w-3xl">
+        <p className="page-hero-desc text-base sm:text-lg lg:text-xl text-[#625D6B] font-normal leading-relaxed max-w-3xl">
           {description}
         </p>
 
-        {children}
+        {children && <div className="page-hero-actions">{children}</div>}
       </Container>
     </div>
   );

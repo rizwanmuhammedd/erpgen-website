@@ -1,0 +1,13 @@
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\bin\Debug\net9.0\ERPGen.Domain.deps.json
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\bin\Debug\net9.0\ERPGen.Domain.dll
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\bin\Debug\net9.0\ERPGen.Domain.pdb
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.csproj.AssemblyReference.cache
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.AssemblyInfoInputs.cache
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.AssemblyInfo.cs
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.csproj.CoreCompileInputs.cache
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.sourcelink.json
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.dll
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\refint\ERPGen.Domain.dll
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ERPGen.Domain.pdb
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Domain\obj\Debug\net9.0\ref\ERPGen.Domain.dll

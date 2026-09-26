@@ -1,0 +1,16 @@
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\bin\Debug\net9.0\ERPGen.Application.deps.json
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\bin\Debug\net9.0\ERPGen.Application.dll
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\bin\Debug\net9.0\ERPGen.Application.pdb
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\bin\Debug\net9.0\ERPGen.Domain.dll
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\bin\Debug\net9.0\ERPGen.Domain.pdb
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.csproj.AssemblyReference.cache
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.AssemblyInfoInputs.cache
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.AssemblyInfo.cs
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.csproj.CoreCompileInputs.cache
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.sourcelink.json
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.A.5A246938.Up2Date
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.dll
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\refint\ERPGen.Application.dll
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ERPGen.Application.pdb
+C:\Users\risva\OneDrive\Documents\Desktop\ERPGen\backend\ERPGen.Application\obj\Debug\net9.0\ref\ERPGen.Application.dll

@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ArrowRight, MessageSquare } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X, ArrowRight, MessageSquare, Layers } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { Button } from '../ui/Button';
 import { DesktopMegaMenu } from './DesktopMegaMenu';
 import { AnimatedERPGenLogo } from './AnimatedERPGenLogo';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useLanguage } from '../../context/LanguageContext';
 import { getWhatsAppUrl } from '../../data/siteData';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t, isRtl } = useLanguage();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -33,20 +37,23 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen]);
 
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 backdrop-blur-xl border-b border-[#E9E4F1] py-3 shadow-sm shadow-[#6D57A5]/5'
-          : 'bg-white/90 backdrop-blur-md py-4 border-b border-[#E9E4F1]/60'
+          ? 'bg-white/95 backdrop-blur-xl border-b border-[#E9E4F1] py-2.5 shadow-sm shadow-[#6D57A5]/5'
+          : 'bg-white/90 backdrop-blur-md py-3.5 border-b border-[#E9E4F1]/60'
       }`}
     >
       <Container size="xl">
-        <div className="flex items-center justify-between">
-          {/* Reusable Animated ERPGen Logo Component */}
-          <AnimatedERPGenLogo
-            onNavigateHome={() => setMobileMenuOpen(false)}
-          />
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
+          {/* Animated ERPGen Logo Component */}
+          <AnimatedERPGenLogo onNavigateHome={() => setMobileMenuOpen(false)} />
 
           {/* Desktop Navigation with Mega Menus */}
           <nav className="hidden lg:flex items-center bg-[#FAF8FC] p-1.5 rounded-2xl border border-[#E9E4F1] backdrop-blur-md">
@@ -54,48 +61,57 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden xl:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+            {/* Language Switcher */}
+            <LanguageSwitcher variant="navbar" />
+
             <a
               href={getWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:text-[#6D57A5] hover:bg-[#FAF8FC] border border-transparent hover:border-[#E9E4F1] transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:text-[#6D57A5] hover:bg-[#FAF8FC] border border-transparent hover:border-[#E9E4F1] transition-all"
               aria-label="Consult ERPGen expert on WhatsApp"
             >
               <MessageSquare className="w-3.5 h-3.5 text-[#17B681]" />
-              <span>Consult Expert</span>
+              <span className="hidden xl:inline">{t('nav.consultWhatsApp')}</span>
             </a>
+
             <Button
               variant="primary"
               size="sm"
-              icon={<ArrowRight className="w-4 h-4" />}
+              icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}
               onClick={() => navigate('/contact')}
             >
-              Build Your ERP
+              {t('nav.buildPlan')}
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* Mobile Actions: Language + WhatsApp + Menu Toggle */}
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
+            <LanguageSwitcher variant="compact" />
+
             <a
               href={getWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg bg-[#E4F8F0] border border-[#17B681]/30 text-[#129267] font-semibold"
+              className="inline-flex items-center gap-1 text-xs px-2 py-1.5 rounded-lg bg-[#E4F8F0] border border-[#17B681]/30 text-[#129267] font-semibold"
               aria-label="Chat on WhatsApp"
             >
               <MessageSquare className="w-3.5 h-3.5" />
-              <span>WhatsApp</span>
             </a>
+
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-[#1F1B2D] hover:text-[#6D57A5] bg-[#FAF8FC] border border-[#E9E4F1] focus-ring-purple cursor-pointer"
-              aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
+              className="p-2 rounded-xl text-[#1F1B2D] hover:text-[#6D57A5] bg-[#FAF8FC] border border-[#E9E4F1] focus-ring-purple cursor-pointer transition-transform active:scale-95"
+              aria-label={mobileMenuOpen ? t('nav.close') : t('nav.open')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation-drawer"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6 text-[#17B681]" /> : <Menu className="w-6 h-6" />}
+              <div className="relative w-5 h-5 flex items-center justify-center">
+                <Menu className={`w-5 h-5 absolute inset-0 transition-all duration-200 ${mobileMenuOpen ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'}`} />
+                <X className={`w-5 h-5 text-[#17B681] absolute inset-0 transition-all duration-200 ${mobileMenuOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'}`} />
+              </div>
             </button>
           </div>
         </div>
@@ -104,73 +120,129 @@ export const Navbar: React.FC = () => {
         {mobileMenuOpen && (
           <div
             id="mobile-navigation-drawer"
-            className="lg:hidden mt-4 pt-4 pb-6 px-4 bg-white border border-[#E9E4F1] rounded-2xl backdrop-blur-2xl shadow-xl animate-in fade-in slide-in-from-top-4 duration-200"
+            className="lg:hidden mt-3 pt-4 pb-6 px-4 bg-white/98 border border-[#E9E4F1] rounded-2xl backdrop-blur-2xl shadow-2xl animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200 origin-top"
           >
-            <div className="flex flex-col space-y-3">
-              <Link
-                to="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-sm font-medium text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]"
-              >
-                Home
-              </Link>
-              <Link
-                to="/products"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-sm font-medium text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]"
-              >
-                Products Overview
-              </Link>
-              <div className="pl-3 space-y-1 text-xs text-[#625D6B]">
-                <Link to="/products/invoice" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#6D57A5]">• Invoice Module</Link>
-                <Link to="/products/pos" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#6D57A5]">• POS System</Link>
+            <div className="flex flex-col space-y-2.5">
+              <div className="pb-3 border-b border-[#E9E4F1] flex justify-center">
+                <LanguageSwitcher variant="navbar" className="w-full justify-center" />
               </div>
 
               <Link
-                to="/services"
+                to="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-sm font-medium text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]"
+                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                  location.pathname === '/'
+                    ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
+                    : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'
+                }`}
               >
-                Services Overview
+                {t('nav.home')}
               </Link>
+
+              {/* ERP Tiers Link */}
+              <a
+                href="/#erp-tiers"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#6D57A5] bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-between"
+              >
+                <span className="flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-[#17B681]" />
+                  <span>{t('nav.erpTiers')}</span>
+                </span>
+                <span className="text-[10px] font-mono text-[#17B681] font-bold">Lite | Pro</span>
+              </a>
+
+              <Link
+                to="/products"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                  location.pathname.startsWith('/products')
+                    ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
+                    : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'
+                }`}
+              >
+                {t('nav.products')}
+              </Link>
+
+              <div className="ms-3 space-y-1 text-xs text-[#625D6B] border-s-2 border-[#E9E4F1] ps-2.5">
+                <Link to="/products/invoice" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#6D57A5]">
+                  • {t('nav.invoice')}
+                </Link>
+                <Link to="/products/pos" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#6D57A5]">
+                  • {t('nav.pos')}
+                </Link>
+              </div>
+
+              <a
+                href="/#core-modules"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
+              >
+                {t('nav.coreErp')}
+              </a>
+
+              <a
+                href="/#business-types"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
+              >
+                {t('nav.businessTypes')}
+              </a>
+
+              <a
+                href="/#why-erpgen"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
+              >
+                {t('nav.whyUs')}
+              </a>
 
               <Link
                 to="/about"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-sm font-medium text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]"
+                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                  location.pathname === '/about'
+                    ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
+                    : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'
+                }`}
               >
-                Why Us / About
+                {t('nav.about')}
               </Link>
 
               <Link
                 to="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-sm font-medium text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]"
+                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                  location.pathname === '/contact'
+                    ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
+                    : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'
+                }`}
               >
-                Contact & Consultation
+                {t('nav.contact')}
               </Link>
 
-              <div className="pt-4 border-t border-[#E9E4F1] flex flex-col gap-2.5">
+              <div className="pt-3 border-t border-[#E9E4F1] flex flex-col gap-2">
                 <a
                   href={getWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#E4F8F0] border border-[#17B681]/30 text-[#129267] font-bold text-sm hover:bg-[#17B681] hover:text-white transition-all shadow-xs"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#E4F8F0] border border-[#17B681]/30 text-[#129267] font-bold text-xs hover:bg-[#17B681] hover:text-white transition-all shadow-xs"
                   aria-label="Chat with ERPGen on WhatsApp"
                 >
                   <MessageSquare className="w-4 h-4" />
-                  <span>Chat on WhatsApp</span>
+                  <span>{t('contact.whatsAppUs')}</span>
                 </a>
+
                 <Button
                   variant="primary"
                   fullWidth
-                  icon={<ArrowRight className="w-4 h-4" />}
+                  icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}
                   onClick={() => {
                     setMobileMenuOpen(false);
                     navigate('/contact');
                   }}
                 >
-                  Build Custom ERP Plan
+                  {t('nav.buildPlan')}
                 </Button>
               </div>
             </div>

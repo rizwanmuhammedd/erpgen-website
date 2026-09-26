@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Utensils, Scissors, ShoppingCart, Shirt, ArrowRight } from 'lucide-react';
 import { PageHero } from '../components/layout/PageHero';
@@ -7,10 +7,46 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { PosFeaturesSection } from '../components/pos-features/PosFeaturesSection';
 import { getWhatsAppUrl } from '../data/siteData';
+import { gsap, prefersReducedMotion } from '../lib/gsap';
 
 export const PosProductPage: React.FC = () => {
+  const cardsRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
+
+    const ctx = gsap.context(() => {
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 14,
+            y: 40,
+            opacity: 0.1,
+            scale: 0.95,
+          },
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    });
+
+    return () => ctx.revert();
   }, []);
 
   const businessTypes = [
@@ -59,7 +95,7 @@ export const PosProductPage: React.FC = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {businessTypes.map((b) => {
               const IconComp = b.icon;
               return (

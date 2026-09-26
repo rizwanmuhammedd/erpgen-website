@@ -1,6 +1,8 @@
 import React from 'react';
 import { Navbar } from '../navigation/Navbar';
 import { SmoothScrollProvider } from './SmoothScrollProvider';
+import { DesktopCursor } from '../ui/DesktopCursor';
+import { MotionDebugHud } from '../ui/motion/MotionDebugHud';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -9,6 +11,8 @@ interface AppShellProps {
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   return (
     <SmoothScrollProvider>
+      <DesktopCursor />
+      <MotionDebugHud />
       <div className="min-h-screen bg-white text-[#1F1B2D] relative selection:bg-[#6D57A5]/15 selection:text-[#6D57A5] overflow-hidden flex flex-col">
 
         {/* Subtle light ambient atmosphere (ERPGen Purple & Emerald subtle accents) */}

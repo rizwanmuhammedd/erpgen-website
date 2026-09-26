@@ -47,6 +47,7 @@ export const PosFeatureCard: React.FC<PosFeatureCardProps> = ({
   return (
     <Card
       variant={isSelected ? 'brand-border' : 'default'}
+      spotlight={true}
       onClick={onSelect}
       className={`cursor-pointer transition-all duration-300 relative group p-5 select-none ${
         isSelected

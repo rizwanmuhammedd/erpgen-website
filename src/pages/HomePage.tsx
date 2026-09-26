@@ -1,38 +1,42 @@
 import React from 'react';
 import { Hero } from '../components/hero/Hero';
-import { PlatformValueSection } from '../components/home/PlatformValueSection';
-import { ModulesSection } from '../components/modules/ModulesSection';
+import { WhatIsERPGenSection } from '../components/home/WhatIsERPGenSection';
+import { ErpTiersSection } from '../components/home/ErpTiersSection';
 import { ConnectedSystemSection } from '../components/home/ConnectedSystemSection';
+import { ModulesSection } from '../components/modules/ModulesSection';
 import { PosFeaturesSection } from '../components/pos-features/PosFeaturesSection';
 import { BusinessTypesSection } from '../components/business-types/BusinessTypesSection';
-import { ERPGenServicesSection } from '../components/company/ERPGenServicesSection';
+import { WhyERPGenSection } from '../components/home/WhyERPGenSection';
 import { ContactSection } from '../components/company/ContactSection';
 
 export const HomePage: React.FC = () => {
   return (
     <div className="space-y-0">
-      {/* 1. Hero with ERP Value Prop & Product Visual Focus */}
+      {/* 01. Hero: ERPGen — The Modular ERP Platform */}
       <Hero />
 
-      {/* 2. Platform Value: One Connected Business Platform (Modular, Connected, Adaptable, Scalable) */}
-      <PlatformValueSection />
+      {/* 02. What is ERPGen? & 03. Core ERP Modules (Sales, Purchase, Inventory, HR, Projects, Finance) */}
+      <WhatIsERPGenSection />
 
-      {/* 3. Core Product Pillars: ERPGen Invoice & ERPGen POS */}
-      <ModulesSection />
+      {/* 03. ERP Lite & ERP Pro: Connected Platform Tiers */}
+      <ErpTiersSection />
 
-      {/* 4. Signature Connected ERP Architecture: Shared Operational Data Layer */}
+      {/* 04. Connected Business: Six Core Operations Converging into ERPGen */}
       <ConnectedSystemSection />
 
-      {/* 5. POS / ERP Capability Showcase: 4 High-Level Capabilities + Live UI Preview */}
+      {/* 05. Product Experience: Invoice & POS with Signature Document Folding */}
+      <ModulesSection />
+
+      {/* 05b. POS Capabilities: 3-Layer Spatial Stack → Unstack Assembly */}
       <PosFeaturesSection />
 
-      {/* 6. Business Types: Restaurant, Barbershop, Supermarket & Laundry Workflows */}
+      {/* 06. Business Types: Pinned Horizontal Storytelling (Restaurant, Barbershop, Supermarket, Laundry) */}
       <BusinessTypesSection />
 
-      {/* 7. ERPGen Technology & Infrastructure Services */}
-      <ERPGenServicesSection />
+      {/* 07. Why ERPGen: Concise Product-Focused Benefits with Editorial Typography Reveal */}
+      <WhyERPGenSection />
 
-      {/* 8. Final WhatsApp Consultation & Contact */}
+      {/* 08. Contact / CTA: See How ERPGen Fits Your Business */}
       <ContactSection />
     </div>
   );

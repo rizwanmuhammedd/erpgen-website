@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, ShoppingBag, ArrowRight, Layers, Sliders, CheckCircle2 } from 'lucide-react';
 import { PageHero } from '../components/layout/PageHero';
@@ -7,10 +7,46 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { getWhatsAppUrl } from '../data/siteData';
+import { gsap, prefersReducedMotion } from '../lib/gsap';
 
 export const ProductsPage: React.FC = () => {
+  const cardsGridRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
+
+    const ctx = gsap.context(() => {
+      if (cardsGridRef.current) {
+        gsap.fromTo(
+          cardsGridRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 14,
+            y: 40,
+            opacity: 0.2,
+            scale: 0.95,
+          },
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.85,
+            stagger: 0.15,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardsGridRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    });
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -29,7 +65,7 @@ export const ProductsPage: React.FC = () => {
 
       <section className="py-16 sm:py-20 border-b border-[#E9E4F1]">
         <Container size="xl" className="space-y-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div ref={cardsGridRef} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card variant="brand-border" className="p-8 space-y-6 flex flex-col justify-between group bg-white border border-[#E9E4F1] shadow-sm hover:border-[#6D57A5]/40 hover:shadow-md transition-all duration-300">
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold group-hover:bg-[#6D57A5] group-hover:text-white transition-all">

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Headphones, Layers, Cpu, ArrowRight, MessageSquare, CheckCircle2, FileText, ShoppingBag } from 'lucide-react';
 import { PageHero } from '../components/layout/PageHero';
@@ -7,11 +7,75 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { getWhatsAppUrl } from '../data/siteData';
+import { gsap, prefersReducedMotion } from '../lib/gsap';
 
 export const AboutPage: React.FC = () => {
+  const missionCardsRef = useRef<HTMLDivElement>(null);
+  const pillarsGridRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = 'Why Us & Company Philosophy | ERPGen';
+
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
+
+    const ctx = gsap.context(() => {
+      if (missionCardsRef.current) {
+        gsap.fromTo(
+          missionCardsRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 14,
+            y: 35,
+            opacity: 0.2,
+            scale: 0.95,
+          },
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: missionCardsRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+
+      if (pillarsGridRef.current) {
+        gsap.fromTo(
+          pillarsGridRef.current.children,
+          {
+            transformPerspective: 1200,
+            rotateX: 12,
+            y: 40,
+            opacity: 0.15,
+            scale: 0.96,
+          },
+          {
+            rotateX: 0,
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: pillarsGridRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    });
+
+    return () => ctx.revert();
   }, []);
 
   const pillars = [
@@ -76,7 +140,7 @@ export const AboutPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div ref={missionCardsRef} className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Card variant="brand-border" className="p-6 space-y-3 bg-white border border-[#E9E4F1] shadow-sm">
                 <FileText className="w-8 h-8 text-[#6D57A5]" />
                 <h3 className="text-base font-bold text-[#1F1B2D] font-heading">ERPGen Invoice</h3>
@@ -106,7 +170,7 @@ export const AboutPage: React.FC = () => {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div ref={pillarsGridRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {pillars.map((p) => {
                 const IconComponent = p.icon;
                 return (

@@ -33,6 +33,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
+  magnetic?: boolean;
 }
 
 export interface BadgeProps {
@@ -48,4 +49,5 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'glass' | 'brand-border' | 'hover-glow';
   className?: string;
   onClick?: () => void;
+  spotlight?: boolean;
 }
