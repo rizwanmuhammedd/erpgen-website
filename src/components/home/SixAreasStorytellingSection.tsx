@@ -147,6 +147,9 @@ export const SixAreasStorytellingSection: React.FC = () => {
   };
 
   const [headerOffset, setHeaderOffset] = useState<number>(getHeaderHeight);
+  const [isDesktopOrTablet, setIsDesktopOrTablet] = useState<boolean>(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 768 : true
+  );
 
   // Keep header offset synchronized
   useEffect(() => {
@@ -155,6 +158,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
     const updateHeight = () => {
       const h = getHeaderHeight();
       setHeaderOffset((prev) => (Math.abs(prev - h) > 1 ? h : prev));
+      setIsDesktopOrTablet(window.innerWidth >= 768);
     };
 
     updateHeight();
@@ -176,8 +180,8 @@ export const SixAreasStorytellingSection: React.FC = () => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      // Pin across all screen sizes with adaptive distance
-      mm.add('(min-width: 0px)', () => {
+      // Pin on desktop and tablet (>= 768px) with adaptive distance
+      mm.add('(min-width: 768px)', () => {
         const distanceMultiplier = 2.6;
 
         const st = ScrollTrigger.create({
@@ -283,11 +287,15 @@ export const SixAreasStorytellingSection: React.FC = () => {
 
       <div
         ref={pinContainerRef}
-        className="w-full flex flex-col justify-between py-2 sm:py-3 lg:py-4 px-3 sm:px-6 lg:px-8 box-border overflow-hidden"
-        style={{
-          height: `calc(100svh - ${headerOffset + 2}px)`,
-          maxHeight: `calc(100svh - ${headerOffset + 2}px)`,
-        }}
+        className="w-full flex flex-col justify-between py-4 sm:py-6 md:py-3 lg:py-4 px-3 sm:px-6 lg:px-8 box-border"
+        style={
+          isDesktopOrTablet
+            ? {
+                height: `calc(100svh - ${headerOffset + 2}px)`,
+                maxHeight: `calc(100svh - ${headerOffset + 2}px)`,
+              }
+            : undefined
+        }
       >
         <Container size="xl" className="h-full flex flex-col justify-between max-w-7xl mx-auto w-full">
           {/* Header Bar: Eyebrow + Title + Segment Navigation */}
@@ -368,8 +376,106 @@ export const SixAreasStorytellingSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Central Interactive Composition: Split Stage */}
-          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-6 items-stretch my-1.5 sm:my-2 overflow-y-auto lg:overflow-visible scrollbar-none">
+          {/* Mobile Controlled Vertical Story (< 768px): ERP Core -> 01 to 06 */}
+          <div className="md:hidden space-y-4 my-4">
+            {/* ERP Core Node */}
+            <div className="p-4 rounded-2xl bg-white border-2 border-[#6D57A5] text-center shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] mx-auto flex items-center justify-center font-bold mb-2 shadow-2xs">
+                <Layers className="w-5 h-5 text-[#6D57A5]" />
+              </div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
+                {t('sixAreas.eyebrow')}
+              </span>
+              <h4 className="text-base font-extrabold text-[#1F1B2D] mt-0.5">
+                ERPGen Operational Core
+              </h4>
+              <p className="text-xs text-[#625D6B] mt-1">
+                {t('sixAreas.allActive')}
+              </p>
+            </div>
+
+            {/* Connecting Vertical Conduit Line */}
+            <div className="w-0.5 h-6 bg-gradient-to-b from-[#6D57A5] to-[#17B681] mx-auto rounded-full" />
+
+            {/* 6 Area Cards */}
+            <div className="space-y-3.5">
+              {AREAS.map((area, idx) => {
+                const AreaIcon = area.icon;
+                const isSelected = activeStep === idx;
+                return (
+                  <div
+                    key={area.id}
+                    id={`mobile-area-${area.id}`}
+                    onClick={() => setActiveStep(idx)}
+                    className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 ${
+                      isSelected
+                        ? 'bg-white border-[#6D57A5] shadow-md ring-2 ring-[#6D57A5]/20'
+                        : 'bg-[#FAF8FC] border-[#E9E4F1]'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3 pb-3 border-b border-[#E9E4F1]">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-2xs"
+                          style={{ backgroundColor: area.accentColor }}
+                        >
+                          <AreaIcon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-mono font-bold text-[#17B681] uppercase tracking-wider block">
+                            {area.number} · {t(area.catKey)}
+                          </span>
+                          <h4 className="text-base font-bold text-[#1F1B2D]">
+                            {t(area.nameKey)}
+                          </h4>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-mono font-semibold px-2.5 py-1 rounded-full bg-[#E4F8F0] text-[#129267] border border-[#17B681]/30 shrink-0">
+                        {t(area.flowKey)}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-[#625D6B] leading-relaxed mt-3">
+                      {t(area.descKey)}
+                    </p>
+
+                    <div className="mt-3 p-2.5 rounded-xl bg-white border border-[#E9E4F1] flex items-center justify-between text-xs">
+                      <span className="text-[11px] font-medium text-[#1F1B2D] truncate">
+                        {t(area.metricValueKey)}
+                      </span>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0 ms-2" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile Handoff Link to Connected System */}
+            <div className="pt-2">
+              <a
+                href="#connected-system"
+                className="p-3 rounded-2xl bg-gradient-to-r from-[#E4F8F0] via-white to-[#FAF8FC] border border-[#17B681] shadow-xs flex items-center justify-between gap-3 text-start group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#17B681] text-white flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-mono uppercase tracking-wider text-[#129267] font-bold block">
+                      {t('sixAreas.allActive')}
+                    </span>
+                    <h5 className="text-xs font-bold text-[#1F1B2D]">
+                      {t('sixAreas.nextConnected')}
+                    </h5>
+                  </div>
+                </div>
+                <ArrowRight className={`w-4 h-4 text-[#17B681] ${isRtl ? 'rotate-180' : ''}`} />
+              </a>
+            </div>
+          </div>
+
+          {/* Desktop & Tablet Central Interactive Composition (>= 768px): Split Stage */}
+          <div className="hidden md:grid flex-1 min-h-0 grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-6 items-stretch my-1.5 sm:my-2 overflow-y-auto lg:overflow-visible scrollbar-none">
             {/* Left Column: Active Operational Area Hologram / Card */}
             <div
               ref={narrativeCardRef}

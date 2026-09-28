@@ -408,8 +408,8 @@ export const ErpTiersSection: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs text-start">
+                <div className="overflow-x-auto pb-1 scrollbar-none">
+                  <table className="w-full min-w-[500px] text-xs text-start">
                     <thead className="bg-[#FAF8FC] text-[#625D6B] font-mono uppercase tracking-wider text-[11px] border-b border-[#E9E4F1]">
                       <tr>
                         <th className="py-3 px-4 font-bold w-1/4">{t('tiers.dimension')}</th>
@@ -457,7 +457,7 @@ export const ErpTiersSection: React.FC = () => {
                   </table>
                 </div>
 
-                <div className="pt-4 flex flex-col sm:flex-row justify-center gap-4 text-center">
+                <div className="pt-4 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 text-center items-stretch sm:items-center">
                   <Button
                     variant="outline"
                     size="sm"

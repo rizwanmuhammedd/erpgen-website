@@ -55,6 +55,18 @@ export const Navbar: React.FC = () => {
     }
   }, [location.pathname, mobileMenuOpen]);
 
+  // Lock body scroll when mobile drawer is open to prevent accidental background scrolling
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (mobileMenuOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [mobileMenuOpen]);
+
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
@@ -140,7 +152,7 @@ export const Navbar: React.FC = () => {
         {mobileMenuOpen && (
           <div
             id="mobile-navigation-drawer"
-            className="lg:hidden mt-3 pt-4 pb-6 px-4 bg-white/98 border border-[#E9E4F1] rounded-2xl backdrop-blur-2xl shadow-2xl animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200 origin-top"
+            className="lg:hidden mt-3 pt-4 pb-6 px-4 bg-white/98 border border-[#E9E4F1] rounded-2xl backdrop-blur-2xl shadow-2xl animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200 origin-top max-h-[calc(100vh-80px)] overflow-y-auto overscroll-contain"
           >
             <div className="flex flex-col space-y-2.5">
               <div className="pb-3 border-b border-[#E9E4F1] flex justify-center">
@@ -150,7 +162,7 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                className={`min-h-[44px] flex items-center px-3 rounded-xl text-xs font-semibold transition-colors ${
                   location.pathname === '/'
                     ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
                     : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'
@@ -163,7 +175,7 @@ export const Navbar: React.FC = () => {
               <a
                 href="/#erp-tiers"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#6D57A5] bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-between"
+                className="min-h-[44px] px-3 rounded-xl text-xs font-semibold text-[#6D57A5] bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-between"
               >
                 <span className="flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-[#17B681]" />
@@ -175,7 +187,7 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/products"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                className={`min-h-[44px] flex items-center px-3 rounded-xl text-xs font-semibold transition-colors ${
                   location.pathname.startsWith('/products')
                     ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
                     : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'
@@ -185,10 +197,10 @@ export const Navbar: React.FC = () => {
               </Link>
 
               <div className="ms-3 space-y-1 text-xs text-[#625D6B] border-s-2 border-[#E9E4F1] ps-2.5">
-                <Link to="/products/invoice" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#6D57A5]">
+                <Link to="/products/invoice" onClick={() => setMobileMenuOpen(false)} className="min-h-[36px] flex items-center py-1 hover:text-[#6D57A5]">
                   • {t('nav.invoice')}
                 </Link>
-                <Link to="/products/pos" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#6D57A5]">
+                <Link to="/products/pos" onClick={() => setMobileMenuOpen(false)} className="min-h-[36px] flex items-center py-1 hover:text-[#6D57A5]">
                   • {t('nav.pos')}
                 </Link>
               </div>
@@ -196,7 +208,7 @@ export const Navbar: React.FC = () => {
               <a
                 href="/#core-modules"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
+                className="min-h-[44px] flex items-center px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
               >
                 {t('nav.coreErp')}
               </a>
@@ -204,7 +216,7 @@ export const Navbar: React.FC = () => {
               <a
                 href="/#business-types"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
+                className="min-h-[44px] flex items-center px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
               >
                 {t('nav.businessTypes')}
               </a>
@@ -212,7 +224,7 @@ export const Navbar: React.FC = () => {
               <a
                 href="/#why-erpgen"
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2 px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
+                className="min-h-[44px] flex items-center px-3 rounded-xl text-xs font-semibold text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5] transition-colors"
               >
                 {t('nav.whyUs')}
               </a>
@@ -220,7 +232,7 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/about"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                className={`min-h-[44px] flex items-center px-3 rounded-xl text-xs font-semibold transition-colors ${
                   location.pathname === '/about'
                     ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
                     : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'
@@ -232,7 +244,7 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`py-2 px-3 rounded-xl text-xs font-semibold transition-colors ${
+                className={`min-h-[44px] flex items-center px-3 rounded-xl text-xs font-semibold transition-colors ${
                   location.pathname === '/contact'
                     ? 'bg-[#FAF8FC] text-[#6D57A5] font-bold border-s-2 border-[#6D57A5]'
                     : 'text-[#1F1B2D] hover:bg-[#FAF8FC] hover:text-[#6D57A5]'

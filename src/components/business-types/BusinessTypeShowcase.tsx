@@ -172,7 +172,7 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
                         className="flex items-center gap-1.5 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs text-[#1F1B2D]"
                       >
                         <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#17B681] shrink-0" />
-                        <span className="font-medium text-[10px] sm:text-[11px] leading-tight truncate">{translatedCap || cap}</span>
+                        <span className="font-medium text-[10px] sm:text-[11px] leading-snug line-clamp-1">{translatedCap || cap}</span>
                       </div>
                     );
                   })}

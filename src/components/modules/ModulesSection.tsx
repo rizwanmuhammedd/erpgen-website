@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FileText, ShoppingBag } from 'lucide-react';
+import { Layers } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { SectionHeading } from '../ui/SectionHeading';
-import { ModuleCard } from './ModuleCard';
-import { ModuleLifecycleSimulator } from './ModuleLifecycleSimulator';
+import { InvoiceStorytelling } from './InvoiceStorytelling';
+import { InvoiceToPosTransition } from './InvoiceToPosTransition';
+import { SideBySideWorkspaces } from './SideBySideWorkspaces';
 import { ModuleConfigurator } from './ModuleConfigurator';
 import { CustomConfiguration } from './CustomConfiguration';
 import { useLanguage } from '../../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 export const ModulesSection: React.FC = () => {
-  // Selection state: defaults to both Invoice & POS active to showcase full capability
   const [selectedModules, setSelectedModules] = useState<string[]>(['invoice', 'pos']);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const simulatorRef = useRef<HTMLDivElement>(null);
+  const threadRef = useRef<HTMLDivElement>(null);
   const configuratorRef = useRef<HTMLDivElement>(null);
   const customRef = useRef<HTMLDivElement>(null);
   const { t, isRtl } = useLanguage();
@@ -32,67 +31,30 @@ export const ModulesSection: React.FC = () => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      // Spatial inward convergence: from ERP platform engine into concrete applications
-      if (cardsRef.current && cardsRef.current.children.length >= 2) {
-        const [cardInvoice, cardPos] = Array.from(cardsRef.current.children) as HTMLElement[];
-        const lateralShift = isRtl ? -36 : 36;
-
+      // 1. Foundation thread pulse down from Connected System
+      if (threadRef.current) {
         gsap.fromTo(
-          cardInvoice,
+          threadRef.current,
+          { opacity: 0.2, y: -20 },
           {
-            x: -lateralShift,
-            y: 18,
-            scale: 0.97,
-            opacity: 0.3,
-          },
-          {
-            x: 0,
-            y: 0,
-            scale: 1,
             opacity: 1,
+            y: 0,
+            duration: 0.8,
             ease: 'power2.out',
             scrollTrigger: {
-              trigger: cardsRef.current,
-              start: 'top 85%',
-              end: 'top 48%',
-              scrub: 0.5,
-            },
-          }
-        );
-
-        gsap.fromTo(
-          cardPos,
-          {
-            x: lateralShift,
-            y: 18,
-            scale: 0.97,
-            opacity: 0.3,
-          },
-          {
-            x: 0,
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: 'top 85%',
-              end: 'top 48%',
-              scrub: 0.5,
+              trigger: threadRef.current,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
             },
           }
         );
       }
 
-      // Configurator and custom panels smooth elevation
+      // 2. Configurator and custom panels smooth elevation
       if (configuratorRef.current) {
         gsap.fromTo(
           configuratorRef.current,
-          {
-            scale: 0.98,
-            y: 24,
-            opacity: 0.4,
-          },
+          { scale: 0.98, y: 24, opacity: 0.4 },
           {
             scale: 1,
             y: 0,
@@ -111,10 +73,7 @@ export const ModulesSection: React.FC = () => {
       if (customRef.current) {
         gsap.fromTo(
           customRef.current,
-          {
-            y: 20,
-            opacity: 0.2,
-          },
+          { y: 20, opacity: 0.2 },
           {
             y: 0,
             opacity: 1,
@@ -138,51 +97,42 @@ export const ModulesSection: React.FC = () => {
       ref={sectionRef}
       id="modules"
       className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 border-b border-[#E9E4F1] bg-white"
-      aria-label="Module Selection Section"
+      aria-label="ERPGen Product Storytelling: Invoice & POS"
     >
-      <Container size="xl" className="space-y-16">
-        {/* Section Intro */}
+      <Container size="xl" className="space-y-16 lg:space-y-20">
+        {/* 1. ERP Foundation Thread: Connection from Connected System */}
+        <div ref={threadRef} className="flex flex-col items-center text-center space-y-2">
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF8FC] border border-[#E9E4F1] text-[11px] font-mono text-[#6D57A5] font-bold shadow-2xs">
+            <Layers className="w-3.5 h-3.5 text-[#17B681]" />
+            <span>{t('productStory.foundationThread')}</span>
+          </div>
+          <p className="text-[11px] text-[#625D6B] font-mono">
+            {t('productStory.foundationSubtitle')}
+          </p>
+          <div className="w-0.5 h-8 bg-linear-to-b from-[#6D57A5] to-[#17B681] rounded-full my-1" />
+        </div>
+
+        {/* 2. Section Intro: The System Powers Business Operations */}
         <SectionHeading
-          eyebrow={t('modulesPillars.eyebrow')}
-          title={t('modulesPillars.title')}
-          titleGradient={t('modulesPillars.titleGradient')}
-          description={t('modulesPillars.description')}
+          eyebrow={t('productStory.eyebrow')}
+          title={t('productStory.title')}
+          titleGradient={t('productStory.titleGradient')}
+          description={t('productStory.description')}
         />
 
-        {/* 2 Core Module Selection Cards */}
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          <div id="invoice" className="scroll-mt-28">
-            <ModuleCard
-              id="invoice"
-              title={t('modulesPillars.invoiceTitle')}
-              subtitle={t('modulesPillars.invoiceSubtitle')}
-              description={t('modulesPillars.invoiceDesc')}
-              icon={<FileText className="w-6 h-6" />}
-              isSelected={invoiceSelected}
-              onToggle={() => toggleModule('invoice')}
-            />
-          </div>
-
-          <div id="pos" className="scroll-mt-28">
-            <ModuleCard
-              id="pos"
-              title={t('modulesPillars.posTitle')}
-              subtitle={t('modulesPillars.posSubtitle')}
-              description={t('modulesPillars.posDesc')}
-              icon={<ShoppingBag className="w-6 h-6" />}
-              isSelected={posSelected}
-              onToggle={() => toggleModule('pos')}
-            />
-          </div>
+        {/* 3. ERPGen Invoice Product Moment: Controlled Progressive Document Assembly */}
+        <div id="invoice" className="scroll-mt-28">
+          <InvoiceStorytelling />
         </div>
 
-        {/* Interactive Simulated Lifecycle Walkthrough */}
-        <div ref={simulatorRef}>
-          <ModuleLifecycleSimulator />
-        </div>
+        {/* 4. Invoice → POS Visual Transformation Conduit */}
+        <InvoiceToPosTransition />
 
-        {/* Interactive System Configurator Preview */}
-        <div ref={configuratorRef}>
+        {/* 5. One ERP Foundation, Two Workspaces: Side-by-Side Moment */}
+        <SideBySideWorkspaces />
+
+        {/* 6. Interactive System Configurator Preview */}
+        <div ref={configuratorRef} className="pt-4">
           <ModuleConfigurator
             invoiceSelected={invoiceSelected}
             posSelected={posSelected}
@@ -191,7 +141,7 @@ export const ModulesSection: React.FC = () => {
           />
         </div>
 
-        {/* Custom Configuration Section */}
+        {/* 7. Custom Configuration Inquiry Card */}
         <div ref={customRef}>
           <CustomConfiguration />
         </div>

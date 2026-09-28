@@ -21,89 +21,146 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
   selectedFeatureId = 'pos-billing',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const layerBaseRef = useRef<HTMLDivElement>(null);
-  const layerMidRef = useRef<HTMLDivElement>(null);
-  const layerTopRef = useRef<HTMLDivElement>(null);
-  const { t } = useLanguage();
+  const layerWorkspaceRef = useRef<HTMLDivElement>(null);
+  const layerTouchRef = useRef<HTMLDivElement>(null);
+  const layerTicketRef = useRef<HTMLDivElement>(null);
+  const layerSettlementRef = useRef<HTMLDivElement>(null);
+  const layerHardwareRef = useRef<HTMLDivElement>(null);
+  const { t, isRtl } = useLanguage();
 
   useEffect(() => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      // Signature "STACK → UNSTACK" animation scrubbed with scroll
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 85%',
-          end: 'top 25%',
-          scrub: 0.6,
-        },
+      const mm = gsap.matchMedia();
+
+      // Desktop and Tablet: 5-Layer Hierarchical Workspace Assembly
+      mm.add('(min-width: 768px)', () => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 85%',
+            end: 'bottom 45%',
+            scrub: 0.6,
+          },
+        });
+
+        // 1. Main POS Workspace Frame enters with perspective settle
+        tl.fromTo(
+          layerWorkspaceRef.current,
+          {
+            y: 35,
+            scale: 0.95,
+            transformPerspective: 1200,
+            rotateX: 8,
+            opacity: 0.4,
+          },
+          {
+            y: 0,
+            scale: 1,
+            rotateX: 0,
+            opacity: 1,
+            ease: 'power2.out',
+            duration: 0.8,
+          }
+        );
+
+        // 2. Product / Touch Catalog tiles activate with slight stagger
+        if (layerTouchRef.current) {
+          tl.fromTo(
+            layerTouchRef.current.children,
+            { y: 12, opacity: 0.3, scale: 0.97 },
+            {
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              stagger: 0.08,
+              ease: 'power2.out',
+              duration: 0.6,
+            },
+            '-=0.4'
+          );
+        }
+
+        // 3. Active Order Ticket floats into its pinned corner anchor
+        const lateralShift = isRtl ? -20 : 20;
+
+        tl.fromTo(
+          layerTicketRef.current,
+          {
+            y: 40,
+            x: lateralShift,
+            scale: 0.9,
+            opacity: 0.3,
+            rotateZ: isRtl ? -2 : 2,
+          },
+          {
+            y: 0,
+            x: 0,
+            scale: 1,
+            opacity: 1,
+            rotateZ: 0,
+            ease: 'power2.out',
+            duration: 0.7,
+          },
+          '-=0.3'
+        );
+
+        // 4. Settlement & clearing elements highlight
+        if (layerSettlementRef.current) {
+          tl.fromTo(
+            layerSettlementRef.current,
+            { opacity: 0.4, scale: 0.95 },
+            { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.5 },
+            '-=0.2'
+          );
+        }
+
+        // 5. Hardware thermal status floats to top anchor
+        tl.fromTo(
+          layerHardwareRef.current,
+          {
+            y: -25,
+            x: -lateralShift,
+            scale: 0.88,
+            opacity: 0.3,
+            rotateZ: isRtl ? 2 : -2,
+          },
+          {
+            y: 0,
+            x: 0,
+            scale: 1,
+            opacity: 1,
+            rotateZ: 0,
+            ease: 'power2.out',
+            duration: 0.6,
+          },
+          '-=0.3'
+        );
       });
 
-      // Initially layers are stacked tightly together
-      tl.fromTo(
-        layerBaseRef.current,
-        {
-          y: 25,
-          scale: 0.96,
-          transformPerspective: 1200,
-          rotateX: 6,
-        },
-        {
-          y: 0,
-          scale: 1,
-          rotateX: 0,
-          ease: 'power2.out',
-        }
-      );
-
-      // Middle layer separates and floats into position
-      tl.fromTo(
-        layerMidRef.current,
-        {
-          y: 50,
-          x: 25,
-          scale: 0.92,
-          opacity: 0.6,
-          transformPerspective: 1200,
-          rotateZ: 2,
-        },
-        {
-          y: 0,
-          x: 0,
-          scale: 1,
-          opacity: 1,
-          rotateZ: 0,
-          ease: 'power2.out',
-        },
-        '-=0.4'
-      );
-
-      // Top layer separates and floats to its corner anchor
-      tl.fromTo(
-        layerTopRef.current,
-        {
-          y: 65,
-          x: -25,
-          scale: 0.88,
-          opacity: 0.5,
-          transformPerspective: 1200,
-          rotateZ: -2,
-        },
-        {
-          y: 0,
-          x: 0,
-          scale: 1,
-          opacity: 1,
-          rotateZ: 0,
-          ease: 'power2.out',
-        },
-        '-=0.3'
-      );
+      // Mobile: Simplified vertical flow without lateral displacement
+      mm.add('(max-width: 767px)', () => {
+        gsap.fromTo(
+          layerWorkspaceRef.current,
+          { y: 20, opacity: 0.4 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      });
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isRtl]);
 
   return (
     <div
@@ -112,14 +169,14 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
       aria-label="ERPGen POS Layered Composition"
     >
       {/* Background Spatial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#6D57A5]/5 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#17B681]/5 blur-[100px] rounded-full pointer-events-none" />
 
       {/* Layer Container */}
       <div className="relative max-w-4xl mx-auto">
-        {/* LAYER 1 (BASE): Clean Terminal Register Canvas */}
+        {/* LAYER 1: Main POS Workspace Chassis */}
         <div
-          ref={layerBaseRef}
-          className="w-full rounded-2xl sm:rounded-3xl border border-[#E9E4F1] shadow-md overflow-hidden bg-white will-change-transform"
+          ref={layerWorkspaceRef}
+          className="w-full rounded-2xl sm:rounded-3xl border border-[#E9E4F1] shadow-lg overflow-hidden bg-white will-change-transform relative z-10"
         >
           {/* Window Header */}
           <div className="flex items-center justify-between px-5 py-3.5 bg-[#FAF8FC] border-b border-[#E9E4F1] text-xs">
@@ -130,23 +187,23 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                 <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/20 inline-block" />
               </div>
               <span className="text-[#625D6B] font-mono text-[11px] ms-2">
-                erpgen.pos / {selectedFeatureId}
+                erpgen.pos / register-terminal-01 / {selectedFeatureId}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
-              <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold">
+              <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold bg-[#E4F8F0] text-[#129267] border-[#17B681]/30">
                 {t('posFeatures.registerOnline')}
               </Badge>
             </div>
           </div>
 
-          {/* Clean Abstract Product Surface */}
+          {/* Clean Product Surface */}
           <div className="p-6 sm:p-8 lg:p-10 space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E9E4F1]">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#17B681] font-bold block">
                   {t('posFeatures.touchCatalog')}
                 </span>
                 <h4 className="text-lg sm:text-xl font-extrabold text-[#1F1B2D] font-heading mt-0.5">
@@ -164,20 +221,23 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
               </div>
             </div>
 
-            {/* Abstract Touch Grid (Clean marketing cards, zero fake transaction tables) */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#6D57A5]/30 hover:border-[#6D57A5] transition-all duration-200 group cursor-pointer shadow-2xs">
-                <div className="w-9 h-9 rounded-lg bg-white border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-3 shadow-2xs group-hover:scale-105 transition-transform">
+            {/* LAYER 2: Touch Item Grid */}
+            <div
+              ref={layerTouchRef}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
+            >
+              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#17B681]/40 hover:border-[#17B681] transition-all duration-200 group cursor-pointer shadow-2xs">
+                <div className="w-9 h-9 rounded-lg bg-white border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-3 shadow-2xs group-hover:scale-105 transition-transform">
                   <ShoppingBag className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#17B681] transition-colors">
                   {t('posFeatures.bevSelect')}
                 </span>
                 <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.customMod')}</span>
               </div>
 
               <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
-                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
+                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
@@ -196,19 +256,19 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                 <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.barcodeScanned')}</span>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
+              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#17B681]/40 transition-all duration-200 group cursor-pointer">
                 <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
                   <CreditCard className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#17B681] transition-colors">
                   {t('posFeatures.expressService')}
                 </span>
                 <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.directCheckout')}</span>
               </div>
             </div>
 
-            {/* Subtle base footer indicator */}
-            <div className="flex items-center justify-between text-xs text-[#625D6B] pt-2">
+            {/* Base Footer Indicator */}
+            <div className="flex items-center justify-between text-xs text-[#625D6B] pt-2 border-t border-[#E9E4F1]">
               <span className="flex items-center gap-1.5 text-[#129267] font-medium">
                 <CheckCircle2 className="w-4 h-4 text-[#17B681]" />
                 <span>{t('posFeatures.syncLedger')}</span>
@@ -218,9 +278,9 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
           </div>
         </div>
 
-        {/* LAYER 2 (MIDDLE): Floating Active Order & Settlement Card (Unstacks to bottom-right) */}
+        {/* LAYER 3: Active Order Ticket & Cart State (Floats to bottom corner) */}
         <div
-          ref={layerMidRef}
+          ref={layerTicketRef}
           className="mt-4 sm:mt-0 sm:absolute sm:-bottom-8 sm:-end-4 w-full sm:w-80 rounded-2xl bg-white border border-[#6D57A5]/30 shadow-xl p-5 space-y-3.5 will-change-transform z-20"
         >
           <div className="flex items-center justify-between pb-2.5 border-b border-[#E9E4F1]">
@@ -246,8 +306,8 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
             </div>
           </div>
 
-          {/* Quick settlement action buttons */}
-          <div className="pt-2 border-t border-[#E9E4F1] space-y-2">
+          {/* LAYER 4: Settlement Actions */}
+          <div ref={layerSettlementRef} className="pt-2 border-t border-[#E9E4F1] space-y-2">
             <div className="flex justify-between items-baseline">
               <span className="text-xs font-bold text-[#1F1B2D]">{t('posFeatures.settlement')}</span>
               <span className="text-xs font-mono font-bold text-[#17B681]">{t('posFeatures.instantClearing')}</span>
@@ -270,9 +330,9 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
           </div>
         </div>
 
-        {/* LAYER 3 (TOP): Floating Hardware & Sync Assurance (Unstacks to top-left) */}
+        {/* LAYER 5: Hardware & Live Inventory Status (Floats to top-start corner) */}
         <div
-          ref={layerTopRef}
+          ref={layerHardwareRef}
           className="mt-4 sm:mt-0 sm:absolute sm:-top-5 sm:-start-4 rounded-xl bg-white border border-[#17B681]/40 shadow-lg px-4 py-2.5 flex items-center gap-3 will-change-transform z-30"
         >
           <div className="w-8 h-8 rounded-lg bg-[#E4F8F0] text-[#129267] flex items-center justify-center shrink-0">
