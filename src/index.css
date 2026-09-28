@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Outfit', 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif;
 
   /* Official ERPGen Purple & Emerald Brand Identity Tokens */
   --color-brand-purple: #6D57A5;         /* Primary Brand Purple */
@@ -31,6 +31,33 @@
     color: #1F1B2D;
     font-family: var(--font-sans);
     overflow-x: hidden;
+  }
+
+  [dir="rtl"] {
+    font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6,
+  [dir="rtl"] .font-heading {
+    font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: normal;
+    line-height: 1.35;
+  }
+
+  [dir="rtl"] input,
+  [dir="rtl"] textarea,
+  [dir="rtl"] select {
+    text-align: right;
+  }
+
+  [dir="rtl"] [dir="ltr"] {
+    text-align: left;
   }
 }
 

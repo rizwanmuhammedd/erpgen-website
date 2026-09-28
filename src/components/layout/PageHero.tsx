@@ -5,6 +5,8 @@ import { Container } from '../ui/Container';
 import { Badge } from '../ui/Badge';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
+import { useLanguage } from '../../context/LanguageContext';
+
 interface Breadcrumb {
   label: string;
   path: string;
@@ -25,11 +27,13 @@ export const PageHero: React.FC<PageHeroProps> = ({
   title,
   titleGradient,
   description,
-  breadcrumbs = [{ label: 'Home', path: '/' }],
+  breadcrumbs,
   badgeText,
   children,
 }) => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
+  const effectiveBreadcrumbs = breadcrumbs ?? [{ label: t('nav.home'), path: '/' }];
 
   useEffect(() => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
@@ -69,11 +73,11 @@ export const PageHero: React.FC<PageHeroProps> = ({
     <div ref={containerRef} className="relative py-16 sm:py-20 lg:py-24 border-b border-[#E9E4F1] bg-radial-brand-hero overflow-hidden">
       <Container size="xl" className="space-y-6 relative z-10">
         {/* Breadcrumb Trail */}
-        {breadcrumbs.length > 0 && (
+        {effectiveBreadcrumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[#625D6B]">
-            {breadcrumbs.map((crumb, idx) => (
+            {effectiveBreadcrumbs.map((crumb, idx) => (
               <React.Fragment key={crumb.path}>
-                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#625D6B]/50" />}
+                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#625D6B]/50 rtl:rotate-180" />}
                 <Link to={crumb.path} className="hover:text-[#6D57A5] transition-colors font-medium">
                   {crumb.label}
                 </Link>

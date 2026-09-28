@@ -153,7 +153,7 @@ export const BusinessTypesSection: React.FC = () => {
                       }`}
                     >
                       <span className="font-mono text-[10px]">0{idx + 1}</span>
-                      <span>{b.title}</span>
+                      <span>{t(`posIndustries.${b.id}`, b.title)}</span>
                     </button>
                   );
                 })}

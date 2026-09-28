@@ -27,11 +27,39 @@ export const ErpTiersSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { t, isRtl } = useLanguage();
+  const { t } = useLanguage();
 
   const handleSelectTier = (tier: 'lite' | 'pro') => {
     navigate(`/contact?tier=${tier}`);
   };
+
+  useEffect(() => {
+    if (prefersReducedMotion() || typeof window === 'undefined') return;
+
+    const ctx = gsap.context(() => {
+      // Smooth depth entrance handoff from Hero
+      if (sectionRef.current) {
+        gsap.fromTo(
+          sectionRef.current,
+          { opacity: 0.85, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 92%',
+              end: 'top 60%',
+              scrub: 0.5,
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
@@ -41,19 +69,16 @@ export const ErpTiersSection: React.FC = () => {
         gsap.fromTo(
           contentRef.current,
           {
-            opacity: 0,
-            y: 20,
-            scale: 0.98,
-            transformPerspective: 1200,
-            rotateX: 4,
+            opacity: 0.3,
+            y: 10,
+            scale: 0.99,
           },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            rotateX: 0,
-            duration: 0.45,
-            ease: 'power3.out',
+            duration: 0.35,
+            ease: 'power2.out',
           }
         );
       });
@@ -155,7 +180,7 @@ export const ErpTiersSection: React.FC = () => {
                     <Badge variant="brand" size="md">
                       {t('tiers.liteTag')}
                     </Badge>
-                    <span className="text-xs font-mono text-[#625D6B]">v1.0 Standard Core</span>
+                    <span className="text-xs font-mono text-[#625D6B]">{t('tiers.standardVersion')}</span>
                   </div>
 
                   <div className="space-y-2">
@@ -192,12 +217,12 @@ export const ErpTiersSection: React.FC = () => {
                       variant="primary"
                       size="md"
                       onClick={() => handleSelectTier('lite')}
-                      icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}
+                      icon={<ArrowRight className="w-4 h-4 rtl:rotate-180" />}
                     >
                       {t('tiers.liteCta')}
                     </Button>
                     <span className="text-xs text-[#625D6B] font-mono">
-                      Fast standard onboarding • No custom dev lag
+                      {t('tiers.liteOnboarding')}
                     </span>
                   </div>
                 </div>
@@ -206,11 +231,11 @@ export const ErpTiersSection: React.FC = () => {
                 <div className="lg:col-span-5 bg-[#FAF8FC] border border-[#E9E4F1] rounded-2xl p-6 sm:p-8 space-y-4 shadow-inner">
                   <div className="flex items-center justify-between pb-3 border-b border-[#E9E4F1]">
                     <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                      Standard Package Architecture
+                      {t('tiers.standardPkgArch')}
                     </span>
                     <span className="inline-flex items-center gap-1 text-[10px] font-mono text-[#17B681]">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#17B681] animate-pulse" />
-                      Ready to Run
+                      {t('tiers.readyToRun')}
                     </span>
                   </div>
 
@@ -220,8 +245,8 @@ export const ErpTiersSection: React.FC = () => {
                         <FileText className="w-4 h-4" />
                       </div>
                       <div>
-                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">ERPGen Invoice (Standard)</h5>
-                        <p className="text-[11px] text-[#625D6B]">Instant PDF creation & billing histories</p>
+                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">{t('tiers.invoiceStd')}</h5>
+                        <p className="text-[11px] text-[#625D6B]">{t('tiers.invoiceStdDesc')}</p>
                       </div>
                     </div>
 
@@ -230,8 +255,8 @@ export const ErpTiersSection: React.FC = () => {
                         <ShoppingBag className="w-4 h-4" />
                       </div>
                       <div>
-                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">ERPGen POS (Standard)</h5>
-                        <p className="text-[11px] text-[#625D6B]">Touch counter checkout for retail & food</p>
+                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">{t('tiers.posStd')}</h5>
+                        <p className="text-[11px] text-[#625D6B]">{t('tiers.posStdDesc')}</p>
                       </div>
                     </div>
 
@@ -240,15 +265,15 @@ export const ErpTiersSection: React.FC = () => {
                         <Boxes className="w-4 h-4" />
                       </div>
                       <div>
-                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">Live Multi-Warehouse Inventory</h5>
-                        <p className="text-[11px] text-[#625D6B]">Stock balances and movement ledger</p>
+                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">{t('tiers.inventoryStd')}</h5>
+                        <p className="text-[11px] text-[#625D6B]">{t('tiers.inventoryStdDesc')}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-3 rounded-xl bg-purple-50/60 border border-purple-100 text-[11px] text-[#6D57A5] flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 shrink-0" />
-                    <span>Includes standard role security & authenticated Admin portal</span>
+                    <span>{t('tiers.securityNote')}</span>
                   </div>
                 </div>
               </div>
@@ -268,7 +293,7 @@ export const ErpTiersSection: React.FC = () => {
                     <Badge variant="success" size="md">
                       {t('tiers.proTag')}
                     </Badge>
-                    <span className="text-xs font-mono text-[#17B681]">Configured Solution</span>
+                    <span className="text-xs font-mono text-[#17B681]">{t('tiers.configuredSolution')}</span>
                   </div>
 
                   <div className="space-y-2">
@@ -305,12 +330,12 @@ export const ErpTiersSection: React.FC = () => {
                       variant="primary"
                       size="md"
                       onClick={() => handleSelectTier('pro')}
-                      icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}
+                      icon={<ArrowRight className="w-4 h-4 rtl:rotate-180" />}
                     >
                       {t('tiers.proCta')}
                     </Button>
                     <span className="text-xs text-[#625D6B] font-mono">
-                      Requirement mapping • Bespoke workflow staging
+                      {t('tiers.proOnboarding')}
                     </span>
                   </div>
                 </div>
@@ -319,11 +344,11 @@ export const ErpTiersSection: React.FC = () => {
                 <div className="lg:col-span-5 bg-[#FAF8FC] border border-[#E9E4F1] rounded-2xl p-6 sm:p-8 space-y-4 shadow-inner">
                   <div className="flex items-center justify-between pb-3 border-b border-[#E9E4F1]">
                     <span className="text-[10px] font-mono uppercase tracking-wider text-[#17B681] font-bold">
-                      Custom Adaptation Workflow
+                      {t('tiers.customAdaptWorkflow')}
                     </span>
                     <span className="inline-flex items-center gap-1 text-[10px] font-mono text-[#6D57A5]">
                       <Sparkles className="w-3 h-3 text-[#17B681]" />
-                      Bespoke Staging
+                      {t('tiers.bespokeStaging')}
                     </span>
                   </div>
 
@@ -333,8 +358,8 @@ export const ErpTiersSection: React.FC = () => {
                         <Sliders className="w-4 h-4" />
                       </div>
                       <div>
-                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">Custom Operational Logic</h5>
-                        <p className="text-[11px] text-[#625D6B]">Specialized counter checkout & kitchen dispatch</p>
+                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">{t('tiers.customOps')}</h5>
+                        <p className="text-[11px] text-[#625D6B]">{t('tiers.customOpsDesc')}</p>
                       </div>
                     </div>
 
@@ -343,8 +368,8 @@ export const ErpTiersSection: React.FC = () => {
                         <FileText className="w-4 h-4" />
                       </div>
                       <div>
-                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">Branded Document Templates</h5>
-                        <p className="text-[11px] text-[#625D6B]">Bespoke thermal receipts & corporate invoices</p>
+                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">{t('tiers.brandedDocs')}</h5>
+                        <p className="text-[11px] text-[#625D6B]">{t('tiers.brandedDocsDesc')}</p>
                       </div>
                     </div>
 
@@ -353,15 +378,15 @@ export const ErpTiersSection: React.FC = () => {
                         <Boxes className="w-4 h-4" />
                       </div>
                       <div>
-                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">Multi-Branch Stock Routing</h5>
-                        <p className="text-[11px] text-[#625D6B]">Custom warehouse transfer rules & alerts</p>
+                        <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">{t('tiers.multiBranchStock')}</h5>
+                        <p className="text-[11px] text-[#625D6B]">{t('tiers.multiBranchStockDesc')}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-100 text-[11px] text-[#129267] flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 shrink-0" />
-                    <span>Includes technical requirement analysis and direct engineer staging</span>
+                    <span>{t('tiers.proSecurityNote')}</span>
                   </div>
                 </div>
               </div>
@@ -379,7 +404,7 @@ export const ErpTiersSection: React.FC = () => {
                     {t('tiers.compareTitle')}
                   </h3>
                   <p className="text-xs text-[#625D6B]">
-                    Clear operational breakdown between our ready standard system and tailored enterprise deployment.
+                    {t('tiers.compareDesc')}
                   </p>
                 </div>
 
@@ -451,6 +476,26 @@ export const ErpTiersSection: React.FC = () => {
               </div>
             </Card>
           )}
+        </div>
+
+        {/* Narrative Continuity Handoff: From Scale Choice to the Six Operational Pillars */}
+        <div className="pt-6 border-t border-[#E9E4F1]/80 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-[#E9E4F1] shadow-2xs">
+          <div className="space-y-0.5 text-center sm:text-start">
+            <span className="text-[10px] font-mono text-[#6D57A5] uppercase tracking-wider font-bold block">
+              {t('tiers.scaleChosen')}
+            </span>
+            <p className="text-xs text-[#625D6B]">
+              {t('tiers.exploreSixAreas')}
+            </p>
+          </div>
+
+          <a
+            href="#core-modules"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs font-semibold text-[#1F1B2D] hover:text-[#6D57A5] hover:border-[#6D57A5]/40 hover:bg-white shadow-2xs transition-all shrink-0"
+          >
+            <span>{t('whatIs.coreModules')}</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#17B681] rtl:rotate-180" />
+          </a>
         </div>
       </Container>
     </section>

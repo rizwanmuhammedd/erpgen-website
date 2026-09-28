@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface SEOProps {
   title?: string;
@@ -8,15 +9,18 @@ interface SEOProps {
 }
 
 export const SEO: React.FC<SEOProps> = ({
-  title = 'ERPGen | Smarter Business. Simpler ERP.',
-  description = 'ERPGen is the flexible business management platform. Choose standalone Invoice, high-speed POS, or configure a combined solution around your exact business requirements.',
+  title,
+  description,
   image = '/erpgen-logo.png',
 }) => {
+  const { t } = useLanguage();
   const location = useLocation();
+  const effectiveTitle = title || t('seo.defaultTitle');
+  const effectiveDescription = description || t('seo.defaultDesc');
 
   useEffect(() => {
     // 1. Update Document Title
-    document.title = title;
+    document.title = effectiveTitle;
 
     // 2. Helper function to set/update meta tag
     const setMetaTag = (nameAttr: string, attrValue: string, content: string) => {
@@ -30,13 +34,13 @@ export const SEO: React.FC<SEOProps> = ({
     };
 
     // 3. Update Standard & OpenGraph & Twitter Meta Tags
-    setMetaTag('name', 'description', description);
-    setMetaTag('property', 'og:title', title);
-    setMetaTag('property', 'og:description', description);
+    setMetaTag('name', 'description', effectiveDescription);
+    setMetaTag('property', 'og:title', effectiveTitle);
+    setMetaTag('property', 'og:description', effectiveDescription);
     setMetaTag('property', 'og:image', image);
     setMetaTag('property', 'og:url', window.location.href);
-    setMetaTag('name', 'twitter:title', title);
-    setMetaTag('name', 'twitter:description', description);
+    setMetaTag('name', 'twitter:title', effectiveTitle);
+    setMetaTag('name', 'twitter:description', effectiveDescription);
     setMetaTag('name', 'twitter:image', image);
 
     // 4. Update Canonical Link
@@ -47,7 +51,7 @@ export const SEO: React.FC<SEOProps> = ({
       document.head.appendChild(canonical);
     }
     canonical.setAttribute('href', window.location.href);
-  }, [title, description, image, location.pathname]);
+  }, [effectiveTitle, effectiveDescription, image, location.pathname]);
 
   return null;
 };

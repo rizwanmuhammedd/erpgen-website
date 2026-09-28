@@ -9,6 +9,7 @@ import {
   Coins,
 } from 'lucide-react';
 import { Badge } from '../ui/Badge';
+import { useLanguage } from '../../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 interface PosDashboardPreviewProps {
@@ -23,6 +24,7 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
   const layerBaseRef = useRef<HTMLDivElement>(null);
   const layerMidRef = useRef<HTMLDivElement>(null);
   const layerTopRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
@@ -127,7 +129,7 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                 <span className="w-2.5 h-2.5 rounded-full bg-[#17B681]/40 inline-block" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/20 inline-block" />
               </div>
-              <span className="text-[#625D6B] font-mono text-[11px] ml-2">
+              <span className="text-[#625D6B] font-mono text-[11px] ms-2">
                 erpgen.pos / {selectedFeatureId}
               </span>
             </div>
@@ -135,7 +137,7 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
               <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold">
-                REGISTER ONLINE
+                {t('posFeatures.registerOnline')}
               </Badge>
             </div>
           </div>
@@ -145,19 +147,19 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E9E4F1]">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
-                  Touch Catalog
+                  {t('posFeatures.touchCatalog')}
                 </span>
                 <h4 className="text-lg sm:text-xl font-extrabold text-[#1F1B2D] font-heading mt-0.5">
-                  Counter Speed & Item Modifiers
+                  {t('posFeatures.counterSpeed')}
                 </h4>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#FAF8FC] border border-[#E9E4F1] text-[#625D6B]">
-                  Catalog Ready
+                  {t('posFeatures.catalogReady')}
                 </span>
                 <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#E4F8F0] border border-[#17B681]/30 text-[#129267]">
-                  Instant Add
+                  {t('posFeatures.instantAdd')}
                 </span>
               </div>
             </div>
@@ -169,9 +171,9 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                   <ShoppingBag className="w-4 h-4" />
                 </div>
                 <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
-                  Beverage Selection
+                  {t('posFeatures.bevSelect')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">Custom Modifiers</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.customMod')}</span>
               </div>
 
               <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
@@ -179,9 +181,9 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
-                  Bakery & Dining
+                  {t('posFeatures.bakeryDining')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">Kitchen Routing</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.kitchenRouting')}</span>
               </div>
 
               <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
@@ -189,9 +191,9 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                   <Layers className="w-4 h-4" />
                 </div>
                 <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
-                  Packaged Retail
+                  {t('posFeatures.packagedRetail')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">Barcode Scanned</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.barcodeScanned')}</span>
               </div>
 
               <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
@@ -199,9 +201,9 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                   <CreditCard className="w-4 h-4" />
                 </div>
                 <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
-                  Express Service
+                  {t('posFeatures.expressService')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">Direct Checkout</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.directCheckout')}</span>
               </div>
             </div>
 
@@ -209,7 +211,7 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
             <div className="flex items-center justify-between text-xs text-[#625D6B] pt-2">
               <span className="flex items-center gap-1.5 text-[#129267] font-medium">
                 <CheckCircle2 className="w-4 h-4 text-[#17B681]" />
-                <span>Synchronized with Central Operational Ledger</span>
+                <span>{t('posFeatures.syncLedger')}</span>
               </span>
               <span className="font-mono text-[10px] text-[#6D57A5] font-semibold">ERPGen POS</span>
             </div>
@@ -219,50 +221,50 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
         {/* LAYER 2 (MIDDLE): Floating Active Order & Settlement Card (Unstacks to bottom-right) */}
         <div
           ref={layerMidRef}
-          className="mt-4 sm:mt-0 sm:absolute sm:-bottom-8 sm:-right-4 w-full sm:w-80 rounded-2xl bg-white border border-[#6D57A5]/30 shadow-xl p-5 space-y-3.5 will-change-transform z-20"
+          className="mt-4 sm:mt-0 sm:absolute sm:-bottom-8 sm:-end-4 w-full sm:w-80 rounded-2xl bg-white border border-[#6D57A5]/30 shadow-xl p-5 space-y-3.5 will-change-transform z-20"
         >
           <div className="flex items-center justify-between pb-2.5 border-b border-[#E9E4F1]">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
               <span className="text-xs font-bold text-[#1F1B2D] font-heading">
-                Active Order Session
+                {t('posFeatures.activeSession')}
               </span>
             </div>
-            <span className="text-[10px] font-mono text-[#6D57A5] font-semibold">#ORDER-READY</span>
+            <span className="text-[10px] font-mono text-[#6D57A5] font-semibold">{t('posFeatures.orderReady')}</span>
           </div>
 
           <div className="space-y-2 text-xs">
             <div className="flex items-center justify-between text-[#1F1B2D]">
-              <span className="font-medium">Selected Items</span>
+              <span className="font-medium">{t('posFeatures.selectedItems')}</span>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5]">
-                3 Items
+                {t('posFeatures.itemsCount')}
               </span>
             </div>
             <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
-              <span>Tax & VAT</span>
-              <span className="text-[#17B681] font-semibold">Auto-Reconciled</span>
+              <span>{t('simulator.taxVat')}</span>
+              <span className="text-[#17B681] font-semibold">{t('posFeatures.autoReconciled')}</span>
             </div>
           </div>
 
           {/* Quick settlement action buttons */}
           <div className="pt-2 border-t border-[#E9E4F1] space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-xs font-bold text-[#1F1B2D]">Settlement:</span>
-              <span className="text-xs font-mono font-bold text-[#17B681]">Instant Clearing</span>
+              <span className="text-xs font-bold text-[#1F1B2D]">{t('posFeatures.settlement')}</span>
+              <span className="text-xs font-mono font-bold text-[#17B681]">{t('posFeatures.instantClearing')}</span>
             </div>
 
             <div className="grid grid-cols-3 gap-1.5 text-[11px]">
               <div className="p-1.5 rounded-lg bg-[#FAF8FC] border border-[#6D57A5]/30 text-[#6D57A5] font-semibold text-center flex items-center justify-center gap-1">
                 <CreditCard className="w-3 h-3" />
-                <span>Card</span>
+                <span>{t('simulator.card')}</span>
               </div>
               <div className="p-1.5 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
                 <Coins className="w-3 h-3" />
-                <span>Cash</span>
+                <span>{t('simulator.cash')}</span>
               </div>
               <div className="p-1.5 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
                 <Layers className="w-3 h-3" />
-                <span>Split</span>
+                <span>{t('simulator.split')}</span>
               </div>
             </div>
           </div>
@@ -271,17 +273,17 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
         {/* LAYER 3 (TOP): Floating Hardware & Sync Assurance (Unstacks to top-left) */}
         <div
           ref={layerTopRef}
-          className="mt-4 sm:mt-0 sm:absolute sm:-top-5 sm:-left-4 rounded-xl bg-white border border-[#17B681]/40 shadow-lg px-4 py-2.5 flex items-center gap-3 will-change-transform z-30"
+          className="mt-4 sm:mt-0 sm:absolute sm:-top-5 sm:-start-4 rounded-xl bg-white border border-[#17B681]/40 shadow-lg px-4 py-2.5 flex items-center gap-3 will-change-transform z-30"
         >
           <div className="w-8 h-8 rounded-lg bg-[#E4F8F0] text-[#129267] flex items-center justify-center shrink-0">
             <Printer className="w-4 h-4 text-[#17B681]" />
           </div>
           <div>
             <span className="text-xs font-bold text-[#1F1B2D] block leading-tight">
-              Thermal Print Ready
+              {t('posFeatures.thermalPrintReady')}
             </span>
             <span className="text-[10px] text-[#129267] font-mono font-medium block">
-              Live Stock Updated
+              {t('posFeatures.liveStockUpdated')}
             </span>
           </div>
         </div>

@@ -7,9 +7,11 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { getWhatsAppUrl } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../lib/gsap';
 
 export const ProductsPage: React.FC = () => {
+  const { t, isRtl } = useLanguage();
   const cardsGridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,15 +54,15 @@ export const ProductsPage: React.FC = () => {
   return (
     <div className="min-h-screen">
       <PageHero
-        eyebrow="MODULAR ERP ARCHITECTURE"
-        title="ERPGen Product Suite —"
-        titleGradient="Choose what you actually need."
-        description="ERPGen brings essential business tools into one flexible platform. Adopt standalone Invoice, high-speed POS, or configure a combined solution around your exact business requirements."
+        eyebrow={t('productsPage.eyebrow')}
+        title={t('productsPage.title')}
+        titleGradient={t('productsPage.titleGradient')}
+        description={t('productsPage.description')}
         breadcrumbs={[
-          { label: 'Home', path: '/' },
-          { label: 'Products Overview', path: '/products' },
+          { label: t('nav.home'), path: '/' },
+          { label: t('nav.products'), path: '/products' },
         ]}
-        badgeText="Invoice & POS Core Modules"
+        badgeText={t('productsPage.badge')}
       />
 
       <section className="py-16 sm:py-20 border-b border-[#E9E4F1]">
@@ -73,8 +75,8 @@ export const ProductsPage: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="brand" size="sm">Module 01</Badge>
-                    <span className="text-xs text-[#17B681] font-semibold">Standalone or Combined</span>
+                    <Badge variant="brand" size="sm">{t('productsPage.module1Tag')}</Badge>
+                    <span className="text-xs text-[#17B681] font-semibold">{t('productsPage.module1Subtitle')}</span>
                   </div>
                   <h2 className="text-2xl font-bold text-[#1F1B2D] font-heading mt-1 group-hover:text-[#6D57A5] transition-colors">
                     ERPGen Invoice
@@ -87,22 +89,22 @@ export const ProductsPage: React.FC = () => {
                 <div className="space-y-2 pt-2 border-t border-[#E9E4F1] text-xs text-[#625D6B]">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                    <span>PDF Customization & Company Branding</span>
+                    <span>{t('productsPage.module1Feat1')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                    <span>One-click Instant Billing & Receipts</span>
+                    <span>{t('productsPage.module1Feat2')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                    <span>Sales History & Payment Tracking</span>
+                    <span>{t('productsPage.module1Feat3')}</span>
                   </div>
                 </div>
               </div>
 
               <Link to="/products/invoice">
-                <Button variant="primary" fullWidth icon={<ArrowRight className="w-4 h-4" />}>
-                  Explore ERPGen Invoice Page
+                <Button variant="primary" fullWidth icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+                  {t('productsPage.module1Cta')}
                 </Button>
               </Link>
             </Card>
@@ -114,8 +116,8 @@ export const ProductsPage: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="success" size="sm">Module 02</Badge>
-                    <span className="text-xs text-[#6D57A5] font-semibold">Multi-Industry Workflows</span>
+                    <Badge variant="success" size="sm">{t('productsPage.module2Tag')}</Badge>
+                    <span className="text-xs text-[#6D57A5] font-semibold">{t('productsPage.module2Subtitle')}</span>
                   </div>
                   <h2 className="text-2xl font-bold text-[#1F1B2D] font-heading mt-1 group-hover:text-[#17B681] transition-colors">
                     ERPGen POS
@@ -128,22 +130,22 @@ export const ProductsPage: React.FC = () => {
                 <div className="space-y-2 pt-2 border-t border-[#E9E4F1] text-xs text-[#625D6B]">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                    <span>Restaurant, Barbershop, Supermarket & Laundry Workflows</span>
+                    <span>{t('productsPage.module2Feat1')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                    <span>7 Operational Features (Returns, Stock, Damaged, Reports)</span>
+                    <span>{t('productsPage.module2Feat2')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                    <span>Thermal Printer & Scanner Integration</span>
+                    <span>{t('productsPage.module2Feat3')}</span>
                   </div>
                 </div>
               </div>
 
               <Link to="/products/pos">
-                <Button variant="primary" fullWidth icon={<ArrowRight className="w-4 h-4" />}>
-                  Explore ERPGen POS Page
+                <Button variant="primary" fullWidth icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+                  {t('productsPage.module2Cta')}
                 </Button>
               </Link>
             </Card>
@@ -153,26 +155,26 @@ export const ProductsPage: React.FC = () => {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-2 max-w-2xl">
                 <div className="flex items-center gap-2">
-                  <Badge variant="brand" size="sm">Tailored Subscriptions</Badge>
+                  <Badge variant="brand" size="sm">{t('productsPage.tailoredTag')}</Badge>
                   <Sliders className="w-4 h-4 text-[#17B681]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#1F1B2D] font-heading">
-                  Need a Customized ERP Combination?
+                  {t('productsPage.customTitle')}
                 </h3>
                 <p className="text-xs text-[#625D6B] leading-relaxed">
-                  ERPGen can be configured around your specific operational requirements. Combine Invoice + POS or request a custom setup.
+                  {t('productsPage.customDesc')}
                 </p>
               </div>
 
               <div className="shrink-0 flex flex-wrap gap-3 w-full md:w-auto">
                 <a href={getWhatsAppUrl("Hello ERPGen team, I am looking for a custom ERP configuration.")} target="_blank" rel="noopener noreferrer">
-                  <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-                    Discuss on WhatsApp
+                  <Button variant="primary" size="md" icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+                    {t('productsPage.discussWhatsApp')}
                   </Button>
                 </a>
                 <Link to="/contact">
                   <Button variant="secondary" size="md" icon={<Layers className="w-4 h-4" />}>
-                    Custom Request
+                    {t('productsPage.customRequest')}
                   </Button>
                 </Link>
               </div>

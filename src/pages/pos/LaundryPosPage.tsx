@@ -8,42 +8,47 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { BusinessTypeShowcase } from '../../components/business-types/BusinessTypeShowcase';
 import { getWhatsAppUrl } from '../../data/siteData';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const LaundryPosPage: React.FC = () => {
+  const { t, isRtl } = useLanguage();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const capabilities = [
-    'Garment Tagging & Itemization',
-    'Drop-off & Pickup Workflow',
-    'Service Status Tracking',
-    'Customer Account Balances',
+    t('posPages.laundryCap1'),
+    t('posPages.laundryCap2'),
+    t('posPages.laundryCap3'),
+    t('posPages.laundryCap4'),
   ];
+
+  const industryName = t('posIndustries.laundry');
 
   return (
     <div className="min-h-screen">
       <PageHero
-        eyebrow="POS INDUSTRY WORKFLOW"
-        title="Laundry POS —"
-        titleGradient="Order Tracking & Pickups"
-        description="Tag clothing items, track garment status from drop-off to wash and press, and streamline customer pickups."
+        eyebrow={t('posPages.industryWorkflow')}
+        title={`${industryName} POS —`}
+        titleGradient={t('businessShowcase.laundryTagline')}
+        description={t('businessShowcase.laundryDesc')}
         breadcrumbs={[
-          { label: 'Home', path: '/' },
+          { label: t('nav.home'), path: '/' },
           { label: 'POS', path: '/products/pos' },
-          { label: 'Laundry POS', path: '/products/pos/laundry' },
+          { label: `${industryName} POS`, path: '/products/pos/laundry' },
         ]}
-        badgeText="Laundry Ready"
+        badgeText={t('posPages.laundryReady')}
       >
         <div className="pt-4 flex flex-wrap gap-4">
           <a href={getWhatsAppUrl("Hello ERPGen team, I am interested in the Laundry POS workflow.")} target="_blank" rel="noopener noreferrer">
-            <Button variant="primary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
-              Configure Laundry POS on WhatsApp
+            <Button variant="primary" size="lg" icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+              {t('posPages.configureOnWhatsApp').replace('{title}', industryName)}
             </Button>
           </a>
           <Link to="/contact">
             <Button variant="secondary" size="lg">
-              Contact Sales
+              {t('posPage.contactSales')}
             </Button>
           </Link>
         </div>
@@ -54,10 +59,10 @@ export const LaundryPosPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                Laundry Capabilities
+                {t('posPages.laundryCaps')}
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F1B2D] font-heading mt-1">
-                Built Specifically for Laundry Operations
+                {t('posPages.laundryCapsTitle')}
               </h2>
             </div>
 
@@ -76,9 +81,9 @@ export const LaundryPosPage: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                Interactive Laundry POS Preview
+                {t('posPages.previewTitle').replace('{title}', industryName)}
               </span>
-              <Badge variant="brand" size="sm">Live Workflow</Badge>
+              <Badge variant="brand" size="sm">{t('posPages.liveWorkflow')}</Badge>
             </div>
             <BusinessTypeShowcase businessId="laundry" />
           </div>

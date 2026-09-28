@@ -136,7 +136,7 @@ export const DesktopMegaMenu: React.FC = () => {
                       <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">
                         {t('nav.erpLite')}
                       </h5>
-                      <p className="text-[10px] text-[#625D6B]">Standard ready offering</p>
+                      <p className="text-[10px] text-[#625D6B]">{t('nav.erpLiteDesc')}</p>
                     </div>
                   </a>
 
@@ -152,7 +152,7 @@ export const DesktopMegaMenu: React.FC = () => {
                       <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">
                         {t('nav.erpPro')}
                       </h5>
-                      <p className="text-[10px] text-[#625D6B]">Custom tailored ERP</p>
+                      <p className="text-[10px] text-[#625D6B]">{t('nav.erpProDesc')}</p>
                     </div>
                   </a>
 
@@ -168,7 +168,7 @@ export const DesktopMegaMenu: React.FC = () => {
                       <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#6D57A5] transition-colors">
                         {t('nav.invoice')}
                       </h5>
-                      <p className="text-[10px] text-[#625D6B]">Billing & PDF Invoices</p>
+                      <p className="text-[10px] text-[#625D6B]">{t('nav.invoiceDesc')}</p>
                     </div>
                   </Link>
 
@@ -184,7 +184,7 @@ export const DesktopMegaMenu: React.FC = () => {
                       <h5 className="text-xs font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors">
                         {t('nav.pos')}
                       </h5>
-                      <p className="text-[10px] text-[#625D6B]">High-Speed Counter POS</p>
+                      <p className="text-[10px] text-[#625D6B]">{t('nav.posDesc')}</p>
                     </div>
                   </Link>
                 </div>

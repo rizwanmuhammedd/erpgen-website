@@ -16,6 +16,7 @@ import {
 import { Container } from '../ui/Container';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Badge } from '../ui/Badge';
+import { useLanguage } from '../../context/LanguageContext';
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/gsap';
 
 interface OperationalStep {
@@ -37,6 +38,7 @@ export const ConnectedSystemSection: React.FC = () => {
   const narrativeRef = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
+  const { t } = useLanguage();
 
   // Helper to dynamically measure the real fixed header height accurately
   const getHeaderHeight = (): number => {
@@ -60,54 +62,50 @@ export const ConnectedSystemSection: React.FC = () => {
     {
       step: 1,
       id: 'commerce',
-      title: 'Sales & Purchase Inflow',
-      subtitle: 'Step 01 · Frontline Commerce',
-      description:
-        'Customer orders, counter sales, and procurement purchase orders enter the platform with automated record generation and instant validation.',
+      title: t('connected.step1Title'),
+      subtitle: t('connected.step1Subtitle'),
+      description: t('connected.step1Desc'),
       activeNodes: ['sales', 'purchase'],
-      statusNode: 'Frontline Commerce',
-      statusLabel: 'Orders & Purchase Sync',
-      payload: 'Real-time sales capture and vendor order generation',
-      badge: 'Step 1 Active',
+      statusNode: t('connected.step1Node'),
+      statusLabel: t('connected.step1Label'),
+      payload: t('connected.step1Payload'),
+      badge: t('connected.step1Badge'),
     },
     {
       step: 2,
       id: 'operations',
-      title: 'Inventory & Projects',
-      subtitle: 'Step 02 · Operational Coordination',
-      description:
-        'Stock levels adjust across all locations as sales occur, while project deliverables and operational tasks track milestones concurrently.',
+      title: t('connected.step2Title'),
+      subtitle: t('connected.step2Subtitle'),
+      description: t('connected.step2Desc'),
       activeNodes: ['sales', 'purchase', 'inventory', 'projects'],
-      statusNode: 'Operational Core',
-      statusLabel: 'Stock & Milestone Continuity',
-      payload: 'Stock deductions balance with project resource demands',
-      badge: 'Step 2 Active',
+      statusNode: t('connected.step2Node'),
+      statusLabel: t('connected.step2Label'),
+      payload: t('connected.step2Payload'),
+      badge: t('connected.step2Badge'),
     },
     {
       step: 3,
       id: 'admin',
-      title: 'HR & Financial Ledger',
-      subtitle: 'Step 03 · Ledger Synchronization',
-      description:
-        'Staff shifts and role permissions align with operational volume, while every checkout and purchase posts directly to financial accounts.',
+      title: t('connected.step3Title'),
+      subtitle: t('connected.step3Subtitle'),
+      description: t('connected.step3Desc'),
       activeNodes: ['sales', 'purchase', 'inventory', 'projects', 'hr', 'finance'],
-      statusNode: 'Financial & Workforce',
-      statusLabel: 'Automated Accounting',
-      payload: 'Ledger entries, VAT schedules, and workforce rosters',
-      badge: 'Step 3 Active',
+      statusNode: t('connected.step3Node'),
+      statusLabel: t('connected.step3Label'),
+      payload: t('connected.step3Payload'),
+      badge: t('connected.step3Badge'),
     },
     {
       step: 4,
       id: 'connected',
-      title: 'Connected Business Operations',
-      subtitle: 'Step 04 · One Cohesive Engine',
-      description:
-        'All six core business streams converge inside ERPGen, giving your enterprise a single synchronized operational pulse with zero manual reconciliations.',
+      title: t('connected.step4Title'),
+      subtitle: t('connected.step4Subtitle'),
+      description: t('connected.step4Desc'),
       activeNodes: ['sales', 'purchase', 'inventory', 'projects', 'hr', 'finance', 'core'],
-      statusNode: 'ERPGen Unified Core',
-      statusLabel: 'Fully Synchronized',
-      payload: 'Complete enterprise visibility across every active channel',
-      badge: 'Connected Suite',
+      statusNode: t('connected.step4Node'),
+      statusLabel: t('connected.step4Label'),
+      payload: t('connected.step4Payload'),
+      badge: t('connected.step4Badge'),
     },
   ];
 
@@ -205,12 +203,12 @@ export const ConnectedSystemSection: React.FC = () => {
   };
 
   const streamNodes = [
-    { id: 'sales', name: 'Sales', icon: ShoppingBag, color: '#6D57A5' },
-    { id: 'purchase', name: 'Purchase', icon: Truck, color: '#6D57A5' },
-    { id: 'inventory', name: 'Inventory', icon: Package, color: '#17B681' },
-    { id: 'projects', name: 'Projects', icon: FolderKanban, color: '#17B681' },
-    { id: 'hr', name: 'HR', icon: Users, color: '#6D57A5' },
-    { id: 'finance', name: 'Finance', icon: Coins, color: '#17B681' },
+    { id: 'sales', name: t('modules.sales'), icon: ShoppingBag, color: '#6D57A5' },
+    { id: 'purchase', name: t('modules.purchase'), icon: Truck, color: '#6D57A5' },
+    { id: 'inventory', name: t('modules.inventory'), icon: Package, color: '#17B681' },
+    { id: 'projects', name: t('modules.projects'), icon: FolderKanban, color: '#17B681' },
+    { id: 'hr', name: t('modules.hr'), icon: Users, color: '#6D57A5' },
+    { id: 'finance', name: t('modules.finance'), icon: Coins, color: '#17B681' },
   ];
 
   return (
@@ -231,10 +229,10 @@ export const ConnectedSystemSection: React.FC = () => {
         <Container size="xl" className="h-full flex flex-col justify-between max-w-7xl mx-auto w-full">
           {/* Section Header */}
           <SectionHeading
-            eyebrow="THE CONNECTED ERP STORY"
-            title="Six essential business operations."
-            titleGradient="One synchronized core."
-            description="See how ERPGen unites Sales, Purchase, Inventory, HR, Projects, and Finance into a single connected operational flow."
+            eyebrow={t('connected.eyebrow')}
+            title={t('connected.title')}
+            titleGradient={t('connected.titleGradient')}
+            description={t('connected.description')}
             className="mb-0 space-y-1 sm:space-y-1.5 max-w-3xl shrink-0 [&>p]:hidden sm:[&>p]:block [&>h2]:text-base sm:[&>h2]:text-2xl lg:[&>h2]:text-3xl"
           />
 
@@ -306,7 +304,7 @@ export const ConnectedSystemSection: React.FC = () => {
                 </div>
                 <div className="p-1.5 sm:p-2 rounded-xl bg-white border border-[#E9E4F1] text-[10px] sm:text-xs text-[#1F1B2D] flex items-center justify-between">
                   <span className="truncate">{currentStep.payload}</span>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0 ml-1.5" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0 ms-1.5" />
                 </div>
               </div>
 
@@ -314,11 +312,11 @@ export const ConnectedSystemSection: React.FC = () => {
               <div className="pt-1.5 sm:pt-2 border-t border-[#E9E4F1] flex items-center justify-between text-[10px] sm:text-xs text-[#625D6B]">
                 <div className="flex items-center gap-1.5">
                   <RefreshCw className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#17B681] animate-spin" style={{ animationDuration: '8s' }} />
-                  <span className="hidden sm:inline">Scroll to explore connected continuity</span>
-                  <span className="sm:hidden">Scroll to progress</span>
+                  <span className="hidden sm:inline">{t('connected.scrollExplore')}</span>
+                  <span className="sm:hidden">{t('connected.scrollProgress')}</span>
                 </div>
                 <span className="font-mono text-[10px] sm:text-[11px] font-bold text-[#6D57A5]">
-                  Stage {currentStep.step} of 4
+                  {t('connected.stageOf').replace('{step}', String(currentStep.step))}
                 </span>
               </div>
             </div>
@@ -333,22 +331,22 @@ export const ConnectedSystemSection: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-[#1F1B2D] font-heading leading-tight">
-                      The Connected ERP Engine
+                      {t('connected.engineTitle')}
                     </h4>
-                    <p className="text-[9px] sm:text-[10px] text-[#625D6B]">Core Operations Flowing into ERPGen</p>
+                    <p className="text-[9px] sm:text-[10px] text-[#625D6B]">{t('connected.engineSubtitle')}</p>
                   </div>
                 </div>
 
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-semibold bg-[#E4F8F0] text-[#129267] border border-[#17B681]/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#17B681] animate-pulse" />
-                  Live Sync
+                  {t('connected.liveSync')}
                 </span>
               </div>
 
               {/* 1. TOP: The 6 Operational Streams Grid */}
               <div className="space-y-0.5 sm:space-y-1">
                 <span className="text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-[#625D6B] font-bold block text-center">
-                  SIX CORE BUSINESS OPERATIONS
+                  {t('connected.sixStreams')}
                 </span>
                 <div className="grid grid-cols-6 gap-1 sm:gap-1.5">
                   {streamNodes.map((node) => {
@@ -475,10 +473,10 @@ export const ConnectedSystemSection: React.FC = () => {
                     <Layers className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#6D57A5]" />
                   </div>
                   <h5 className="text-[11px] sm:text-xs font-bold text-[#1F1B2D] font-heading mt-0.5">
-                    ERPGen Platform
+                    {t('connected.platform')}
                   </h5>
                   <p className="text-[8px] sm:text-[9px] text-[#625D6B]">
-                    Central Unified Operational Engine
+                    {t('connected.centralHub')}
                   </p>
                 </div>
               </div>
@@ -498,16 +496,16 @@ export const ConnectedSystemSection: React.FC = () => {
                     </div>
                     <div>
                       <span className="text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-[#129267] font-bold block">
-                        OUTCOME
+                        {t('connected.outcome')}
                       </span>
                       <h5 className="text-[11px] sm:text-xs font-bold text-[#1F1B2D]">
-                        Connected Business Operations
+                        {t('connected.outcomeTitle')}
                       </h5>
                     </div>
                   </div>
 
                   <span className="text-[9px] sm:text-[10px] font-mono text-[#6D57A5] font-semibold shrink-0 hidden sm:inline">
-                    Zero Redundant Work
+                    {t('connected.zeroRedundant')}
                   </span>
                 </div>
               </div>
@@ -516,9 +514,9 @@ export const ConnectedSystemSection: React.FC = () => {
               <div className="pt-1 sm:pt-1.5 border-t border-[#E9E4F1] hidden lg:flex items-center justify-between text-[10px] text-[#625D6B]">
                 <div className="flex items-center gap-1.5 text-[#129267] font-semibold truncate">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                  <span className="truncate">Real-time continuity between commerce, supply, and financial reporting</span>
+                  <span className="truncate">{t('connected.canvasFooter')}</span>
                 </div>
-                <span className="font-mono text-[9px] sm:text-[10px] text-[#6D57A5] font-semibold shrink-0 ml-2">
+                <span className="font-mono text-[9px] sm:text-[10px] text-[#6D57A5] font-semibold shrink-0 ms-2">
                   ERPGen
                 </span>
               </div>

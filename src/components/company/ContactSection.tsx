@@ -134,21 +134,21 @@ export const ContactSection: React.FC = () => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
+      // Controlled conversion entrance: grounded settling
       if (cardRef.current) {
         gsap.fromTo(
           cardRef.current.children,
           {
-            transformPerspective: 1200,
-            rotateX: 10,
-            y: 30,
-            opacity: 0,
+            y: 22,
+            scale: 0.99,
+            opacity: 0.3,
           },
           {
-            rotateX: 0,
             y: 0,
+            scale: 1,
             opacity: 1,
-            stagger: 0.12,
-            duration: 0.75,
+            stagger: 0.1,
+            duration: 0.65,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: cardRef.current,
@@ -199,13 +199,13 @@ export const ContactSection: React.FC = () => {
             >
               <div className="space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold block">
-                  Technical Consultation
+                  {t('contact.techConsultation')}
                 </span>
                 <h3 className="text-xl font-bold text-[#1F1B2D] font-heading">
-                  Direct Engineering Engagement
+                  {t('contact.directEngagement')}
                 </h3>
                 <p className="text-xs text-[#625D6B] leading-relaxed">
-                  We engage with technical clarity from your very first conversation. Discuss standard ERP Lite deployment or tailored ERP Pro adaptations directly.
+                  {t('contact.directEngagementDesc')}
                 </p>
               </div>
 
@@ -224,7 +224,7 @@ export const ContactSection: React.FC = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="text-[10px] font-mono text-[#129267] font-semibold uppercase tracking-wider block">
-                      Fastest Response
+                      {t('contact.fastestResponse')}
                     </span>
                     <span className="text-sm font-bold text-[#1F1B2D] group-hover:text-[#17B681] transition-colors block">
                       {t('contact.whatsAppUs')}
@@ -416,14 +416,14 @@ export const ContactSection: React.FC = () => {
                         disabled={isSubmitting}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#1F1B2D] text-xs focus:bg-white focus-ring-purple cursor-pointer disabled:opacity-60 transition-all"
                       >
-                        <option value="ERP Lite (Standard Product)">ERP Lite (Standard Ready Product)</option>
-                        <option value="ERP Pro (Custom Solution)">ERP Pro (Custom Configured Solution)</option>
-                        <option value="ERPGen Invoice Standalone">ERPGen Invoice Standalone</option>
-                        <option value="ERPGen POS Standalone">ERPGen POS Standalone</option>
-                        <option value="Restaurant POS Workflow">Restaurant POS Workflow</option>
-                        <option value="Barbershop POS Workflow">Barbershop POS Workflow</option>
-                        <option value="Supermarket POS Workflow">Supermarket POS Workflow</option>
-                        <option value="Laundry POS Workflow">Laundry POS Workflow</option>
+                        <option value="ERP Lite (Standard Product)">{t('contact.optLite')}</option>
+                        <option value="ERP Pro (Custom Solution)">{t('contact.optPro')}</option>
+                        <option value="ERPGen Invoice Standalone">{t('contact.optInvoice')}</option>
+                        <option value="ERPGen POS Standalone">{t('contact.optPos')}</option>
+                        <option value="Restaurant POS Workflow">{t('contact.optRestaurant')}</option>
+                        <option value="Barbershop POS Workflow">{t('contact.optBarbershop')}</option>
+                        <option value="Supermarket POS Workflow">{t('contact.optSupermarket')}</option>
+                        <option value="Laundry POS Workflow">{t('contact.optLaundry')}</option>
                       </select>
                     </div>
                   </div>

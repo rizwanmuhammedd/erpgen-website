@@ -22,7 +22,7 @@ interface BusinessTypeShowcaseProps {
 export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
   businessId,
 }) => {
-  const { isRtl } = useLanguage();
+  const { isRtl, t } = useLanguage();
   const leftColRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
 
@@ -46,39 +46,35 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
   const businessData = {
     restaurant: {
       icon: Utensils,
-      title: 'Restaurant & Food Service',
-      tagline: 'Connected operations for modern restaurants.',
-      description:
-        'Fast counter ordering, table-side coordination, and instant thermal receipt printing designed for high-turnover dining.',
+      title: t('businessShowcase.restTitle'),
+      tagline: t('businessShowcase.restTagline'),
+      description: t('businessShowcase.restDesc'),
       path: '/products/pos/restaurant',
-      badge: 'Restaurant Mode',
+      badge: t('businessShowcase.restBadge'),
     },
     barbershop: {
       icon: Scissors,
-      title: 'Barbershop & Grooming',
-      tagline: 'Simple business management for service teams.',
-      description:
-        'Effortless client checkout, combined service and retail product billing, and staff tracking tailored for grooming teams.',
+      title: t('businessShowcase.barberTitle'),
+      tagline: t('businessShowcase.barberTagline'),
+      description: t('businessShowcase.barberDesc'),
       path: '/products/pos/barbershop',
-      badge: 'Salon Mode',
+      badge: t('businessShowcase.barberBadge'),
     },
     supermarket: {
       icon: ShoppingCart,
-      title: 'Supermarket & Retail',
-      tagline: 'Fast, connected retail operations.',
-      description:
-        'Rapid barcode checkout, multi-lane register synchronization, and live inventory adjustments built for high-volume stores.',
+      title: t('businessShowcase.superTitle'),
+      tagline: t('businessShowcase.superTagline'),
+      description: t('businessShowcase.superDesc'),
       path: '/products/pos/supermarket',
-      badge: 'Retail Mode',
+      badge: t('businessShowcase.superBadge'),
     },
     laundry: {
       icon: Shirt,
-      title: 'Laundry & Dry Cleaning',
-      tagline: 'Organized workflows for modern laundry businesses.',
-      description:
-        'Clear garment intake, drop-off ticket generation, and scheduled customer pickup management unified in one register.',
+      title: t('businessShowcase.laundryTitle'),
+      tagline: t('businessShowcase.laundryTagline'),
+      description: t('businessShowcase.laundryDesc'),
       path: '/products/pos/laundry',
-      badge: 'Laundry Mode',
+      badge: t('businessShowcase.laundryBadge'),
     },
   };
 
@@ -122,7 +118,7 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
                 icon={<ArrowRight className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isRtl ? 'rotate-180' : ''}`} />}
                 className="shadow-md shadow-[#6D57A5]/20"
               >
-                Explore {data.title}
+                {t('businessShowcase.explore').replace('{title}', data.title)}
               </Button>
             </Link>
           </div>
@@ -144,7 +140,7 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
                 </span>
               </div>
               <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold bg-[#E4F8F0] text-[#129267] border border-[#17B681]/30">
-                {data.badge} Active
+                {data.badge} {isRtl ? 'نشط' : 'Active'}
               </span>
             </div>
 
@@ -153,10 +149,10 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
               <div className="flex items-center justify-between">
                 <div>
                   <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-[#625D6B] block">
-                    Tailored Operational Mode
+                    {t('businessShowcase.tailoredMode')}
                   </span>
                   <span className="text-xs sm:text-sm font-bold text-[#1F1B2D] font-heading mt-0.5 block">
-                    {data.title} Register
+                    {t('businessShowcase.register').replace('{title}', data.title)}
                   </span>
                 </div>
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold">
@@ -167,32 +163,36 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
               {/* Verified High-Level Capabilities Grid */}
               <div className="space-y-1.5 pt-0.5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
-                  {spec?.keyCapabilities.map((cap) => (
-                    <div
-                      key={cap}
-                      className="flex items-center gap-1.5 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs text-[#1F1B2D]"
-                    >
-                      <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#17B681] shrink-0" />
-                      <span className="font-medium text-[10px] sm:text-[11px] leading-tight truncate">{cap}</span>
-                    </div>
-                  ))}
+                  {spec?.keyCapabilities.map((cap, idx) => {
+                    const capKey = 'posPages.' + (businessId === 'restaurant' ? 'restCap' : businessId === 'barbershop' ? 'barberCap' : businessId === 'supermarket' ? 'superCap' : 'laundryCap') + (idx + 1);
+                    const translatedCap = t(capKey as any);
+                    return (
+                      <div
+                        key={cap}
+                        className="flex items-center gap-1.5 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs text-[#1F1B2D]"
+                      >
+                        <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#17B681] shrink-0" />
+                        <span className="font-medium text-[10px] sm:text-[11px] leading-tight truncate">{translatedCap || cap}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
               <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] flex items-center justify-between text-xs">
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#17B681] animate-pulse" />
-                  <span className="font-semibold text-[#1F1B2D] text-[10px] sm:text-xs">Live Data Continuity</span>
+                  <span className="font-semibold text-[#1F1B2D] text-[10px] sm:text-xs">{t('businessShowcase.liveContinuity')}</span>
                 </div>
                 <span className="text-[#6D57A5] font-mono text-[9px] sm:text-[10px] font-medium hidden sm:inline">
-                  Front Counter ↔ Invoicing ↔ Inventory
+                  {t('businessShowcase.syncPath')}
                 </span>
               </div>
 
               <div className="flex items-center justify-between pt-0.5 text-[10px] sm:text-xs text-[#625D6B]">
                 <span className="flex items-center gap-1.5 text-[#17B681]">
                   <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate">Pre-configured out of the box</span>
+                  <span className="truncate">{t('businessShowcase.outOfBox')}</span>
                 </span>
                 <span className="font-mono text-[9px] sm:text-[10px] text-[#6D57A5] shrink-0 ml-1">ERPGen Platform</span>
               </div>

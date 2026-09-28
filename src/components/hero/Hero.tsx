@@ -3,7 +3,7 @@ import { ArrowRight, Sliders, CheckCircle2, Sparkles } from 'lucide-react';
 import { Container } from '../ui/Container';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
-import { HeroProductVisual } from './HeroProductVisual';
+import { HeroVideoPlayer } from './HeroVideoPlayer';
 import { Magnetic } from '../ui/motion/Magnetic';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 import { useLanguage } from '../../context/LanguageContext';
@@ -33,7 +33,6 @@ export const Hero: React.FC = () => {
           visualRef.current,
           highlightsRef.current,
           '.hero-line-inner',
-          '.hero-floating-card',
         ],
         { opacity: 1, y: 0, x: 0, scale: 1, rotateX: 0, rotateY: 0 }
       );
@@ -42,7 +41,7 @@ export const Hero: React.FC = () => {
 
     const ctx = gsap.context(() => {
       // ========================================================
-      // 1. MASTER TIMELINE — CINEMATIC 7-LAYER OPENING SEQUENCE
+      // 1. MASTER TIMELINE — CINEMATIC 6-LAYER OPENING SEQUENCE
       // ========================================================
       const masterTl = gsap.timeline({
         defaults: { ease: 'power3.out' },
@@ -89,32 +88,22 @@ export const Hero: React.FC = () => {
           { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
           '-=0.4'
         )
-        // Layer 6: Product World Unfolds (1.05s)
+        // Layer 6: Video Player Settles into Position (1.05s)
         .fromTo(
           visualRef.current,
           {
             opacity: 0,
-            scale: 0.93,
-            y: 36,
-            transformPerspective: 1200,
-            rotateX: 10,
+            scale: 0.95,
+            y: 28,
           },
           {
             opacity: 1,
             scale: 1,
             y: 0,
-            rotateX: 0,
-            duration: 1.1,
+            duration: 1.0,
             ease: 'power3.out',
           },
           '-=0.75'
-        )
-        // Layer 7: Floating Chips Settle into Depth Plane (1.25s)
-        .fromTo(
-          '.hero-floating-card',
-          { opacity: 0, y: 16, scale: 0.88 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.65, stagger: 0.14, ease: 'back.out(1.5)' },
-          '-=0.55'
         );
 
       // ========================================================
@@ -127,32 +116,12 @@ export const Hero: React.FC = () => {
         scrub: 0.8,
       };
 
-      // Subtle dimensional movement of the product visual
+      // Subtle dimensional depth recession toward ERP Lite / Pro
       gsap.to(visualRef.current, {
-        y: 45,
-        scale: 1.02,
-        transformPerspective: 1200,
-        rotateX: -2,
+        y: 35,
+        scale: 0.98,
+        opacity: 0.85,
         ease: 'power1.out',
-        scrollTrigger: scrollTriggerDefaults,
-      });
-
-      // Lateral and vertical depth drift on floating cards
-      const lateralSign = isRtl ? -1 : 1;
-
-      gsap.to('.hero-floating-card-left', {
-        y: -40,
-        x: -16 * lateralSign,
-        opacity: 0.5,
-        ease: 'power1.inOut',
-        scrollTrigger: scrollTriggerDefaults,
-      });
-
-      gsap.to('.hero-floating-card-right', {
-        y: -55,
-        x: 16 * lateralSign,
-        opacity: 0.5,
-        ease: 'power1.inOut',
         scrollTrigger: scrollTriggerDefaults,
       });
 
@@ -294,9 +263,9 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Layer 6 & 7: Right Column Product World Stage */}
+          {/* Layer 6: Right Column Video Player Stage */}
           <div ref={visualRef} className="lg:col-span-5 z-10 w-full will-change-transform">
-            <HeroProductVisual />
+            <HeroVideoPlayer />
           </div>
         </div>
       </Container>

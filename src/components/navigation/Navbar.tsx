@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight, MessageSquare, Layers } from 'lucide-react';
 import { Container } from '../ui/Container';
@@ -11,17 +11,25 @@ import { getWhatsAppUrl } from '../../data/siteData';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { t, isRtl } = useLanguage();
-
   const navigate = useNavigate();
   const location = useLocation();
+  const prevPathnameRef = useRef(location.pathname);
+  const { t, isRtl } = useLanguage();
 
-  // Handle scroll effect
+  // Handle scroll effect and progress calculation
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 20);
+
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll > 0) {
+        setScrollProgress(Math.min(1, Math.max(0, scrollY / maxScroll)));
+      }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -39,17 +47,29 @@ export const Navbar: React.FC = () => {
 
   // Close mobile drawer on route change
   useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
+    if (prevPathnameRef.current !== location.pathname) {
+      prevPathnameRef.current = location.pathname;
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    }
+  }, [location.pathname, mobileMenuOpen]);
 
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 backdrop-blur-xl border-b border-[#E9E4F1] py-2.5 shadow-sm shadow-[#6D57A5]/5'
-          : 'bg-white/90 backdrop-blur-md py-3.5 border-b border-[#E9E4F1]/60'
+          ? 'bg-white/95 backdrop-blur-xl border-b border-[#E9E4F1] py-2 sm:py-2.5 shadow-[0_4px_25px_rgba(109,87,165,0.06)]'
+          : 'bg-white/80 backdrop-blur-md py-3 sm:py-3.5 border-b border-[#E9E4F1]/60'
       }`}
     >
+      {/* Scroll Depth Hairline Indicator */}
+      <div className="absolute bottom-0 inset-x-0 h-[2px] bg-transparent pointer-events-none overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-[#6D57A5] via-[#8C74CC] to-[#17B681] transition-all duration-150"
+          style={{ width: `${scrollProgress * 100}%` }}
+        />
+      </div>
       <Container size="xl">
         <div className="flex items-center justify-between gap-2 sm:gap-4">
           {/* Animated ERPGen Logo Component */}

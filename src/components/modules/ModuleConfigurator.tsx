@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileText, ShoppingBag, ArrowRightLeft, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ModuleConfiguratorProps {
   invoiceSelected: boolean;
@@ -14,6 +15,7 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
   onToggleInvoice,
   onTogglePos,
 }) => {
+  const { t } = useLanguage();
   const isBoth = invoiceSelected && posSelected;
   const isNone = !invoiceSelected && !posSelected;
 
@@ -27,10 +29,10 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-[#E9E4F1]">
           <div>
             <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-semibold">
-              Interactive System Preview
+              {t('configurator.preview')}
             </span>
             <h4 className="text-xl sm:text-2xl font-bold text-[#1F1B2D] font-heading mt-1">
-              Your Configured ERP Setup
+              {t('configurator.title')}
             </h4>
           </div>
 
@@ -47,7 +49,7 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
               aria-pressed={invoiceSelected}
             >
               <FileText className="w-3.5 h-3.5" />
-              <span>Invoice</span>
+              <span>{t('modulesPillars.invoiceTitle')}</span>
             </button>
 
             <button
@@ -61,7 +63,7 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
               aria-pressed={posSelected}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
-              <span>POS</span>
+              <span>{t('modulesPillars.posTitle')}</span>
             </button>
           </div>
         </div>
@@ -71,8 +73,8 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
           {isNone ? (
             <div className="text-center py-10 px-4 bg-[#FAF8FC] rounded-2xl border border-dashed border-[#E9E4F1] text-[#625D6B] space-y-3">
               <ShieldAlert className="w-8 h-8 text-[#6D57A5] mx-auto" />
-              <p className="text-sm font-medium text-[#1F1B2D]">Select at least one module above to preview your configuration.</p>
-              <p className="text-xs text-[#625D6B]">Click on Invoice or POS to see how your solution is structured.</p>
+              <p className="text-sm font-medium text-[#1F1B2D]">{t('configurator.noneSelected')}</p>
+              <p className="text-xs text-[#625D6B]">{t('configurator.noneDesc')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-11 gap-4 items-center">
@@ -89,8 +91,8 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
-                    <h5 className="text-base font-bold text-[#1F1B2D] font-heading">Invoice System</h5>
-                    <span className="text-[11px] text-[#17B681] font-semibold">Billing & PDF Invoices</span>
+                    <h5 className="text-base font-bold text-[#1F1B2D] font-heading">{t('configurator.invoiceSystem')}</h5>
+                    <span className="text-[11px] text-[#17B681] font-semibold">{t('configurator.invoiceSub')}</span>
                   </div>
                 </div>
               </div>
@@ -107,7 +109,7 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
                   <ArrowRightLeft className="w-4 h-4" />
                 </div>
                 <span className="text-[11px] font-semibold text-[#625D6B] mt-2">
-                  {isBoth ? 'Connected System' : 'Standalone Setup'}
+                  {isBoth ? t('configurator.connected') : t('configurator.standalone')}
                 </span>
               </div>
 
@@ -124,8 +126,8 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
                     <ShoppingBag className="w-5 h-5" />
                   </div>
                   <div>
-                    <h5 className="text-base font-bold text-[#1F1B2D] font-heading">POS Counter</h5>
-                    <span className="text-[11px] text-[#6D57A5] font-semibold">Store & Counter Checkout</span>
+                    <h5 className="text-base font-bold text-[#1F1B2D] font-heading">{t('configurator.posCounter')}</h5>
+                    <span className="text-[11px] text-[#6D57A5] font-semibold">{t('configurator.posSub')}</span>
                   </div>
                 </div>
               </div>
@@ -143,21 +145,21 @@ export const ModuleConfigurator: React.FC<ModuleConfiguratorProps> = ({
               <div>
                 <p className="text-xs font-semibold text-[#1F1B2D]">
                   {isBoth
-                    ? 'Selected Plan: Combined Invoice + POS Suite'
+                    ? t('configurator.bothSelected')
                     : invoiceSelected
-                    ? 'Selected Plan: Standalone Invoice System'
-                    : 'Selected Plan: Standalone POS Counter System'}
+                    ? t('configurator.invoiceOnly')
+                    : t('configurator.posOnly')}
                 </p>
                 <p className="text-[11px] text-[#625D6B]">
                   {isBoth
-                    ? 'Both modules communicate seamlessly in one synchronized workspace.'
-                    : 'Focused deployment tailored exclusively for your current operation.'}
+                    ? t('configurator.bothDesc')
+                    : t('configurator.standaloneDesc')}
                 </p>
               </div>
             </div>
 
             <span className="text-[11px] font-mono font-semibold text-[#6D57A5] shrink-0">
-              {isBoth ? '2 Modules Active' : '1 Module Active'}
+              {isBoth ? t('configurator.twoActive') : t('configurator.oneActive')}
             </span>
           </div>
         )}

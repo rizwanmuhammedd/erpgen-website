@@ -1,25 +1,27 @@
 import React, { useEffect } from 'react';
 import { PageHero } from '../components/layout/PageHero';
 import { ContactSection } from '../components/company/ContactSection';
+import { useLanguage } from '../context/LanguageContext';
 
 export const ContactPage: React.FC = () => {
+  const { t } = useLanguage();
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Contact & Direct Consultation | ERPGen';
   }, []);
 
   return (
     <div className="min-h-screen">
       <PageHero
-        eyebrow="DIRECT CONSULTATION"
-        title="Contact & Consultation —"
-        titleGradient="Let's Build Your Solution"
-        description="Discuss your Invoice, POS, or custom ERPGen requirements directly with our engineering team, or connect on WhatsApp for immediate technical assistance."
+        eyebrow={t('contactPage.eyebrow')}
+        title={t('contactPage.title')}
+        titleGradient={t('contactPage.titleGradient')}
+        description={t('contactPage.description')}
         breadcrumbs={[
-          { label: 'Home', path: '/' },
-          { label: 'Contact', path: '/contact' },
+          { label: t('nav.home'), path: '/' },
+          { label: t('contactPage.breadcrumb'), path: '/contact' },
         ]}
-        badgeText="ERPGen Engineering Support"
+        badgeText={t('contactPage.badge')}
       />
 
       <ContactSection />

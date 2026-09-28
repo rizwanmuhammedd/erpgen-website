@@ -8,42 +8,47 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { BusinessTypeShowcase } from '../../components/business-types/BusinessTypeShowcase';
 import { getWhatsAppUrl } from '../../data/siteData';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const BarbershopPosPage: React.FC = () => {
+  const { t, isRtl } = useLanguage();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const capabilities = [
-    'Appointment Scheduling',
-    'Stylist Queue Tracking',
-    'Walk-in Queue Billing',
-    'Service & Product Sales',
+    t('posPages.barberCap1'),
+    t('posPages.barberCap2'),
+    t('posPages.barberCap3'),
+    t('posPages.barberCap4'),
   ];
+
+  const industryName = t('posIndustries.barbershop');
 
   return (
     <div className="min-h-screen">
       <PageHero
-        eyebrow="POS INDUSTRY WORKFLOW"
-        title="Barbershop POS —"
-        titleGradient="Appointments, Walk-ins & Styling"
-        description="Track staff appointments, manage walk-in queues, bill hair styling services and product sales seamlessly."
+        eyebrow={t('posPages.industryWorkflow')}
+        title={`${industryName} POS —`}
+        titleGradient={t('businessShowcase.barberTagline')}
+        description={t('businessShowcase.barberDesc')}
         breadcrumbs={[
-          { label: 'Home', path: '/' },
+          { label: t('nav.home'), path: '/' },
           { label: 'POS', path: '/products/pos' },
-          { label: 'Barbershop POS', path: '/products/pos/barbershop' },
+          { label: `${industryName} POS`, path: '/products/pos/barbershop' },
         ]}
-        badgeText="Barbershop Ready"
+        badgeText={t('posPages.barbershopReady')}
       >
         <div className="pt-4 flex flex-wrap gap-4">
           <a href={getWhatsAppUrl("Hello ERPGen team, I am interested in the Barbershop POS workflow.")} target="_blank" rel="noopener noreferrer">
-            <Button variant="primary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
-              Configure Barbershop POS on WhatsApp
+            <Button variant="primary" size="lg" icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+              {t('posPages.configureOnWhatsApp').replace('{title}', industryName)}
             </Button>
           </a>
           <Link to="/contact">
             <Button variant="secondary" size="lg">
-              Contact Sales
+              {t('posPage.contactSales')}
             </Button>
           </Link>
         </div>
@@ -54,10 +59,10 @@ export const BarbershopPosPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                Barbershop Capabilities
+                {t('posPages.barbershopCaps')}
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F1B2D] font-heading mt-1">
-                Built Specifically for Barbershop Operations
+                {t('posPages.barbershopCapsTitle')}
               </h2>
             </div>
 
@@ -76,9 +81,9 @@ export const BarbershopPosPage: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                Interactive Barbershop POS Preview
+                {t('posPages.previewTitle').replace('{title}', industryName)}
               </span>
-              <Badge variant="brand" size="sm">Live Workflow</Badge>
+              <Badge variant="brand" size="sm">{t('posPages.liveWorkflow')}</Badge>
             </div>
             <BusinessTypeShowcase businessId="barbershop" />
           </div>

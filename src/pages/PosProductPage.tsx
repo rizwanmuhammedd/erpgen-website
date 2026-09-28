@@ -7,9 +7,11 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { PosFeaturesSection } from '../components/pos-features/PosFeaturesSection';
 import { getWhatsAppUrl } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../lib/gsap';
 
 export const PosProductPage: React.FC = () => {
+  const { t, isRtl } = useLanguage();
   const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,35 +52,35 @@ export const PosProductPage: React.FC = () => {
   }, []);
 
   const businessTypes = [
-    { id: 'restaurant', title: 'Restaurant POS', path: '/products/pos/restaurant', icon: Utensils, desc: 'Table layout, dine-in, takeaway & kitchen dispatch' },
-    { id: 'barbershop', title: 'Barbershop POS', path: '/products/pos/barbershop', icon: Scissors, desc: 'Appointment queue, walk-ins, styling & product sales' },
-    { id: 'supermarket', title: 'Supermarket POS', path: '/products/pos/supermarket', icon: ShoppingCart, desc: 'Rapid barcode scanning, batch expiry & multi-lane cashier' },
-    { id: 'laundry', title: 'Laundry POS', path: '/products/pos/laundry', icon: Shirt, desc: 'Garment item tagging, drop-off & pickup order tracking' },
+    { id: 'restaurant', title: `${t('posIndustries.restaurant')} POS`, path: '/products/pos/restaurant', icon: Utensils, desc: t('posIndustries.restaurantDesc') },
+    { id: 'barbershop', title: `${t('posIndustries.barbershop')} POS`, path: '/products/pos/barbershop', icon: Scissors, desc: t('posIndustries.barbershopDesc') },
+    { id: 'supermarket', title: `${t('posIndustries.supermarket')} POS`, path: '/products/pos/supermarket', icon: ShoppingCart, desc: t('posIndustries.supermarketDesc') },
+    { id: 'laundry', title: `${t('posIndustries.laundry')} POS`, path: '/products/pos/laundry', icon: Shirt, desc: t('posIndustries.laundryDesc') },
   ];
 
   return (
     <div className="min-h-screen">
       <PageHero
-        eyebrow="CORE ERP MODULE"
-        title="ERPGen POS —"
-        titleGradient="Next-Gen Counter & Store Checkout"
-        description="High-speed, touch-optimized point-of-sale engine built for modern counter operations. Features real-time stock sync, industry-tailored workflows, and centralized sales intelligence."
+        eyebrow={t('posPage.eyebrow')}
+        title={t('posPage.title')}
+        titleGradient={t('posPage.titleGradient')}
+        description={t('posPage.description')}
         breadcrumbs={[
-          { label: 'Home', path: '/' },
-          { label: 'Products', path: '/products' },
+          { label: t('nav.home'), path: '/' },
+          { label: t('nav.products'), path: '/products' },
           { label: 'ERPGen POS', path: '/products/pos' },
         ]}
-        badgeText="Multi-Industry Counter Engine"
+        badgeText={t('posPage.badge')}
       >
         <div className="pt-4 flex flex-wrap gap-4">
           <a href={getWhatsAppUrl("Hello ERPGen team, I would like to get started with the POS system.")} target="_blank" rel="noopener noreferrer">
-            <Button variant="primary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
-              Configure POS Engine on WhatsApp
+            <Button variant="primary" size="lg" icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+              {t('posPage.configureWhatsApp')}
             </Button>
           </a>
           <Link to="/contact">
             <Button variant="secondary" size="lg">
-              Contact Sales
+              {t('posPage.contactSales')}
             </Button>
           </Link>
         </div>
@@ -88,10 +90,10 @@ export const PosProductPage: React.FC = () => {
         <Container size="xl" className="space-y-8">
           <div>
             <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-              Targeted Business Workflows
+              {t('posPage.targetedWorkflows')}
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F1B2D] font-heading mt-1">
-              Select Your Industry POS Context
+              {t('posPage.selectContext')}
             </h2>
           </div>
 
@@ -113,8 +115,8 @@ export const PosProductPage: React.FC = () => {
                   </div>
 
                   <Link to={b.path} className="pt-2 flex items-center gap-1.5 text-xs font-bold text-[#17B681] hover:text-[#129267] transition-colors">
-                    <span>Explore Workflow</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>{t('posPage.exploreWorkflow')}</span>
+                    <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
                   </Link>
                 </Card>
               );

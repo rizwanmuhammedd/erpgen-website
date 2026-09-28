@@ -3,6 +3,7 @@ import { Container } from '../ui/Container';
 import { SectionHeading } from '../ui/SectionHeading';
 import { PosFeatureCard } from './PosFeatureCard';
 import { PosDashboardPreview } from './PosDashboardPreview';
+import { useLanguage } from '../../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 export const PosFeaturesSection: React.FC = () => {
@@ -11,36 +12,37 @@ export const PosFeaturesSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   // 4 High-Level Enterprise Capability Groups
   const capabilities = [
     {
       id: 'sales-billing',
       previewId: 'pos-billing',
-      name: 'Sales & Fast Checkout',
-      subtitle: 'Counter Velocity',
-      description: 'Rapid barcode scanning, dine-in/takeaway tickets, split billing, and instant thermal receipt printing.',
+      name: t('posFeatures.cap1Title'),
+      subtitle: t('posFeatures.cap1Subtitle'),
+      description: t('posFeatures.cap1Desc'),
     },
     {
       id: 'inventory-ops',
       previewId: 'inventory',
-      name: 'Inventory & Operations',
-      subtitle: 'Real-Time Sync',
-      description: 'Live stock tracking across registers, variant management, returns, and damaged product controls.',
+      name: t('posFeatures.cap2Title'),
+      subtitle: t('posFeatures.cap2Subtitle'),
+      description: t('posFeatures.cap2Desc'),
     },
     {
       id: 'customers-management',
       previewId: 'customers',
-      name: 'Customers & Accounts',
-      subtitle: 'Client Profiles',
-      description: 'Centralized customer profiles, complete purchase histories, and credit account tracking.',
+      name: t('posFeatures.cap3Title'),
+      subtitle: t('posFeatures.cap3Subtitle'),
+      description: t('posFeatures.cap3Desc'),
     },
     {
       id: 'reports-insights',
       previewId: 'reports',
-      name: 'Reports & Insights',
-      subtitle: 'Live Visibility',
-      description: 'Real-time sales summaries, cashier register balancing, and daily business performance analytics.',
+      name: t('posFeatures.cap4Title'),
+      subtitle: t('posFeatures.cap4Subtitle'),
+      description: t('posFeatures.cap4Desc'),
     },
   ];
 
@@ -48,57 +50,56 @@ export const PosFeaturesSection: React.FC = () => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      // 3D perspective fold-to-unfold for the POS capability cards
-      gsap.fromTo(
-        cardsRef.current,
-        {
-          transformPerspective: 1200,
-          rotateX: 12,
-          scale: 0.95,
-          y: 35,
-          opacity: 0,
-        },
-        {
-          rotateX: 0,
-          scale: 1,
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: 'top 85%',
-            end: 'top 45%',
-            scrub: 0.6,
+      // Clean workspace panel stagger elevation
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.children,
+          {
+            scale: 0.98,
+            y: 20,
+            opacity: 0.3,
           },
-        }
-      );
+          {
+            scale: 1,
+            y: 0,
+            opacity: 1,
+            stagger: 0.07,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 85%',
+              end: 'top 50%',
+              scrub: 0.5,
+            },
+          }
+        );
+      }
 
-      // Settle preview dashboard with perspective
-      gsap.fromTo(
-        previewRef.current,
-        {
-          transformPerspective: 1200,
-          rotateX: 10,
-          scale: 0.96,
-          y: 30,
-          opacity: 0.5,
-        },
-        {
-          rotateX: 0,
-          scale: 1,
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: previewRef.current,
-            start: 'top 85%',
-            end: 'top 40%',
-            scrub: 0.6,
+      // Settle preview dashboard workspace
+      if (previewRef.current) {
+        gsap.fromTo(
+          previewRef.current,
+          {
+            scale: 0.98,
+            y: 22,
+            opacity: 0.4,
           },
-        }
-      );
+          {
+            scale: 1,
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: previewRef.current,
+              start: 'top 85%',
+              end: 'top 48%',
+              scrub: 0.5,
+            },
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -134,10 +135,10 @@ export const PosFeaturesSection: React.FC = () => {
       <Container size="xl" className="space-y-12 lg:space-y-16">
         {/* Section Intro */}
         <SectionHeading
-          eyebrow="ENGINEERED FOR DAILY COMMERCE"
-          title="Point-of-sale capabilities built for"
-          titleGradient="high-velocity operations."
-          description="ERPGen POS unifies counter billing, real-time inventory synchronization, customer records, and daily financial reporting into one intuitive workspace."
+          eyebrow={t('posFeatures.eyebrow')}
+          title={t('posFeatures.title')}
+          titleGradient={t('posFeatures.titleGradient')}
+          description={t('posFeatures.description')}
         />
 
         {/* 4 Premium Capability Cards Grid */}

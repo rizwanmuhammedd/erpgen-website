@@ -6,6 +6,7 @@ import { ModuleCard } from './ModuleCard';
 import { ModuleLifecycleSimulator } from './ModuleLifecycleSimulator';
 import { ModuleConfigurator } from './ModuleConfigurator';
 import { CustomConfiguration } from './CustomConfiguration';
+import { useLanguage } from '../../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 export const ModulesSection: React.FC = () => {
@@ -16,6 +17,7 @@ export const ModulesSection: React.FC = () => {
   const simulatorRef = useRef<HTMLDivElement>(null);
   const configuratorRef = useRef<HTMLDivElement>(null);
   const customRef = useRef<HTMLDivElement>(null);
+  const { t, isRtl } = useLanguage();
 
   const toggleModule = (id: string) => {
     setSelectedModules((prev) =>
@@ -30,47 +32,68 @@ export const ModulesSection: React.FC = () => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      // 3D perspective fold-to-unfold for the core module cards
-      if (cardsRef.current) {
+      // Spatial inward convergence: from ERP platform engine into concrete applications
+      if (cardsRef.current && cardsRef.current.children.length >= 2) {
+        const [cardInvoice, cardPos] = Array.from(cardsRef.current.children) as HTMLElement[];
+        const lateralShift = isRtl ? -36 : 36;
+
         gsap.fromTo(
-          cardsRef.current.children,
+          cardInvoice,
           {
-            transformPerspective: 1200,
-            rotateX: 14,
-            scale: 0.95,
-            y: 40,
-            opacity: 0,
+            x: -lateralShift,
+            y: 18,
+            scale: 0.97,
+            opacity: 0.3,
           },
           {
-            rotateX: 0,
-            scale: 1,
+            x: 0,
             y: 0,
+            scale: 1,
             opacity: 1,
-            stagger: 0.1,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: cardsRef.current,
               start: 'top 85%',
-              end: 'top 45%',
-              scrub: 0.6,
+              end: 'top 48%',
+              scrub: 0.5,
+            },
+          }
+        );
+
+        gsap.fromTo(
+          cardPos,
+          {
+            x: lateralShift,
+            y: 18,
+            scale: 0.97,
+            opacity: 0.3,
+          },
+          {
+            x: 0,
+            y: 0,
+            scale: 1,
+            opacity: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 85%',
+              end: 'top 48%',
+              scrub: 0.5,
             },
           }
         );
       }
 
-      // Configurator and custom panels
+      // Configurator and custom panels smooth elevation
       if (configuratorRef.current) {
         gsap.fromTo(
           configuratorRef.current,
           {
-            transformPerspective: 1200,
-            rotateX: 10,
-            scale: 0.97,
-            y: 30,
-            opacity: 0.6,
+            scale: 0.98,
+            y: 24,
+            opacity: 0.4,
           },
           {
-            rotateX: 0,
             scale: 1,
             y: 0,
             opacity: 1,
@@ -78,8 +101,8 @@ export const ModulesSection: React.FC = () => {
             scrollTrigger: {
               trigger: configuratorRef.current,
               start: 'top 85%',
-              end: 'top 50%',
-              scrub: 0.6,
+              end: 'top 52%',
+              scrub: 0.5,
             },
           }
         );
@@ -89,16 +112,13 @@ export const ModulesSection: React.FC = () => {
         gsap.fromTo(
           customRef.current,
           {
-            transformPerspective: 1200,
-            rotateX: 8,
-            y: 25,
-            opacity: 0,
+            y: 20,
+            opacity: 0.2,
           },
           {
-            rotateX: 0,
             y: 0,
             opacity: 1,
-            duration: 0.7,
+            duration: 0.6,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: customRef.current,
@@ -111,7 +131,7 @@ export const ModulesSection: React.FC = () => {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isRtl]);
 
   return (
     <section
@@ -123,10 +143,10 @@ export const ModulesSection: React.FC = () => {
       <Container size="xl" className="space-y-16">
         {/* Section Intro */}
         <SectionHeading
-          eyebrow="CORE PRODUCT PILLARS"
-          title="Deploy standalone modules, or"
-          titleGradient="connect them all."
-          description="Start with standalone Invoicing for billing, standalone POS for your counter registers, or unify them into a single connected platform as your business operations grow."
+          eyebrow={t('modulesPillars.eyebrow')}
+          title={t('modulesPillars.title')}
+          titleGradient={t('modulesPillars.titleGradient')}
+          description={t('modulesPillars.description')}
         />
 
         {/* 2 Core Module Selection Cards */}
@@ -134,9 +154,9 @@ export const ModulesSection: React.FC = () => {
           <div id="invoice" className="scroll-mt-28">
             <ModuleCard
               id="invoice"
-              title="ERPGen Invoice"
-              subtitle="Standalone Billing & Invoicing"
-              description="Create, manage and track invoices with a focused invoicing solution. Built for instant customer billing, receipt printing, and sales tracking."
+              title={t('modulesPillars.invoiceTitle')}
+              subtitle={t('modulesPillars.invoiceSubtitle')}
+              description={t('modulesPillars.invoiceDesc')}
               icon={<FileText className="w-6 h-6" />}
               isSelected={invoiceSelected}
               onToggle={() => toggleModule('invoice')}
@@ -146,9 +166,9 @@ export const ModulesSection: React.FC = () => {
           <div id="pos" className="scroll-mt-28">
             <ModuleCard
               id="pos"
-              title="ERPGen POS"
-              subtitle="Standalone Point-of-Sale"
-              description="Run point-of-sale operations for your business with a dedicated POS solution. Optimized for fast checkout, counter billing, and item variants."
+              title={t('modulesPillars.posTitle')}
+              subtitle={t('modulesPillars.posSubtitle')}
+              description={t('modulesPillars.posDesc')}
               icon={<ShoppingBag className="w-6 h-6" />}
               isSelected={posSelected}
               onToggle={() => toggleModule('pos')}

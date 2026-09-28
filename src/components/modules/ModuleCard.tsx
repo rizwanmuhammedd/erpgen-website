@@ -1,6 +1,7 @@
 import React from 'react';
 import { FileText, ShoppingBag, CheckCircle2 } from 'lucide-react';
 import { Card } from '../ui/Card';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ModuleCardProps {
   id: 'invoice' | 'pos';
@@ -21,6 +22,8 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
   isSelected,
   onToggle,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <Card
       variant={isSelected ? 'brand-border' : 'default'}
@@ -66,10 +69,10 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
               {isSelected ? (
                 <>
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681]" />
-                  <span>Active in Suite</span>
+                  <span>{t('modulesPillars.activeInSuite')}</span>
                 </>
               ) : (
-                <span>+ Select Module</span>
+                <span>{t('modulesPillars.selectModule')}</span>
               )}
             </span>
           </div>
@@ -95,15 +98,15 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
               <div className="flex items-center justify-between pb-2 border-b border-[#E9E4F1]">
                 <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#1F1B2D] font-bold">
                   <FileText className="w-3.5 h-3.5 text-[#6D57A5]" />
-                  <span>Invoice #INV-2026-88</span>
+                  <span>{t('modulesPillars.invoiceCardTitle')}</span>
                 </div>
                 <span className="px-2 py-0.5 rounded bg-[#E4F8F0] text-[#129267] text-[10px] font-semibold">
-                  Paid & Confirmed
+                  {t('modulesPillars.paidConfirmed')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
-                <span>Commercial Client Billing</span>
-                <span className="font-mono text-[#17B681] font-bold text-xs">$1,480.00</span>
+                <span>{t('modulesPillars.commercialBilling')}</span>
+                <span className="font-mono text-[#17B681] font-bold text-xs" dir="ltr">$1,480.00</span>
               </div>
             </>
           ) : (
@@ -111,15 +114,15 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
               <div className="flex items-center justify-between pb-2 border-b border-[#E9E4F1]">
                 <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#1F1B2D] font-bold">
                   <ShoppingBag className="w-3.5 h-3.5 text-[#17B681]" />
-                  <span>POS Terminal 01</span>
+                  <span>{t('modulesPillars.posTerminal')}</span>
                 </div>
                 <span className="px-2 py-0.5 rounded bg-[#E4F8F0] text-[#129267] text-[10px] font-semibold">
-                  Live Register
+                  {t('modulesPillars.liveRegister')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
-                <span>Fast Touch Checkout</span>
-                <span className="font-mono text-[#17B681] font-bold text-xs">$84.50</span>
+                <span>{t('modulesPillars.fastCheckout')}</span>
+                <span className="font-mono text-[#17B681] font-bold text-xs" dir="ltr">$84.50</span>
               </div>
             </>
           )}
@@ -129,10 +132,10 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
       {/* Footer Visual Status */}
       <div className="mt-6 pt-4 border-t border-[#E9E4F1] flex items-center justify-between text-xs font-medium">
         <span className={isSelected ? 'text-[#6D57A5] font-semibold' : 'text-[#625D6B]'}>
-          {isSelected ? 'Configured in synchronized core' : 'Standalone deployment ready'}
+          {isSelected ? t('modulesPillars.configuredInCore') : t('modulesPillars.standaloneReady')}
         </span>
         <span className="text-[11px] font-mono tracking-wider uppercase text-[#17B681] font-bold flex items-center gap-1">
-          <span>Enterprise Ready</span>
+          <span>{t('modulesPillars.enterpriseReady')}</span>
           <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681]" />
         </span>
       </div>

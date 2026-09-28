@@ -7,15 +7,16 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { getWhatsAppUrl } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../lib/gsap';
 
 export const AboutPage: React.FC = () => {
+  const { t, isRtl } = useLanguage();
   const missionCardsRef = useRef<HTMLDivElement>(null);
   const pillarsGridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Why Us & Company Philosophy | ERPGen';
 
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
@@ -79,34 +80,34 @@ export const AboutPage: React.FC = () => {
   }, []);
 
   const pillars = [
-    { title: '24/7 Priority Support & Monitoring', icon: Headphones, desc: 'Dedicated technical response team and continuous infrastructure oversight ensuring zero business disruption.' },
-    { title: 'Scalable Architecture & Design', icon: Layers, desc: 'Enterprise software and cloud architectures built to scale smoothly alongside growing operational volume.' },
-    { title: 'Industry-Grade Network Security', icon: ShieldCheck, desc: 'Encrypted communications, proactive threat mitigation, and strict data privacy protection.' },
-    { title: 'Agile Software Methodologies', icon: Cpu, desc: 'Rapid iterative engineering, continuous integration, and transparent development cycles.' },
+    { title: t('aboutPage.pillar1Title'), icon: Headphones, desc: t('aboutPage.pillar1Desc') },
+    { title: t('aboutPage.pillar2Title'), icon: Layers, desc: t('aboutPage.pillar2Desc') },
+    { title: t('aboutPage.pillar3Title'), icon: ShieldCheck, desc: t('aboutPage.pillar3Desc') },
+    { title: t('aboutPage.pillar4Title'), icon: Cpu, desc: t('aboutPage.pillar4Desc') },
   ];
 
   return (
     <div className="min-h-screen bg-white">
       <PageHero
-        eyebrow="COMPANY POSITIONING"
-        title="Why Us — Technology as a"
-        titleGradient="Strategic Business Asset"
-        description="ERPGen empowers forward-thinking businesses by delivering modern, modular ERP software alongside enterprise cloud infrastructure, application engineering, cybersecurity, and managed IT services."
+        eyebrow={t('aboutPage.eyebrow')}
+        title={t('aboutPage.title')}
+        titleGradient={t('aboutPage.titleGradient')}
+        description={t('aboutPage.description')}
         breadcrumbs={[
-          { label: 'Home', path: '/' },
-          { label: 'Why Us / About', path: '/about' },
+          { label: t('nav.home'), path: '/' },
+          { label: t('nav.about'), path: '/about' },
         ]}
-        badgeText="ERPGen Engineering Standards"
+        badgeText={t('aboutPage.badge')}
       >
         <div className="pt-4 flex flex-wrap gap-4">
           <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
             <Button variant="primary" size="lg" icon={<MessageSquare className="w-4 h-4" />}>
-              Consult an Expert on WhatsApp
+              {t('aboutPage.consultWhatsApp')}
             </Button>
           </a>
           <Link to="/services">
-            <Button variant="secondary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
-              Explore All Services
+            <Button variant="secondary" size="lg" icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+              {t('aboutPage.exploreServices')}
             </Button>
           </Link>
         </div>
@@ -117,25 +118,25 @@ export const AboutPage: React.FC = () => {
           {/* Engineering Approach */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-4">
-              <Badge variant="brand" size="sm">Our Mission</Badge>
+              <Badge variant="brand" size="sm">{t('aboutPage.ourMission')}</Badge>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F1B2D] font-heading">
-                Purpose-Built Software Designed Around Actual Business Workflows
+                {t('aboutPage.missionTitle')}
               </h2>
               <p className="text-xs sm:text-sm text-[#625D6B] leading-relaxed">
-                Traditional ERP systems force businesses to adopt expensive monolithic software suites with features they never touch. ERPGen flips this paradigm by offering modular flexibility: choose standalone Invoice, high-speed POS, or a tailored combined suite.
+                {t('aboutPage.missionDesc')}
               </p>
               <div className="space-y-2 text-xs text-[#625D6B] pt-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#17B681] shrink-0" />
-                  <span>Choose standalone Invoice or standalone POS counters</span>
+                  <span>{t('aboutPage.missionFeat1')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#17B681] shrink-0" />
-                  <span>Combine modules or request customer-specific configurations</span>
+                  <span>{t('aboutPage.missionFeat2')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#17B681] shrink-0" />
-                  <span>Backed by enterprise cloud infrastructure and cybersecurity</span>
+                  <span>{t('aboutPage.missionFeat3')}</span>
                 </div>
               </div>
             </div>
@@ -143,17 +144,17 @@ export const AboutPage: React.FC = () => {
             <div ref={missionCardsRef} className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Card variant="brand-border" className="p-6 space-y-3 bg-white border border-[#E9E4F1] shadow-sm">
                 <FileText className="w-8 h-8 text-[#6D57A5]" />
-                <h3 className="text-base font-bold text-[#1F1B2D] font-heading">ERPGen Invoice</h3>
+                <h3 className="text-base font-bold text-[#1F1B2D] font-heading">{t('aboutPage.invoiceCardTitle')}</h3>
                 <p className="text-xs text-[#625D6B] leading-relaxed">
-                  Dedicated invoicing, PDF customization, customer profiles, and automated sales audit logs.
+                  {t('aboutPage.invoiceCardDesc')}
                 </p>
               </Card>
 
               <Card variant="brand-border" className="p-6 space-y-3 bg-white border border-[#E9E4F1] shadow-sm">
                 <ShoppingBag className="w-8 h-8 text-[#17B681]" />
-                <h3 className="text-base font-bold text-[#1F1B2D] font-heading">ERPGen POS</h3>
+                <h3 className="text-base font-bold text-[#1F1B2D] font-heading">{t('aboutPage.posCardTitle')}</h3>
                 <p className="text-xs text-[#625D6B] leading-relaxed">
-                  High-speed counter billing for Restaurant, Barbershop, Supermarket, and Laundry workflows.
+                  {t('aboutPage.posCardDesc')}
                 </p>
               </Card>
             </div>
@@ -163,10 +164,10 @@ export const AboutPage: React.FC = () => {
           <div className="space-y-8">
             <div>
               <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                Our Core Engineering Pillars
+                {t('aboutPage.corePillars')}
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F1B2D] font-heading mt-1">
-                ERPGen Infrastructure & Performance Commitments
+                {t('aboutPage.pillarsHeadline')}
               </h2>
             </div>
 
@@ -195,25 +196,25 @@ export const AboutPage: React.FC = () => {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-2 max-w-2xl">
                 <div className="flex items-center gap-2">
-                  <Badge variant="brand" size="sm">Technology Ecosystem</Badge>
+                  <Badge variant="brand" size="sm">{t('aboutPage.ecoBadge')}</Badge>
                 </div>
                 <h3 className="text-xl font-bold text-[#1F1B2D] font-heading">
-                  Comprehensive Enterprise Technology Services
+                  {t('aboutPage.ecoTitle')}
                 </h3>
                 <p className="text-xs text-[#625D6B]">
-                  Explore our complete portfolio of AI software development, cloud infrastructure, telecommunications, and managed IT services designed to support your enterprise growth.
+                  {t('aboutPage.ecoDesc')}
                 </p>
               </div>
 
               <div className="shrink-0 flex flex-wrap gap-3 w-full md:w-auto">
                 <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
                   <Button variant="primary" size="md" icon={<MessageSquare className="w-4 h-4" />}>
-                    Chat on WhatsApp
+                    {t('aboutPage.chatWhatsApp')}
                   </Button>
                 </a>
                 <Link to="/services">
-                  <Button variant="secondary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-                    View Services
+                  <Button variant="secondary" size="md" icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+                    {t('aboutPage.viewServices')}
                   </Button>
                 </Link>
               </div>

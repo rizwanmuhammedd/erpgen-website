@@ -8,42 +8,47 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { BusinessTypeShowcase } from '../../components/business-types/BusinessTypeShowcase';
 import { getWhatsAppUrl } from '../../data/siteData';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const SupermarketPosPage: React.FC = () => {
+  const { t, isRtl } = useLanguage();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const capabilities = [
-    'Barcode & QR Rapid Scanning',
-    'Batch & Expiry Management',
-    'Multi-lane Cashier Sync',
-    'Low-stock Threshold Alerts',
+    t('posPages.superCap1'),
+    t('posPages.superCap2'),
+    t('posPages.superCap3'),
+    t('posPages.superCap4'),
   ];
+
+  const industryName = t('posIndustries.supermarket');
 
   return (
     <div className="min-h-screen">
       <PageHero
-        eyebrow="POS INDUSTRY WORKFLOW"
-        title="Supermarket POS —"
-        titleGradient="Inventory & Fast Checkout"
-        description="Process items rapidly with barcode scanning, instant stock updates, category variants, and multi-lane cashier performance."
+        eyebrow={t('posPages.industryWorkflow')}
+        title={`${industryName} POS —`}
+        titleGradient={t('businessShowcase.superTagline')}
+        description={t('businessShowcase.superDesc')}
         breadcrumbs={[
-          { label: 'Home', path: '/' },
+          { label: t('nav.home'), path: '/' },
           { label: 'POS', path: '/products/pos' },
-          { label: 'Supermarket POS', path: '/products/pos/supermarket' },
+          { label: `${industryName} POS`, path: '/products/pos/supermarket' },
         ]}
-        badgeText="Supermarket Ready"
+        badgeText={t('posPages.supermarketReady')}
       >
         <div className="pt-4 flex flex-wrap gap-4">
           <a href={getWhatsAppUrl("Hello ERPGen team, I am interested in the Supermarket POS workflow.")} target="_blank" rel="noopener noreferrer">
-            <Button variant="primary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
-              Configure Supermarket POS on WhatsApp
+            <Button variant="primary" size="lg" icon={<ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />}>
+              {t('posPages.configureOnWhatsApp').replace('{title}', industryName)}
             </Button>
           </a>
           <Link to="/contact">
             <Button variant="secondary" size="lg">
-              Contact Sales
+              {t('posPage.contactSales')}
             </Button>
           </Link>
         </div>
@@ -54,10 +59,10 @@ export const SupermarketPosPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                Supermarket Capabilities
+                {t('posPages.supermarketCaps')}
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F1B2D] font-heading mt-1">
-                Built Specifically for Supermarket Operations
+                {t('posPages.supermarketCapsTitle')}
               </h2>
             </div>
 
@@ -76,9 +81,9 @@ export const SupermarketPosPage: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
-                Interactive Supermarket POS Preview
+                {t('posPages.previewTitle').replace('{title}', industryName)}
               </span>
-              <Badge variant="brand" size="sm">Live Workflow</Badge>
+              <Badge variant="brand" size="sm">{t('posPages.liveWorkflow')}</Badge>
             </div>
             <BusinessTypeShowcase businessId="supermarket" />
           </div>
