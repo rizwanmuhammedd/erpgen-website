@@ -299,10 +299,10 @@ export const InvoiceStorytelling: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="text-base font-extrabold text-[#1F1B2D] font-heading">
-                      Tax Invoice
+                      {t('invoiceStory.taxInvoice')}
                     </h4>
                     <span className="font-mono text-xs text-[#6D57A5] font-semibold bg-[#FAF8FC] px-2 py-0.5 rounded border border-[#E9E4F1]">
-                      #INV-2026-104
+                      {t('invoiceStory.invoicePreview')}
                     </span>
                   </div>
                   <span className="text-[11px] text-[#625D6B] block">
@@ -326,20 +326,20 @@ export const InvoiceStorytelling: React.FC = () => {
             >
               <div className="p-3.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-1">
                 <span className="text-[10px] font-mono text-[#6D57A5] uppercase font-bold block">
-                  Billed To
+                  {t('invoiceStory.customerLabel')}
                 </span>
-                <p className="font-bold text-[#1F1B2D]">Enterprise Client Account</p>
-                <p className="text-[11px] text-[#625D6B]">Payment Terms: Net 30 Days</p>
+                <p className="font-bold text-[#1F1B2D]">{t('invoiceStory.customerDetails')}</p>
+                <p className="text-[11px] text-[#625D6B]">{t('invoiceStory.customerTerms')}</p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-1">
                 <span className="text-[10px] font-mono text-[#17B681] uppercase font-bold block">
-                  Tax Compliance
+                  {t('invoiceStory.taxDetailsLabel')}
                 </span>
-                <p className="font-bold text-[#1F1B2D]">TRN: 100482910400003</p>
+                <p className="font-bold text-[#1F1B2D]">{t('invoiceStory.taxSchedule')}</p>
                 <p className="text-[11px] text-[#129267] font-medium flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Standard VAT 5% Schedule</span>
+                  <span>{t('invoiceStory.taxCalculation')}</span>
                 </p>
               </div>
             </div>
@@ -347,9 +347,9 @@ export const InvoiceStorytelling: React.FC = () => {
             {/* Progressive Line Items (Step 4) */}
             <div className="space-y-2">
               <div className="grid grid-cols-12 text-[10px] font-mono font-bold text-[#625D6B] uppercase pb-1.5 border-b border-[#E9E4F1] px-2">
-                <span className="col-span-6 sm:col-span-8">Configured Deliverable</span>
-                <span className="col-span-2 text-center">Qty</span>
-                <span className="col-span-4 sm:col-span-2 text-end">Amount</span>
+                <span className="col-span-7 sm:col-span-8">{t('invoiceStory.colItem')}</span>
+                <span className="col-span-2 text-center">{t('invoiceStory.colUnit')}</span>
+                <span className="col-span-3 sm:col-span-2 text-end">{t('invoiceStory.colRate')}</span>
               </div>
 
               {/* Row 1 */}
@@ -357,13 +357,13 @@ export const InvoiceStorytelling: React.FC = () => {
                 ref={lineItem1Ref}
                 className="grid grid-cols-12 items-center py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs transition-all hover:border-[#6D57A5]/40"
               >
-                <div className="col-span-6 sm:col-span-8">
+                <div className="col-span-7 sm:col-span-8">
                   <p className="font-bold text-[#1F1B2D] text-[11px] sm:text-xs">{t('invoiceStory.item1')}</p>
-                  <p className="text-[9px] sm:text-[10px] text-[#625D6B]">Central ledger & operational schema</p>
+                  <p className="text-[9px] sm:text-[10px] text-[#625D6B]">{t('invoiceStory.item1Desc')}</p>
                 </div>
-                <span className="col-span-2 text-center font-mono text-[#625D6B]">1</span>
-                <span className="col-span-4 sm:col-span-2 text-end font-mono font-bold text-[#1F1B2D] text-xs">
-                  $1,200.00
+                <span className="col-span-2 text-center font-mono text-[#625D6B] text-[11px]">{t('invoiceStory.unitItem')}</span>
+                <span className="col-span-3 sm:col-span-2 text-end font-mono font-semibold text-[#1F1B2D] text-xs">
+                  {t('invoiceStory.calculated')}
                 </span>
               </div>
 
@@ -372,13 +372,13 @@ export const InvoiceStorytelling: React.FC = () => {
                 ref={lineItem2Ref}
                 className="grid grid-cols-12 items-center py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs transition-all hover:border-[#6D57A5]/40"
               >
-                <div className="col-span-6 sm:col-span-8">
+                <div className="col-span-7 sm:col-span-8">
                   <p className="font-bold text-[#1F1B2D] text-[11px] sm:text-xs">{t('invoiceStory.item2')}</p>
-                  <p className="text-[9px] sm:text-[10px] text-[#625D6B]">Counter terminals connected to core</p>
+                  <p className="text-[9px] sm:text-[10px] text-[#625D6B]">{t('invoiceStory.item2Desc')}</p>
                 </div>
-                <span className="col-span-2 text-center font-mono text-[#625D6B]">3</span>
-                <span className="col-span-4 sm:col-span-2 text-end font-mono font-bold text-[#1F1B2D] text-xs">
-                  $450.00
+                <span className="col-span-2 text-center font-mono text-[#625D6B] text-[11px]">{t('invoiceStory.unitItem')}</span>
+                <span className="col-span-3 sm:col-span-2 text-end font-mono font-semibold text-[#1F1B2D] text-xs">
+                  {t('invoiceStory.calculated')}
                 </span>
               </div>
 
@@ -387,13 +387,13 @@ export const InvoiceStorytelling: React.FC = () => {
                 ref={lineItem3Ref}
                 className="grid grid-cols-12 items-center py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs transition-all hover:border-[#6D57A5]/40"
               >
-                <div className="col-span-6 sm:col-span-8">
+                <div className="col-span-7 sm:col-span-8">
                   <p className="font-bold text-[#1F1B2D] text-[11px] sm:text-xs">{t('invoiceStory.item3')}</p>
-                  <p className="text-[9px] sm:text-[10px] text-[#625D6B]">Continuous replication & automated snapshots</p>
+                  <p className="text-[9px] sm:text-[10px] text-[#625D6B]">{t('invoiceStory.item3Desc')}</p>
                 </div>
-                <span className="col-span-2 text-center font-mono text-[#625D6B]">1</span>
-                <span className="col-span-4 sm:col-span-2 text-end font-mono font-bold text-[#1F1B2D] text-xs">
-                  $350.00
+                <span className="col-span-2 text-center font-mono text-[#625D6B] text-[11px]">{t('invoiceStory.unitItem')}</span>
+                <span className="col-span-3 sm:col-span-2 text-end font-mono font-semibold text-[#1F1B2D] text-xs">
+                  {t('invoiceStory.calculated')}
                 </span>
               </div>
             </div>
@@ -423,7 +423,7 @@ export const InvoiceStorytelling: React.FC = () => {
                 </div>
                 <div className="flex justify-between pt-1.5 border-t border-[#E9E4F1] text-sm font-bold text-[#1F1B2D]">
                   <span className="text-[#6D57A5]">{t('invoiceStory.grandTotalLabel')}</span>
-                  <span className="font-mono text-[#17B681] text-base">
+                  <span className="font-mono text-[#17B681] text-sm font-bold">
                     {t('invoiceStory.grandTotalVal')}
                   </span>
                 </div>

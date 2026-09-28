@@ -156,7 +156,7 @@ export const SideBySideWorkspaces: React.FC = () => {
                   <FileText className="w-6 h-6 text-[#6D57A5]" />
                 </div>
                 <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold">
-                  DESK & ENTERPRISE
+                  {t('sideBySide.invoiceCardBadge')}
                 </Badge>
               </div>
 
@@ -176,15 +176,15 @@ export const SideBySideWorkspaces: React.FC = () => {
               <div className="p-3.5 rounded-2xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-2 text-xs">
                 <div className="flex items-center gap-2 text-[#1F1B2D]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                  <span>Branded PDF document creation & instant export</span>
+                  <span>{t('sideBySide.invCap1')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#1F1B2D]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                  <span>Automated tax/VAT schedules & exact rounding</span>
+                  <span>{t('sideBySide.invCap2')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#1F1B2D]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                  <span>Enterprise customer accounts & Net 30 payment terms</span>
+                  <span>{t('sideBySide.invCap3')}</span>
                 </div>
               </div>
             </div>
@@ -197,7 +197,7 @@ export const SideBySideWorkspaces: React.FC = () => {
                   icon={<ArrowRight className="w-4 h-4 rtl:rotate-180" />}
                   className="w-full sm:w-auto shadow-xs"
                 >
-                  Explore ERPGen Invoice
+                  {t('invoiceStory.exploreCta')}
                 </Button>
               </Link>
             </div>
@@ -214,7 +214,7 @@ export const SideBySideWorkspaces: React.FC = () => {
                   <ShoppingBag className="w-6 h-6 text-[#17B681]" />
                 </div>
                 <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold bg-[#E4F8F0] text-[#129267] border-[#17B681]/30">
-                  FRONT COUNTER & REGISTER
+                  {t('sideBySide.posCardBadge')}
                 </Badge>
               </div>
 
@@ -234,15 +234,15 @@ export const SideBySideWorkspaces: React.FC = () => {
               <div className="p-3.5 rounded-2xl bg-[#FAF8FC] border border-[#E9E4F1] space-y-2 text-xs">
                 <div className="flex items-center gap-2 text-[#1F1B2D]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                  <span>High-velocity touch product tiles & barcode scan support</span>
+                  <span>{t('sideBySide.posCap1')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#1F1B2D]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                  <span>Split payment settlement (Card, Cash, Split tender)</span>
+                  <span>{t('sideBySide.posCap2')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#1F1B2D]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681] shrink-0" />
-                  <span>Direct thermal receipt output & live stock decrement</span>
+                  <span>{t('sideBySide.posCap3')}</span>
                 </div>
               </div>
             </div>
@@ -255,7 +255,7 @@ export const SideBySideWorkspaces: React.FC = () => {
                   icon={<ArrowRight className="w-4 h-4 rtl:rotate-180" />}
                   className="w-full sm:w-auto shadow-xs bg-[#17B681] hover:bg-[#149d6f]"
                 >
-                  Explore ERPGen POS
+                  {t('posStory.exploreCta')}
                 </Button>
               </Link>
             </div>

@@ -106,7 +106,7 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
               </div>
               <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
                 <span>{t('modulesPillars.commercialBilling')}</span>
-                <span className="font-mono text-[#17B681] font-bold text-xs" dir="ltr">$1,480.00</span>
+                <span className="font-mono text-[#17B681] font-semibold text-xs">{t('modulesPillars.standardFormat', 'Standard Layout')}</span>
               </div>
             </>
           ) : (
@@ -122,7 +122,7 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
               </div>
               <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
                 <span>{t('modulesPillars.fastCheckout')}</span>
-                <span className="font-mono text-[#17B681] font-bold text-xs" dir="ltr">$84.50</span>
+                <span className="font-mono text-[#17B681] font-semibold text-xs">{t('modulesPillars.activeSession', 'Active Register')}</span>
               </div>
             </>
           )}

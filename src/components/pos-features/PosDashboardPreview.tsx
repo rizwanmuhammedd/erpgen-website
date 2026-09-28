@@ -187,7 +187,7 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
                 <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/20 inline-block" />
               </div>
               <span className="text-[#625D6B] font-mono text-[11px] ms-2">
-                erpgen.pos / register-terminal-01 / {selectedFeatureId}
+                erpgen.pos / counter-terminal / {selectedFeatureId}
               </span>
             </div>
 

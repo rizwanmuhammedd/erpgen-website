@@ -180,7 +180,7 @@ export const InvoiceProductPage: React.FC = () => {
                       {t('invoicePage.taxInvoice')}
                     </h3>
                     <span className="font-mono text-xs text-[#6D57A5] font-semibold bg-[#FAF8FC] px-2 py-0.5 rounded border border-[#E9E4F1]">
-                      #INV-2026-104
+                      Invoice Preview
                     </span>
                   </div>
                   <span className="text-[11px] text-[#625D6B]">{t('invoicePage.engineNote')}</span>
@@ -202,7 +202,7 @@ export const InvoiceProductPage: React.FC = () => {
                   <span>{downloading ? t('invoicePage.exportingPdf') : t('invoicePage.downloadPdf')}</span>
                 </button>
                 <a
-                  href={getWhatsAppUrl("Hello ERPGen, I am interested in testing Invoice #INV-2026-104.")}
+                  href={getWhatsAppUrl("Hello ERPGen, I am interested in exploring the Invoice module.")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 rounded-lg bg-[#17B681] text-white text-xs font-semibold hover:bg-[#129267] transition-all flex items-center gap-1.5 shadow-2xs"
@@ -221,7 +221,7 @@ export const InvoiceProductPage: React.FC = () => {
                 </span>
                 <p className="font-bold text-[#1F1B2D] text-sm">{t('invoicePage.issuedByName')}</p>
                 <p>{t('invoicePage.issuedByDiv')}</p>
-                <p className="font-mono text-[11px]">TRN: 100482910400003</p>
+                <p className="font-mono text-[11px]">Tax Details</p>
               </div>
 
               <div className="space-y-1 p-4 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1]">
@@ -237,41 +237,37 @@ export const InvoiceProductPage: React.FC = () => {
             {/* Line Items Table */}
             <div className="space-y-2">
               <div className="grid grid-cols-12 text-[11px] font-mono font-bold text-[#625D6B] uppercase pb-2 border-b border-[#E9E4F1] px-2">
-                <span className="col-span-6 sm:col-span-7">{t('invoicePage.itemDesc')}</span>
+                <span className="col-span-7 sm:col-span-8">{t('invoicePage.itemDesc')}</span>
                 <span className="col-span-2 text-center">{t('invoicePage.qty')}</span>
-                <span className="col-span-2 text-end">{t('invoicePage.rate')}</span>
-                <span className="col-span-2 sm:col-span-1 text-end">{t('invoicePage.total')}</span>
+                <span className="col-span-3 sm:col-span-2 text-end">{t('invoicePage.rate')}</span>
               </div>
 
               <div ref={rowsRef} className="space-y-1.5 text-xs">
                 <div className="grid grid-cols-12 items-center py-2.5 px-2 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1]/60">
-                  <div className="col-span-6 sm:col-span-7">
+                  <div className="col-span-7 sm:col-span-8">
                     <p className="font-bold text-[#1F1B2D]">{t('invoicePage.sampleItem1Title')}</p>
                     <p className="text-[11px] text-[#625D6B]">{t('invoicePage.sampleItem1Desc')}</p>
                   </div>
-                  <span className="col-span-2 text-center font-mono">1</span>
-                  <span className="col-span-2 text-end font-mono">$1,200.00</span>
-                  <span className="col-span-2 sm:col-span-1 text-end font-mono font-bold text-[#1F1B2D]">$1,200.00</span>
+                  <span className="col-span-2 text-center font-mono text-[#625D6B]">—</span>
+                  <span className="col-span-3 sm:col-span-2 text-end font-mono font-semibold text-[#1F1B2D]">{t('invoicePage.calculatedRate')}</span>
                 </div>
 
                 <div className="grid grid-cols-12 items-center py-2.5 px-2 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1]/60">
-                  <div className="col-span-6 sm:col-span-7">
+                  <div className="col-span-7 sm:col-span-8">
                     <p className="font-bold text-[#1F1B2D]">{t('invoicePage.sampleItem2Title')}</p>
                     <p className="text-[11px] text-[#625D6B]">{t('invoicePage.sampleItem2Desc')}</p>
                   </div>
-                  <span className="col-span-2 text-center font-mono">3</span>
-                  <span className="col-span-2 text-end font-mono">$150.00</span>
-                  <span className="col-span-2 sm:col-span-1 text-end font-mono font-bold text-[#1F1B2D]">$450.00</span>
+                  <span className="col-span-2 text-center font-mono text-[#625D6B]">—</span>
+                  <span className="col-span-3 sm:col-span-2 text-end font-mono font-semibold text-[#1F1B2D]">{t('invoicePage.calculatedRate')}</span>
                 </div>
 
                 <div className="grid grid-cols-12 items-center py-2.5 px-2 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1]/60">
-                  <div className="col-span-6 sm:col-span-7">
+                  <div className="col-span-7 sm:col-span-8">
                     <p className="font-bold text-[#1F1B2D]">{t('invoicePage.sampleItem3Title')}</p>
                     <p className="text-[11px] text-[#625D6B]">{t('invoicePage.sampleItem3Desc')}</p>
                   </div>
-                  <span className="col-span-2 text-center font-mono">1</span>
-                  <span className="col-span-2 text-end font-mono">$350.00</span>
-                  <span className="col-span-2 sm:col-span-1 text-end font-mono font-bold text-[#1F1B2D]">$350.00</span>
+                  <span className="col-span-2 text-center font-mono text-[#625D6B]">—</span>
+                  <span className="col-span-3 sm:col-span-2 text-end font-mono font-semibold text-[#1F1B2D]">{t('invoicePage.calculatedRate')}</span>
                 </div>
               </div>
             </div>
@@ -286,15 +282,15 @@ export const InvoiceProductPage: React.FC = () => {
               <div className="w-full sm:w-64 space-y-1.5 text-xs text-[#625D6B]">
                 <div className="flex justify-between">
                   <span>{t('invoicePage.subtotal')}</span>
-                  <span className="font-mono font-bold text-[#1F1B2D]">$2,000.00</span>
+                  <span className="font-mono font-semibold text-[#1F1B2D]">{t('invoiceStory.subtotalVal')}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>{t('invoicePage.vat')}</span>
-                  <span className="font-mono font-bold text-[#1F1B2D]">$100.00</span>
+                  <span className="font-mono font-semibold text-[#1F1B2D]">{t('invoiceStory.vatVal')}</span>
                 </div>
                 <div className="flex justify-between pt-2 border-t border-[#E9E4F1] text-sm font-bold text-[#1F1B2D]">
                   <span className="text-[#6D57A5]">{t('invoicePage.grandTotal')}</span>
-                  <span className="font-mono text-base text-[#17B681]">$2,100.00</span>
+                  <span className="font-mono text-sm text-[#17B681] font-bold">{t('invoiceStory.grandTotalVal')}</span>
                 </div>
               </div>
             </div>

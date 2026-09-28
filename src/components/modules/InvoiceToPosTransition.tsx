@@ -105,7 +105,7 @@ export const InvoiceToPosTransition: React.FC = () => {
               <FileText className="w-4 h-4" />
             </div>
             <span className="text-[10px] font-mono text-[#6D57A5] font-semibold bg-[#FAF8FC] px-2 py-0.5 rounded border border-[#E9E4F1]">
-              #INV-2026-104
+              {t('invoiceToPos.badgeInvoice')}
             </span>
           </div>
           <div>
@@ -113,12 +113,12 @@ export const InvoiceToPosTransition: React.FC = () => {
               {t('invoiceToPos.stepInvoice')}
             </h5>
             <p className="text-[10px] text-[#625D6B] mt-0.5">
-              Commercial deliverable billed & client balance booked.
+              {t('invoiceToPos.descInvoice')}
             </p>
           </div>
           <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#129267] font-semibold pt-1 border-t border-[#E9E4F1]">
             <CheckCircle2 className="w-3 h-3 text-[#17B681]" />
-            <span>Amount: $2,100.00 Reconciled</span>
+            <span>{t('invoiceToPos.reconciledInvoice')}</span>
           </div>
         </div>
 
@@ -133,7 +133,7 @@ export const InvoiceToPosTransition: React.FC = () => {
           className="p-4 rounded-2xl bg-[#FAF8FC] border-2 border-[#17B681] shadow-sm space-y-2 relative"
         >
           <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#17B681] text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-            Live ERP Bus
+            {t('invoiceToPos.badgeEngine')}
           </span>
           <div className="flex items-center justify-between pt-1">
             <div className="w-8 h-8 rounded-lg bg-white border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold">
@@ -146,11 +146,11 @@ export const InvoiceToPosTransition: React.FC = () => {
               {t('invoiceToPos.stepLedger')}
             </h5>
             <p className="text-[10px] text-[#625D6B] mt-0.5">
-              Unified ledger and stock deductions propagate instantly.
+              {t('invoiceToPos.descEngine')}
             </p>
           </div>
           <div className="text-[10px] font-mono text-[#6D57A5] font-semibold pt-1 border-t border-[#E9E4F1]">
-            0 Redundant Entry · 1 Truth
+            {t('invoiceToPos.ledgerEngine')}
           </div>
         </div>
 
@@ -169,7 +169,7 @@ export const InvoiceToPosTransition: React.FC = () => {
               <ShoppingBag className="w-4 h-4" />
             </div>
             <span className="text-[10px] font-mono text-[#129267] font-semibold bg-[#E4F8F0] px-2 py-0.5 rounded border border-[#17B681]/30">
-              Terminal 01
+              {t('invoiceToPos.badgePos')}
             </span>
           </div>
           <div>
@@ -177,12 +177,12 @@ export const InvoiceToPosTransition: React.FC = () => {
               {t('invoiceToPos.stepPos')}
             </h5>
             <p className="text-[10px] text-[#625D6B] mt-0.5">
-              Counter cashier operates with synchronized catalog and inventory.
+              {t('invoiceToPos.descPos')}
             </p>
           </div>
           <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#17B681] font-semibold pt-1 border-t border-[#E9E4F1]">
             <CheckCircle2 className="w-3 h-3 text-[#17B681]" />
-            <span>Multi-Register Synchronized</span>
+            <span>{t('invoiceToPos.registerPos')}</span>
           </div>
         </div>
       </div>
