@@ -1,51 +1,68 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Sparkles, Utensils, Scissors, ShoppingCart, Shirt } from 'lucide-react';
+import {
+  ShoppingBag,
+  Sparkles,
+  Utensils,
+  Scissors,
+  ShoppingCart,
+  Shirt,
+  Layers,
+  Coins,
+  Package,
+  Receipt,
+} from 'lucide-react';
 import { Container } from '../ui/Container';
-import { SectionHeading } from '../ui/SectionHeading';
-import { PosFeatureCard } from './PosFeatureCard';
 import { PosDashboardPreview } from './PosDashboardPreview';
 import { useLanguage } from '../../context/LanguageContext';
 import { gsap, prefersReducedMotion } from '../../lib/gsap';
 
 export const PosFeaturesSection: React.FC = () => {
-  // Default selected feature: pos-billing
   const [selectedFeatureId, setSelectedFeatureId] = useState<string>('pos-billing');
   const sectionRef = useRef<HTMLDivElement>(null);
+  const titleLineRef = useRef<HTMLSpanElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
   const streamBadgeRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const capsGridRef = useRef<HTMLDivElement>(null);
   const handoffRef = useRef<HTMLDivElement>(null);
   const { t, isRtl } = useLanguage();
 
-  // 4 High-Level Enterprise Capability Groups
-  const capabilities = [
+  // 5 Clean Key Capabilities based on prompt requirements: Billing, Products, Orders, Payments, Inventory
+  const fiveCapabilities = [
     {
-      id: 'sales-billing',
+      id: 'billing',
       previewId: 'pos-billing',
-      name: t('posFeatures.cap1Title'),
-      subtitle: t('posFeatures.cap1Subtitle'),
-      description: t('posFeatures.cap1Desc'),
+      icon: Receipt,
+      title: t('posFeatures.capBilling'),
+      desc: t('posFeatures.capBillingDesc'),
     },
     {
-      id: 'inventory-ops',
+      id: 'products',
       previewId: 'inventory',
-      name: t('posFeatures.cap2Title'),
-      subtitle: t('posFeatures.cap2Subtitle'),
-      description: t('posFeatures.cap2Desc'),
+      icon: ShoppingBag,
+      title: t('posFeatures.capProducts'),
+      desc: t('posFeatures.capProductsDesc'),
     },
     {
-      id: 'customers-management',
-      previewId: 'customers',
-      name: t('posFeatures.cap3Title'),
-      subtitle: t('posFeatures.cap3Subtitle'),
-      description: t('posFeatures.cap3Desc'),
+      id: 'orders',
+      previewId: 'pos-billing',
+      icon: Layers,
+      title: t('posFeatures.capOrders'),
+      desc: t('posFeatures.capOrdersDesc'),
     },
     {
-      id: 'reports-insights',
-      previewId: 'reports',
-      name: t('posFeatures.cap4Title'),
-      subtitle: t('posFeatures.cap4Subtitle'),
-      description: t('posFeatures.cap4Desc'),
+      id: 'payments',
+      previewId: 'pos-billing',
+      icon: Coins,
+      title: t('posFeatures.capPayments'),
+      desc: t('posFeatures.capPaymentsDesc'),
+    },
+    {
+      id: 'inventory',
+      previewId: 'inventory',
+      icon: Package,
+      title: t('posFeatures.capInventory'),
+      desc: t('posFeatures.capInventoryDesc'),
     },
   ];
 
@@ -53,84 +70,65 @@ export const PosFeaturesSection: React.FC = () => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      // 1. Data stream arrival badge
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      // 1. Badge & masked title reveal
       if (streamBadgeRef.current) {
-        gsap.fromTo(
+        tl.fromTo(
           streamBadgeRef.current,
-          { opacity: 0.2, y: -15 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: streamBadgeRef.current,
-              start: 'top 88%',
-              toggleActions: 'play none none none',
-            },
-          }
+          { opacity: 0, y: -14 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
         );
       }
 
-      // 2. Capability cards stagger elevation
-      if (cardsRef.current) {
-        gsap.fromTo(
-          cardsRef.current.children,
-          { scale: 0.98, y: 20, opacity: 0.3 },
+      if (titleLineRef.current) {
+        tl.fromTo(
+          titleLineRef.current,
+          { yPercent: 110, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 0.8, ease: 'power4.out' },
+          '-=0.3'
+        );
+      }
+
+      if (descRef.current) {
+        tl.fromTo(
+          descRef.current,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          '-=0.45'
+        );
+      }
+
+      // 2. 5 capabilities staggered reveal
+      if (capsGridRef.current) {
+        tl.fromTo(
+          capsGridRef.current.children,
+          { opacity: 0, y: 18, scale: 0.98 },
           {
+            opacity: 1,
+            y: 0,
             scale: 1,
-            y: 0,
-            opacity: 1,
-            stagger: 0.07,
-            duration: 0.7,
+            duration: 0.5,
+            stagger: 0.08,
             ease: 'power2.out',
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: 'top 85%',
-              end: 'top 50%',
-              scrub: 0.5,
-            },
-          }
+          },
+          '-=0.2'
         );
       }
 
-      // 3. Settle preview dashboard workspace
-      if (previewRef.current) {
-        gsap.fromTo(
-          previewRef.current,
-          { scale: 0.98, y: 22, opacity: 0.4 },
-          {
-            scale: 1,
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: previewRef.current,
-              start: 'top 85%',
-              end: 'top 48%',
-              scrub: 0.5,
-            },
-          }
-        );
-      }
-
-      // 4. POS -> Business Types Handoff bridge elevation
+      // 3. Handoff bridge to Business Types
       if (handoffRef.current) {
-        gsap.fromTo(
+        tl.fromTo(
           handoffRef.current,
-          { y: 24, opacity: 0.3 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: handoffRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          '-=0.1'
         );
       }
     }, sectionRef);
@@ -138,93 +136,106 @@ export const PosFeaturesSection: React.FC = () => {
     return () => ctx.revert();
   }, [isRtl]);
 
-  // Subtle settle when selected feature changes
-  useEffect(() => {
-    if (prefersReducedMotion() || typeof window === 'undefined' || !previewRef.current) return;
-    gsap.fromTo(
-      previewRef.current,
-      { opacity: 0.85, y: 4 },
-      { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }
-    );
-  }, [selectedFeatureId]);
-
-  // Determine if a capability group is currently active based on preview feature ID
-  const isCapabilityActive = (cap: typeof capabilities[0]) => {
-    if (cap.previewId === selectedFeatureId) return true;
-    if (cap.id === 'sales-billing' && ['pos-billing', 'returns', 'sales-history'].includes(selectedFeatureId)) return true;
-    if (cap.id === 'inventory-ops' && ['inventory', 'damaged-products'].includes(selectedFeatureId)) return true;
-    if (cap.id === 'customers-management' && selectedFeatureId === 'customers') return true;
-    if (cap.id === 'reports-insights' && selectedFeatureId === 'reports') return true;
-    return false;
-  };
-
   return (
     <section
       ref={sectionRef}
       id="pos-features"
-      className="py-20 lg:py-28 relative overflow-hidden scroll-mt-20 bg-[#FAF8FC] border-b border-[#E9E4F1]"
+      className="py-16 sm:py-20 lg:py-24 relative overflow-hidden scroll-mt-20 bg-[#FAF8FC] border-b border-[#E9E4F1]"
       aria-label="POS Capabilities Section"
     >
       <Container size="xl" className="space-y-12 lg:space-y-16">
-        {/* 1. ERP Core Data Stream Indicator */}
-        <div ref={streamBadgeRef} className="flex flex-col items-center text-center space-y-2">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#E9E4F1] text-[11px] font-mono text-[#17B681] font-bold shadow-2xs">
+        {/* 1. Header: ERPGEN POS with Masked Title Reveal */}
+        <div className="text-center space-y-4 max-w-3xl mx-auto">
+          <div
+            ref={streamBadgeRef}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#E9E4F1] text-[11px] font-mono text-[#17B681] font-bold shadow-2xs"
+          >
             <ShoppingBag className="w-3.5 h-3.5 text-[#17B681]" />
-            <span>{t('posStory.badge')}</span>
+            <span>{t('posFeatures.productEyebrow')}</span>
           </div>
-          <p className="text-[11px] text-[#625D6B] font-mono">
-            {t('posStory.terminalOnline')}
+
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1F1B2D] font-heading leading-tight">
+            <span className="block overflow-hidden py-0.5">
+              <span ref={titleLineRef} className="inline-block will-change-transform">
+                {t('posFeatures.title')}{' '}
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-[#17B681] to-[#6D57A5]">
+                  {t('posFeatures.titleGradient')}
+                </span>
+              </span>
+            </span>
+          </h2>
+
+          <p ref={descRef} className="text-xs sm:text-sm lg:text-base text-[#625D6B] max-w-2xl mx-auto leading-relaxed">
+            {t('posFeatures.description')}
           </p>
-          <div className="w-0.5 h-8 bg-linear-to-b from-[#17B681] to-[#6D57A5] rounded-full my-1" />
+
+          <div className="w-0.5 h-6 bg-linear-to-b from-[#17B681] to-[#6D57A5] rounded-full mx-auto my-1" />
         </div>
 
-        {/* 2. Section Intro */}
-        <SectionHeading
-          eyebrow={t('posFeatures.eyebrow')}
-          title={t('posFeatures.title')}
-          titleGradient={t('posFeatures.titleGradient')}
-          description={t('posFeatures.description')}
-        />
-
-        {/* 3. 4 Premium Capability Cards Grid */}
-        <div
-          ref={cardsRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
-          role="region"
-          aria-label="POS Capabilities Overview"
-        >
-          {capabilities.map((cap) => (
-            <PosFeatureCard
-              key={cap.id}
-              id={cap.id}
-              name={cap.name}
-              subtitle={cap.subtitle}
-              description={cap.description}
-              isSelected={isCapabilityActive(cap)}
-              onSelect={() => setSelectedFeatureId(cap.previewId)}
-            />
-          ))}
-        </div>
-
-        {/* 4. Interactive POS Application Workspace Visual (5-Layer Spatial Stack) */}
-        <div ref={previewRef} className="pt-2 will-change-[transform,opacity]">
+        {/* 2. Large Clean POS Product Visual (Enters from depth with sequential panels) */}
+        <div ref={previewRef}>
           <PosDashboardPreview
             selectedFeatureId={selectedFeatureId}
             onSelectFeature={(id) => setSelectedFeatureId(id)}
           />
         </div>
 
-        {/* 5. POS → Business Types Handoff Bridge */}
+        {/* 3. 5 Key Capabilities: Billing, Products, Orders, Payments, Inventory */}
+        <div
+          ref={capsGridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4 max-w-6xl mx-auto"
+          role="region"
+          aria-label="POS Key Capabilities"
+        >
+          {fiveCapabilities.map((cap) => {
+            const Icon = cap.icon;
+            const isSelected = selectedFeatureId === cap.previewId;
+
+            return (
+              <button
+                type="button"
+                key={cap.id}
+                onClick={() => setSelectedFeatureId(cap.previewId)}
+                className={`p-4 rounded-2xl border text-start transition-all cursor-pointer flex flex-col justify-between ${
+                  isSelected
+                    ? 'bg-white border-[#17B681] shadow-sm'
+                    : 'bg-white/80 border-[#E9E4F1] hover:border-[#17B681]/40 hover:bg-white'
+                }`}
+              >
+                <div className="space-y-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-[#1F1B2D] font-heading">
+                      {cap.title}
+                    </h4>
+                    <p className="text-xs text-[#625D6B] mt-1 leading-relaxed">
+                      {cap.desc}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-2 mt-2 border-t border-[#E9E4F1] flex items-center justify-between text-[10px] font-mono text-[#17B681] font-semibold">
+                  <span>ERPGen POS</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#17B681]" />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 4. POS → Business Types Handoff Bridge */}
         <div
           ref={handoffRef}
-          className="pt-8 sm:pt-12 text-center max-w-3xl mx-auto space-y-4 border-t border-[#E9E4F1]"
+          className="pt-6 sm:pt-10 text-center max-w-3xl mx-auto space-y-4 border-t border-[#E9E4F1]"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#E9E4F1] text-[11px] font-mono text-[#6D57A5] font-bold shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-[#17B681]" />
             <span>{t('posHandoff.eyebrow')}</span>
           </div>
 
-          <h4 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#1F1B2D] font-heading">
+          <h4 className="text-xl sm:text-2xl font-extrabold text-[#1F1B2D] font-heading">
             {t('posHandoff.title')}{' '}
             <span className="text-transparent bg-clip-text bg-linear-to-r from-[#6D57A5] to-[#17B681]">
               {t('posHandoff.titleGradient')}
@@ -236,23 +247,35 @@ export const PosFeaturesSection: React.FC = () => {
           </p>
 
           {/* 4 Industry Quick Icons */}
-          <div className="flex items-center justify-center gap-4 sm:gap-6 pt-2">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <a
+              href="#business-types"
+              className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3.5 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs hover:border-[#6D57A5]/40 transition-colors"
+            >
               <Utensils className="w-3.5 h-3.5 text-[#6D57A5]" />
               <span>{t('posIndustries.restaurant')}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs">
+            </a>
+            <a
+              href="#business-types"
+              className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3.5 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs hover:border-[#17B681]/40 transition-colors"
+            >
               <Scissors className="w-3.5 h-3.5 text-[#17B681]" />
               <span>{t('posIndustries.barbershop')}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs">
+            </a>
+            <a
+              href="#business-types"
+              className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3.5 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs hover:border-[#6D57A5]/40 transition-colors"
+            >
               <ShoppingCart className="w-3.5 h-3.5 text-[#6D57A5]" />
               <span>{t('posIndustries.supermarket')}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs">
+            </a>
+            <a
+              href="#business-types"
+              className="flex items-center gap-1.5 text-xs font-semibold text-[#1F1B2D] bg-white px-3.5 py-1.5 rounded-xl border border-[#E9E4F1] shadow-2xs hover:border-[#17B681]/40 transition-colors"
+            >
               <Shirt className="w-3.5 h-3.5 text-[#17B681]" />
               <span>{t('posIndustries.laundry')}</span>
-            </div>
+            </a>
           </div>
         </div>
       </Container>

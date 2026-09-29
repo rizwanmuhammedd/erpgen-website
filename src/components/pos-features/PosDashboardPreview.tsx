@@ -21,40 +21,80 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
   selectedFeatureId = 'pos-billing',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { t, isRtl } = useLanguage();
+  const catalogPanelRef = useRef<HTMLDivElement>(null);
+  const orderPanelRef = useRef<HTMLDivElement>(null);
+  const settlementRowRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
+      // 1. Terminal enters from depth: scale: 0.94 -> 1, y: 32 -> 0, opacity: 0 -> 1
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      tl.fromTo(
         containerRef.current,
-        { opacity: 0, y: 24, scale: 0.98 },
+        { opacity: 0, y: 32, scale: 0.94 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.6,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
+          duration: 0.8,
+          ease: 'power3.out',
         }
-      );
+      )
+        // 2. Left Catalog panel reveals
+        .fromTo(
+          catalogPanelRef.current,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          '-=0.4'
+        )
+        // 3. Right Order panel reveals
+        .fromTo(
+          orderPanelRef.current,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          '-=0.35'
+        )
+        // 4. Payment settlement methods reveal
+        .fromTo(
+          settlementRowRef.current,
+          { opacity: 0, scale: 0.96 },
+          { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.2)' },
+          '-=0.2'
+        );
+
+      // Subtle parallax on scroll
+      gsap.to(containerRef.current, {
+        y: -12,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      });
     }, containerRef);
 
     return () => ctx.revert();
-  }, [isRtl]);
+  }, []);
 
   return (
     <div
       ref={containerRef}
-      className="w-full relative py-4 select-none"
+      className="w-full relative py-2 sm:py-4 select-none will-change-[transform,opacity]"
       aria-label="ERPGen POS Terminal Interface"
     >
-      <div className="w-full max-w-4xl mx-auto rounded-3xl border border-[#E9E4F1] shadow-xl overflow-hidden bg-white">
+      <div className="w-full max-w-4xl mx-auto rounded-3xl border border-[#E9E4F1] shadow-xl shadow-[#17B681]/5 overflow-hidden bg-white">
         {/* Terminal Header */}
         <div className="flex items-center justify-between px-5 py-3.5 bg-[#FAF8FC] border-b border-[#E9E4F1] text-xs">
           <div className="flex items-center gap-2">
@@ -70,16 +110,20 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
 
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
-            <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold bg-[#E4F8F0] text-[#129267] border-[#17B681]/30">
+            <Badge
+              variant="brand"
+              size="sm"
+              className="text-[10px] font-mono font-bold bg-[#E4F8F0] text-[#129267] border-[#17B681]/30"
+            >
               {t('posFeatures.registerOnline')}
             </Badge>
           </div>
         </div>
 
-        {/* Realistic 2-Column POS Screen */}
+        {/* 2-Column Clean POS Workspace */}
         <div className="p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left: Product Catalog & Touch Items (7 Cols) */}
-          <div className="lg:col-span-7 space-y-4">
+          <div ref={catalogPanelRef} className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-[#E9E4F1]">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-wider text-[#17B681] font-bold block">
@@ -159,7 +203,10 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
           </div>
 
           {/* Right: Active Order Ticket & Settlement (5 Cols) */}
-          <div className="lg:col-span-5 p-4 sm:p-5 rounded-2xl bg-[#FAF8FC] border border-[#E9E4F1] flex flex-col justify-between space-y-4">
+          <div
+            ref={orderPanelRef}
+            className="lg:col-span-5 p-4 sm:p-5 rounded-2xl bg-[#FAF8FC] border border-[#E9E4F1] flex flex-col justify-between space-y-4"
+          >
             <div className="space-y-3">
               {/* Order Header */}
               <div className="flex items-center justify-between pb-2.5 border-b border-[#E9E4F1]">
@@ -190,7 +237,7 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
             </div>
 
             {/* Payment Settlement Methods */}
-            <div className="space-y-2.5 pt-2 border-t border-[#E9E4F1]">
+            <div ref={settlementRowRef} className="space-y-2.5 pt-2 border-t border-[#E9E4F1]">
               <div className="flex justify-between items-baseline text-xs">
                 <span className="font-bold text-[#1F1B2D]">{t('posFeatures.settlement')}</span>
                 <span className="font-mono font-bold text-[#17B681]">{t('posFeatures.instantClearing')}</span>

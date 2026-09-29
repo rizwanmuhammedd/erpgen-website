@@ -19,7 +19,16 @@ import { gsap, prefersReducedMotion } from '../../lib/gsap';
 export const ConnectedSystemSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const coreRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const trunkLineRef = useRef<SVGLineElement>(null);
+  const lineSalesRef = useRef<SVGPathElement>(null);
+  const linePurchaseRef = useRef<SVGPathElement>(null);
+  const lineInventoryRef = useRef<SVGPathElement>(null);
+  const lineFinanceRef = useRef<SVGPathElement>(null);
+  const salesCardRef = useRef<HTMLDivElement>(null);
+  const purchaseCardRef = useRef<HTMLDivElement>(null);
+  const inventoryCardRef = useRef<HTMLDivElement>(null);
+  const financeCardRef = useRef<HTMLDivElement>(null);
+  const highlightsRef = useRef<HTMLDivElement>(null);
   const pulseDotRef = useRef<SVGCircleElement>(null);
   const { t, isRtl } = useLanguage();
 
@@ -27,52 +36,114 @@ export const ConnectedSystemSection: React.FC = () => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
+      // Sequential meaningful animation:
+      // 1. Core appears
+      // 2. Trunk & connection 1 draws -> Sales node activates
+      // 3. Connection 2 draws -> Purchase activates
+      // 4. Connection 3 draws -> Inventory activates
+      // 5. Connection 4 draws -> Finance activates
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      // 1. Core appears
       if (coreRef.current) {
-        gsap.fromTo(
+        tl.fromTo(
           coreRef.current,
-          { opacity: 0, y: 16 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: coreRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
+          { opacity: 0, y: 20, scale: 0.98 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: 'power2.out' }
         );
       }
 
+      // Trunk line drops down
+      if (trunkLineRef.current) {
+        tl.fromTo(
+          trunkLineRef.current,
+          { strokeDashoffset: 30 },
+          { strokeDashoffset: 0, duration: 0.25, ease: 'power1.inOut' }
+        );
+      }
+
+      // 2. Sales connection draws -> Sales activates
+      if (lineSalesRef.current && salesCardRef.current) {
+        tl.fromTo(
+          lineSalesRef.current,
+          { strokeDashoffset: 400 },
+          { strokeDashoffset: 0, duration: 0.35, ease: 'power1.inOut' }
+        ).fromTo(
+          salesCardRef.current,
+          { opacity: 0, y: 16, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(1.2)' },
+          '-=0.15'
+        );
+      }
+
+      // 3. Purchase connection draws -> Purchase activates
+      if (linePurchaseRef.current && purchaseCardRef.current) {
+        tl.fromTo(
+          linePurchaseRef.current,
+          { strokeDashoffset: 200 },
+          { strokeDashoffset: 0, duration: 0.3, ease: 'power1.inOut' }
+        ).fromTo(
+          purchaseCardRef.current,
+          { opacity: 0, y: 16, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(1.2)' },
+          '-=0.15'
+        );
+      }
+
+      // 4. Inventory connection draws -> Inventory activates
+      if (lineInventoryRef.current && inventoryCardRef.current) {
+        tl.fromTo(
+          lineInventoryRef.current,
+          { strokeDashoffset: 200 },
+          { strokeDashoffset: 0, duration: 0.3, ease: 'power1.inOut' }
+        ).fromTo(
+          inventoryCardRef.current,
+          { opacity: 0, y: 16, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(1.2)' },
+          '-=0.15'
+        );
+      }
+
+      // 5. Finance connection draws -> Finance activates
+      if (lineFinanceRef.current && financeCardRef.current) {
+        tl.fromTo(
+          lineFinanceRef.current,
+          { strokeDashoffset: 400 },
+          { strokeDashoffset: 0, duration: 0.35, ease: 'power1.inOut' }
+        ).fromTo(
+          financeCardRef.current,
+          { opacity: 0, y: 16, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(1.2)' },
+          '-=0.15'
+        );
+      }
+
+      // 6. Highlights strip fades in
+      if (highlightsRef.current) {
+        tl.fromTo(
+          highlightsRef.current.children,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'power2.out' },
+          '-=0.1'
+        );
+      }
+
+      // Subtle traveling pulse indicator looping
       if (pulseDotRef.current) {
         gsap.to(pulseDotRef.current, {
-          y: 10,
+          y: 20,
           scale: 1.25,
           repeat: -1,
           yoyo: true,
-          duration: 1.6,
+          duration: 1.8,
           ease: 'power1.inOut',
         });
-      }
-
-      if (cardsRef.current) {
-        gsap.fromTo(
-          cardsRef.current.children,
-          { opacity: 0, y: 16 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.08,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
       }
     }, sectionRef);
 
@@ -82,39 +153,51 @@ export const ConnectedSystemSection: React.FC = () => {
   const streams = [
     {
       id: 'sales',
+      ref: salesCardRef,
+      pathRef: lineSalesRef,
       title: t('modules.sales'),
-      category: t('modules.salesCat'),
       desc: t('connected.step1Desc'),
       icon: ShoppingBag,
       tag: 'Commerce & Orders',
       color: '#6D57A5',
+      pathD: isRtl ? 'M 400 24 L 700 24 L 700 52' : 'M 400 24 L 100 24 L 100 52',
+      dashLength: 400,
     },
     {
       id: 'purchase',
+      ref: purchaseCardRef,
+      pathRef: linePurchaseRef,
       title: t('modules.purchase'),
-      category: t('modules.purchaseCat'),
       desc: t('connected.step1Payload'),
       icon: Truck,
       tag: 'Supplier Inflow',
       color: '#6D57A5',
+      pathD: isRtl ? 'M 400 24 L 500 24 L 500 52' : 'M 400 24 L 300 24 L 300 52',
+      dashLength: 200,
     },
     {
       id: 'inventory',
+      ref: inventoryCardRef,
+      pathRef: lineInventoryRef,
       title: t('modules.inventory'),
-      category: t('modules.inventoryCat'),
       desc: t('connected.step2Desc'),
       icon: Package,
       tag: 'Stock & Warehouses',
       color: '#17B681',
+      pathD: isRtl ? 'M 400 24 L 300 24 L 300 52' : 'M 400 24 L 500 24 L 500 52',
+      dashLength: 200,
     },
     {
       id: 'finance',
+      ref: financeCardRef,
+      pathRef: lineFinanceRef,
       title: t('modules.finance'),
-      category: t('modules.financeCat'),
       desc: t('connected.step3Desc'),
       icon: Coins,
       tag: 'Ledgers & Taxes',
       color: '#17B681',
+      pathD: isRtl ? 'M 400 24 L 100 24 L 100 52' : 'M 400 24 L 700 24 L 700 52',
+      dashLength: 400,
     },
   ];
 
@@ -143,7 +226,7 @@ export const ConnectedSystemSection: React.FC = () => {
       className="py-16 sm:py-20 lg:py-24 relative overflow-hidden bg-[#FAF8FC] border-b border-[#E9E4F1]"
       aria-label="Connected ERP Platform Architecture"
     >
-      <Container size="xl" className="space-y-12 sm:space-y-16">
+      <Container size="xl" className="space-y-10 sm:space-y-14">
         {/* Section Heading */}
         <SectionHeading
           eyebrow={t('connected.eyebrow')}
@@ -153,7 +236,7 @@ export const ConnectedSystemSection: React.FC = () => {
         />
 
         {/* Central Core & Connected Streams Layout */}
-        <div className="max-w-5xl mx-auto space-y-6">
+        <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
           {/* Central ERP Core Banner */}
           <div
             ref={coreRef}
@@ -187,39 +270,81 @@ export const ConnectedSystemSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Purposeful Connection Drawing: Core to Streams with Single Pulse */}
-          <div className="hidden lg:flex justify-center -my-2 relative z-0 pointer-events-none">
-            <svg viewBox="0 0 800 36" className="w-full max-w-4xl h-9 overflow-visible" fill="none">
+          {/* Simple Visual Drawing: Core sequentially connects to the 4 operational streams */}
+          <div className="hidden lg:flex justify-center -my-3 relative z-0 pointer-events-none">
+            <svg viewBox="0 0 800 52" className="w-full max-w-4xl h-13 overflow-visible" fill="none">
               {/* Trunk line down from Core */}
-              <line x1="400" y1="0" x2="400" y2="16" stroke="#6D57A5" strokeWidth="2" strokeDasharray="3 3" className="opacity-40" />
-              {/* Distribution bar across streams */}
-              <path d="M 100 16 L 700 16" stroke="#E9E4F1" strokeWidth="2" />
-              {/* Downward connector drops */}
-              <line x1="100" y1="16" x2="100" y2="36" stroke="#6D57A5" strokeWidth="2" />
-              <line x1="300" y1="16" x2="300" y2="36" stroke="#6D57A5" strokeWidth="2" />
-              <line x1="500" y1="16" x2="500" y2="36" stroke="#17B681" strokeWidth="2" />
-              <line x1="700" y1="16" x2="700" y2="36" stroke="#17B681" strokeWidth="2" />
-              {/* Single light pulse traveling along trunk */}
-              <circle ref={pulseDotRef} cx="400" cy="10" r="3.5" fill="#17B681" />
+              <line
+                ref={trunkLineRef}
+                x1="400"
+                y1="0"
+                x2="400"
+                y2="24"
+                stroke="#6D57A5"
+                strokeWidth="2"
+                strokeDasharray="30"
+                strokeDashoffset="30"
+              />
+
+              {/* Branch 1: Core -> Sales */}
+              <path
+                ref={lineSalesRef}
+                d={streams[0].pathD}
+                stroke="#6D57A5"
+                strokeWidth="2"
+                strokeDasharray="400"
+                strokeDashoffset="400"
+              />
+
+              {/* Branch 2: Core -> Purchase */}
+              <path
+                ref={linePurchaseRef}
+                d={streams[1].pathD}
+                stroke="#6D57A5"
+                strokeWidth="2"
+                strokeDasharray="200"
+                strokeDashoffset="200"
+              />
+
+              {/* Branch 3: Core -> Inventory */}
+              <path
+                ref={lineInventoryRef}
+                d={streams[2].pathD}
+                stroke="#17B681"
+                strokeWidth="2"
+                strokeDasharray="200"
+                strokeDashoffset="200"
+              />
+
+              {/* Branch 4: Core -> Finance */}
+              <path
+                ref={lineFinanceRef}
+                d={streams[3].pathD}
+                stroke="#17B681"
+                strokeWidth="2"
+                strokeDasharray="400"
+                strokeDashoffset="400"
+              />
+
+              {/* Subtle light pulse traveling along trunk */}
+              <circle ref={pulseDotRef} cx="400" cy="12" r="3.5" fill="#17B681" />
             </svg>
           </div>
 
           {/* Mobile Vertical Indicator */}
           <div className="lg:hidden flex justify-center -my-1">
-            <div className="w-0.5 h-6 bg-gradient-to-b from-[#6D57A5] to-[#17B681] rounded-full animate-pulse" />
+            <div className="w-0.5 h-6 bg-linear-to-b from-[#6D57A5] to-[#17B681] rounded-full animate-pulse" />
           </div>
 
           {/* Connected Streams Grid: Sales, Purchase, Inventory, Finance */}
-          <div
-            ref={cardsRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 relative z-10"
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 relative z-10">
             {streams.map((stream) => {
               const Icon = stream.icon;
               return (
                 <div
                   key={stream.id}
-                  className="p-5 rounded-2xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 hover:shadow-sm transition-all flex flex-col justify-between"
+                  ref={stream.ref}
+                  className="p-5 rounded-2xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 hover:shadow-md transition-all flex flex-col justify-between will-change-transform"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -250,7 +375,7 @@ export const ConnectedSystemSection: React.FC = () => {
           </div>
 
           {/* 3 Core Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div ref={highlightsRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
             {highlights.map((h, i) => {
               const Icon = h.icon;
               return (

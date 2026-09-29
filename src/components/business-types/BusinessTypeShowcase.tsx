@@ -41,6 +41,12 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
         { opacity: 0.75, scale: 0.98 },
         { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' }
       );
+
+      gsap.fromTo(
+        '.showcase-cap-item',
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' }
+      );
     }
   }, [businessId, isRtl]);
   const businessData = {
@@ -169,7 +175,7 @@ export const BusinessTypeShowcase: React.FC<BusinessTypeShowcaseProps> = ({
                     return (
                       <div
                         key={cap}
-                        className="flex items-center gap-1.5 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs text-[#1F1B2D]"
+                        className="showcase-cap-item flex items-center gap-1.5 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-xs text-[#1F1B2D]"
                       >
                         <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#17B681] shrink-0" />
                         <span className="font-medium text-[10px] sm:text-[11px] leading-snug line-clamp-1">{translatedCap || cap}</span>
