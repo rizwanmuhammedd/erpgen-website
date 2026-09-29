@@ -153,8 +153,6 @@ export const ConnectedSystemSection: React.FC = () => {
   const streams = [
     {
       id: 'sales',
-      ref: salesCardRef,
-      pathRef: lineSalesRef,
       title: t('modules.sales'),
       desc: t('connected.step1Desc'),
       icon: ShoppingBag,
@@ -165,8 +163,6 @@ export const ConnectedSystemSection: React.FC = () => {
     },
     {
       id: 'purchase',
-      ref: purchaseCardRef,
-      pathRef: linePurchaseRef,
       title: t('modules.purchase'),
       desc: t('connected.step1Payload'),
       icon: Truck,
@@ -177,8 +173,6 @@ export const ConnectedSystemSection: React.FC = () => {
     },
     {
       id: 'inventory',
-      ref: inventoryCardRef,
-      pathRef: lineInventoryRef,
       title: t('modules.inventory'),
       desc: t('connected.step2Desc'),
       icon: Package,
@@ -189,8 +183,6 @@ export const ConnectedSystemSection: React.FC = () => {
     },
     {
       id: 'finance',
-      ref: financeCardRef,
-      pathRef: lineFinanceRef,
       title: t('modules.finance'),
       desc: t('connected.step3Desc'),
       icon: Coins,
@@ -343,7 +335,12 @@ export const ConnectedSystemSection: React.FC = () => {
               return (
                 <div
                   key={stream.id}
-                  ref={stream.ref}
+                  ref={(el) => {
+                    if (stream.id === 'sales') salesCardRef.current = el;
+                    else if (stream.id === 'purchase') purchaseCardRef.current = el;
+                    else if (stream.id === 'inventory') inventoryCardRef.current = el;
+                    else if (stream.id === 'finance') financeCardRef.current = el;
+                  }}
                   className="p-5 rounded-2xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 hover:shadow-md transition-all flex flex-col justify-between will-change-transform"
                 >
                   <div className="space-y-3">

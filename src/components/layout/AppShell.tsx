@@ -13,7 +13,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
     <SmoothScrollProvider>
       <DesktopCursor />
       <MotionDebugHud />
-      <div className="min-h-screen bg-white text-[#1F1B2D] relative selection:bg-[#6D57A5]/15 selection:text-[#6D57A5] overflow-hidden flex flex-col">
+      <div className="min-h-screen bg-white text-[#1F1B2D] relative selection:bg-[#6D57A5]/15 selection:text-[#6D57A5] overflow-x-clip flex flex-col">
 
         {/* Subtle light ambient atmosphere (ERPGen Purple & Emerald subtle accents) */}
         <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">

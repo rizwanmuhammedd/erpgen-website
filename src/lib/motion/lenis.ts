@@ -46,6 +46,9 @@ export const initGlobalLenis = (config?: LenisConfig): Lenis | null => {
 
   globalLenisInstance = lenis;
   isInitialized = true;
+  if (typeof window !== 'undefined') {
+    (window as any).__lenis = lenis;
+  }
 
   // Synchronize Lenis scroll events with GSAP ScrollTrigger
   lenis.on('scroll', ScrollTrigger.update);
