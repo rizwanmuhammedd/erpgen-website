@@ -156,6 +156,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
           <p className="text-sm sm:text-base text-[#625D6B] max-w-2xl mx-auto leading-relaxed">
             {t('sixAreas.description')}
           </p>
+          <div className="w-0.5 h-6 bg-linear-to-b from-[#6D57A5] to-[#17B681] rounded-full mx-auto my-1" />
         </div>
 
         {/* Clean 6-Area Grid */}
@@ -177,7 +178,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
                   {/* Top Bar: Icon, Category & Number */}
                   <div className="flex items-center justify-between gap-3 mb-4">
                     <div
-                      className={`w-11 h-11 rounded-xl ${area.badgeBg} border ${area.badgeBorder} flex items-center justify-center transition-transform group-hover:scale-105 shadow-2xs`}
+                      className={`w-11 h-11 rounded-xl ${area.badgeBg} border ${area.badgeBorder} flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-1 shadow-2xs`}
                     >
                       <Icon className="w-5 h-5 text-[#6D57A5]" />
                     </div>
@@ -206,7 +207,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-[#17B681]" />
                     <span>{t(area.flowKey as any)}</span>
                   </span>
-                  <span className="text-[#6D57A5] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+                  <span className="text-[#6D57A5] opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 flex items-center gap-0.5">
                     <ArrowRight className={`w-3 h-3 ${isRtl ? 'rotate-180' : ''}`} />
                   </span>
                 </div>

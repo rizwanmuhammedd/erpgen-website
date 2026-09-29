@@ -68,6 +68,16 @@ export const BusinessTypesSection: React.FC = () => {
     return () => ctx.revert();
   }, [isRtl]);
 
+  // Smooth crossfade when active business changes
+  useEffect(() => {
+    if (prefersReducedMotion() || typeof window === 'undefined' || !showcaseRef.current) return;
+    gsap.fromTo(
+      showcaseRef.current,
+      { opacity: 0.35, y: 8, scale: 0.99 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: 'power2.out' }
+    );
+  }, [activeBusiness]);
+
   return (
     <section
       ref={sectionRef}

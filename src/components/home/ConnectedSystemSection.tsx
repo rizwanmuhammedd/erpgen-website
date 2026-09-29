@@ -20,6 +20,7 @@ export const ConnectedSystemSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const coreRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const pulseDotRef = useRef<SVGCircleElement>(null);
   const { t, isRtl } = useLanguage();
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export const ConnectedSystemSection: React.FC = () => {
       if (coreRef.current) {
         gsap.fromTo(
           coreRef.current,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 16 },
           {
             opacity: 1,
             y: 0,
@@ -44,10 +45,21 @@ export const ConnectedSystemSection: React.FC = () => {
         );
       }
 
+      if (pulseDotRef.current) {
+        gsap.to(pulseDotRef.current, {
+          y: 10,
+          scale: 1.25,
+          repeat: -1,
+          yoyo: true,
+          duration: 1.6,
+          ease: 'power1.inOut',
+        });
+      }
+
       if (cardsRef.current) {
         gsap.fromTo(
           cardsRef.current.children,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 16 },
           {
             opacity: 1,
             y: 0,
@@ -141,11 +153,11 @@ export const ConnectedSystemSection: React.FC = () => {
         />
 
         {/* Central Core & Connected Streams Layout */}
-        <div className="max-w-5xl mx-auto space-y-8">
+        <div className="max-w-5xl mx-auto space-y-6">
           {/* Central ERP Core Banner */}
           <div
             ref={coreRef}
-            className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-[#6D57A5]/30 shadow-md relative overflow-hidden text-center"
+            className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-[#6D57A5]/30 shadow-md relative overflow-hidden text-center z-10"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF8FC] border border-[#E9E4F1] text-xs font-mono text-[#6D57A5] font-bold mb-3">
               <Layers className="w-4 h-4 text-[#17B681]" />
@@ -175,10 +187,32 @@ export const ConnectedSystemSection: React.FC = () => {
             </div>
           </div>
 
+          {/* Purposeful Connection Drawing: Core to Streams with Single Pulse */}
+          <div className="hidden lg:flex justify-center -my-2 relative z-0 pointer-events-none">
+            <svg viewBox="0 0 800 36" className="w-full max-w-4xl h-9 overflow-visible" fill="none">
+              {/* Trunk line down from Core */}
+              <line x1="400" y1="0" x2="400" y2="16" stroke="#6D57A5" strokeWidth="2" strokeDasharray="3 3" className="opacity-40" />
+              {/* Distribution bar across streams */}
+              <path d="M 100 16 L 700 16" stroke="#E9E4F1" strokeWidth="2" />
+              {/* Downward connector drops */}
+              <line x1="100" y1="16" x2="100" y2="36" stroke="#6D57A5" strokeWidth="2" />
+              <line x1="300" y1="16" x2="300" y2="36" stroke="#6D57A5" strokeWidth="2" />
+              <line x1="500" y1="16" x2="500" y2="36" stroke="#17B681" strokeWidth="2" />
+              <line x1="700" y1="16" x2="700" y2="36" stroke="#17B681" strokeWidth="2" />
+              {/* Single light pulse traveling along trunk */}
+              <circle ref={pulseDotRef} cx="400" cy="10" r="3.5" fill="#17B681" />
+            </svg>
+          </div>
+
+          {/* Mobile Vertical Indicator */}
+          <div className="lg:hidden flex justify-center -my-1">
+            <div className="w-0.5 h-6 bg-gradient-to-b from-[#6D57A5] to-[#17B681] rounded-full animate-pulse" />
+          </div>
+
           {/* Connected Streams Grid: Sales, Purchase, Inventory, Finance */}
           <div
             ref={cardsRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 relative z-10"
           >
             {streams.map((stream) => {
               const Icon = stream.icon;
