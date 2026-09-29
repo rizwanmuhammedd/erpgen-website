@@ -54,17 +54,16 @@ export const ModulesSection: React.FC = () => {
       if (configuratorRef.current) {
         gsap.fromTo(
           configuratorRef.current,
-          { scale: 0.98, y: 24, opacity: 0.4 },
+          { y: 20, opacity: 0.4 },
           {
-            scale: 1,
             y: 0,
             opacity: 1,
+            duration: 0.6,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: configuratorRef.current,
               start: 'top 85%',
-              end: 'top 52%',
-              scrub: 0.5,
+              toggleActions: 'play none none none',
             },
           }
         );

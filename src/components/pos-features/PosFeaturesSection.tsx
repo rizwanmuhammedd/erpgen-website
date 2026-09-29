@@ -138,13 +138,13 @@ export const PosFeaturesSection: React.FC = () => {
     return () => ctx.revert();
   }, [isRtl]);
 
-  // Perspective settle when selected feature changes
+  // Subtle settle when selected feature changes
   useEffect(() => {
     if (prefersReducedMotion() || typeof window === 'undefined' || !previewRef.current) return;
     gsap.fromTo(
       previewRef.current,
-      { opacity: 0.75, y: 6, scale: 0.99, rotateX: 2, transformPerspective: 1000 },
-      { opacity: 1, y: 0, scale: 1, rotateX: 0, duration: 0.3, ease: 'power2.out' }
+      { opacity: 0.85, y: 4 },
+      { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }
     );
   }, [selectedFeatureId]);
 

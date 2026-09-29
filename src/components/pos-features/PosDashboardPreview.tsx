@@ -21,142 +21,28 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
   selectedFeatureId = 'pos-billing',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const layerWorkspaceRef = useRef<HTMLDivElement>(null);
-  const layerTouchRef = useRef<HTMLDivElement>(null);
-  const layerTicketRef = useRef<HTMLDivElement>(null);
-  const layerSettlementRef = useRef<HTMLDivElement>(null);
-  const layerHardwareRef = useRef<HTMLDivElement>(null);
   const { t, isRtl } = useLanguage();
 
   useEffect(() => {
     if (prefersReducedMotion() || typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      // Desktop and Tablet: 5-Layer Hierarchical Workspace Assembly
-      mm.add('(min-width: 768px)', () => {
-        const tl = gsap.timeline({
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 0, y: 24, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top 85%',
-            end: 'bottom 45%',
-            scrub: 0.6,
+            toggleActions: 'play none none none',
           },
-        });
-
-        // 1. Main POS Workspace Frame enters with perspective settle
-        tl.fromTo(
-          layerWorkspaceRef.current,
-          {
-            y: 35,
-            scale: 0.95,
-            transformPerspective: 1200,
-            rotateX: 8,
-            opacity: 0.4,
-          },
-          {
-            y: 0,
-            scale: 1,
-            rotateX: 0,
-            opacity: 1,
-            ease: 'power2.out',
-            duration: 0.8,
-          }
-        );
-
-        // 2. Product / Touch Catalog tiles activate with slight stagger
-        if (layerTouchRef.current) {
-          tl.fromTo(
-            layerTouchRef.current.children,
-            { y: 12, opacity: 0.3, scale: 0.97 },
-            {
-              y: 0,
-              opacity: 1,
-              scale: 1,
-              stagger: 0.08,
-              ease: 'power2.out',
-              duration: 0.6,
-            },
-            '-=0.4'
-          );
         }
-
-        // 3. Active Order Ticket floats into its pinned corner anchor
-        const lateralShift = isRtl ? -20 : 20;
-
-        tl.fromTo(
-          layerTicketRef.current,
-          {
-            y: 40,
-            x: lateralShift,
-            scale: 0.9,
-            opacity: 0.3,
-            rotateZ: isRtl ? -2 : 2,
-          },
-          {
-            y: 0,
-            x: 0,
-            scale: 1,
-            opacity: 1,
-            rotateZ: 0,
-            ease: 'power2.out',
-            duration: 0.7,
-          },
-          '-=0.3'
-        );
-
-        // 4. Settlement & clearing elements highlight
-        if (layerSettlementRef.current) {
-          tl.fromTo(
-            layerSettlementRef.current,
-            { opacity: 0.4, scale: 0.95 },
-            { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.5 },
-            '-=0.2'
-          );
-        }
-
-        // 5. Hardware thermal status floats to top anchor
-        tl.fromTo(
-          layerHardwareRef.current,
-          {
-            y: -25,
-            x: -lateralShift,
-            scale: 0.88,
-            opacity: 0.3,
-            rotateZ: isRtl ? 2 : -2,
-          },
-          {
-            y: 0,
-            x: 0,
-            scale: 1,
-            opacity: 1,
-            rotateZ: 0,
-            ease: 'power2.out',
-            duration: 0.6,
-          },
-          '-=0.3'
-        );
-      });
-
-      // Mobile: Simplified vertical flow without lateral displacement
-      mm.add('(max-width: 767px)', () => {
-        gsap.fromTo(
-          layerWorkspaceRef.current,
-          { y: 20, opacity: 0.4 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      });
+      );
     }, containerRef);
 
     return () => ctx.revert();
@@ -165,186 +51,179 @@ export const PosDashboardPreview: React.FC<PosDashboardPreviewProps> = ({
   return (
     <div
       ref={containerRef}
-      className="w-full relative py-6 px-2 sm:px-4 select-none"
-      aria-label="ERPGen POS Layered Composition"
+      className="w-full relative py-4 select-none"
+      aria-label="ERPGen POS Terminal Interface"
     >
-      {/* Background Spatial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#17B681]/5 blur-[100px] rounded-full pointer-events-none" />
-
-      {/* Layer Container */}
-      <div className="relative max-w-4xl mx-auto">
-        {/* LAYER 1: Main POS Workspace Chassis */}
-        <div
-          ref={layerWorkspaceRef}
-          className="w-full rounded-2xl sm:rounded-3xl border border-[#E9E4F1] shadow-lg overflow-hidden bg-white will-change-transform relative z-10"
-        >
-          {/* Window Header */}
-          <div className="flex items-center justify-between px-5 py-3.5 bg-[#FAF8FC] border-b border-[#E9E4F1] text-xs">
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/40 inline-block" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#17B681]/40 inline-block" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/20 inline-block" />
-              </div>
-              <span className="text-[#625D6B] font-mono text-[11px] ms-2">
-                erpgen.pos / counter-terminal / {selectedFeatureId}
-              </span>
+      <div className="w-full max-w-4xl mx-auto rounded-3xl border border-[#E9E4F1] shadow-xl overflow-hidden bg-white">
+        {/* Terminal Header */}
+        <div className="flex items-center justify-between px-5 py-3.5 bg-[#FAF8FC] border-b border-[#E9E4F1] text-xs">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/40 inline-block" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#17B681]/40 inline-block" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#6D57A5]/20 inline-block" />
             </div>
-
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
-              <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold bg-[#E4F8F0] text-[#129267] border-[#17B681]/30">
-                {t('posFeatures.registerOnline')}
-              </Badge>
-            </div>
+            <span className="text-[#625D6B] font-mono text-[11px] ms-2">
+              erpgen.pos / counter-terminal / {selectedFeatureId}
+            </span>
           </div>
 
-          {/* Clean Product Surface */}
-          <div className="p-6 sm:p-8 lg:p-10 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E9E4F1]">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
+            <Badge variant="brand" size="sm" className="text-[10px] font-mono font-bold bg-[#E4F8F0] text-[#129267] border-[#17B681]/30">
+              {t('posFeatures.registerOnline')}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Realistic 2-Column POS Screen */}
+        <div className="p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left: Product Catalog & Touch Items (7 Cols) */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E9E4F1]">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-wider text-[#17B681] font-bold block">
                   {t('posFeatures.touchCatalog')}
                 </span>
-                <h4 className="text-lg sm:text-xl font-extrabold text-[#1F1B2D] font-heading mt-0.5">
+                <h4 className="text-base sm:text-lg font-extrabold text-[#1F1B2D] font-heading">
                   {t('posFeatures.counterSpeed')}
                 </h4>
               </div>
-
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#FAF8FC] border border-[#E9E4F1] text-[#625D6B]">
-                  {t('posFeatures.catalogReady')}
-                </span>
-                <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#E4F8F0] border border-[#17B681]/30 text-[#129267]">
-                  {t('posFeatures.instantAdd')}
-                </span>
-              </div>
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#E4F8F0] text-[#129267] border border-[#17B681]/30">
+                {t('posFeatures.instantAdd')}
+              </span>
             </div>
 
-            {/* LAYER 2: Touch Item Grid */}
-            <div
-              ref={layerTouchRef}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
-            >
-              <div className="p-4 rounded-xl bg-[#FAF8FC] border border-[#17B681]/40 hover:border-[#17B681] transition-all duration-200 group cursor-pointer shadow-2xs">
-                <div className="w-9 h-9 rounded-lg bg-white border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-3 shadow-2xs group-hover:scale-105 transition-transform">
-                  <ShoppingBag className="w-4 h-4" />
+            {/* Catalog Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-3.5 rounded-xl bg-[#FAF8FC] border-2 border-[#17B681] shadow-2xs">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-white border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold">
+                    <ShoppingBag className="w-4 h-4" />
+                  </div>
+                  <span className="w-2 h-2 rounded-full bg-[#17B681]" />
                 </div>
-                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#17B681] transition-colors">
+                <span className="text-xs font-bold text-[#1F1B2D] block">
                   {t('posFeatures.bevSelect')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.customMod')}</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">
+                  {t('posFeatures.customMod')}
+                </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
-                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
+              <div className="p-3.5 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all">
+                <div className="w-8 h-8 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-2">
                   <Sparkles className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                <span className="text-xs font-bold text-[#1F1B2D] block">
                   {t('posFeatures.bakeryDining')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.kitchenRouting')}</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">
+                  {t('posFeatures.kitchenRouting')}
+                </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all duration-200 group cursor-pointer">
-                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
+              <div className="p-3.5 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#6D57A5]/40 transition-all">
+                <div className="w-8 h-8 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold mb-2">
                   <Layers className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#6D57A5] transition-colors">
+                <span className="text-xs font-bold text-[#1F1B2D] block">
                   {t('posFeatures.packagedRetail')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.barcodeScanned')}</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">
+                  {t('posFeatures.barcodeScanned')}
+                </span>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#17B681]/40 transition-all duration-200 group cursor-pointer">
-                <div className="w-9 h-9 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-3 group-hover:scale-105 transition-transform">
+              <div className="p-3.5 rounded-xl bg-white border border-[#E9E4F1] hover:border-[#17B681]/40 transition-all">
+                <div className="w-8 h-8 rounded-lg bg-[#FAF8FC] border border-[#E9E4F1] text-[#17B681] flex items-center justify-center font-bold mb-2">
                   <CreditCard className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-bold text-[#1F1B2D] block group-hover:text-[#17B681] transition-colors">
+                <span className="text-xs font-bold text-[#1F1B2D] block">
                   {t('posFeatures.expressService')}
                 </span>
-                <span className="text-[10px] text-[#625D6B] block mt-0.5">{t('posFeatures.directCheckout')}</span>
+                <span className="text-[10px] text-[#625D6B] block mt-0.5">
+                  {t('posFeatures.directCheckout')}
+                </span>
               </div>
             </div>
 
-            {/* Base Footer Indicator */}
+            {/* Catalog Footer Strip */}
             <div className="flex items-center justify-between text-xs text-[#625D6B] pt-2 border-t border-[#E9E4F1]">
-              <span className="flex items-center gap-1.5 text-[#129267] font-medium">
-                <CheckCircle2 className="w-4 h-4 text-[#17B681]" />
+              <span className="flex items-center gap-1.5 text-[#129267] font-semibold text-[11px]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#17B681]" />
                 <span>{t('posFeatures.syncLedger')}</span>
               </span>
               <span className="font-mono text-[10px] text-[#6D57A5] font-semibold">ERPGen POS</span>
             </div>
           </div>
-        </div>
 
-        {/* LAYER 3: Active Order Ticket & Cart State (Floats to bottom corner) */}
-        <div
-          ref={layerTicketRef}
-          className="mt-4 sm:mt-0 sm:absolute sm:-bottom-8 sm:-end-4 w-full sm:w-80 rounded-2xl bg-white border border-[#6D57A5]/30 shadow-xl p-5 space-y-3.5 will-change-transform z-20"
-        >
-          <div className="flex items-center justify-between pb-2.5 border-b border-[#E9E4F1]">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
-              <span className="text-xs font-bold text-[#1F1B2D] font-heading">
-                {t('posFeatures.activeSession')}
-              </span>
-            </div>
-            <span className="text-[10px] font-mono text-[#6D57A5] font-semibold">{t('posFeatures.orderReady')}</span>
-          </div>
-
-          <div className="space-y-2 text-xs">
-            <div className="flex items-center justify-between text-[#1F1B2D]">
-              <span className="font-medium">{t('posFeatures.selectedItems')}</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5]">
-                {t('posFeatures.itemsCount')}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
-              <span>{t('simulator.taxVat')}</span>
-              <span className="text-[#17B681] font-semibold">{t('posFeatures.autoReconciled')}</span>
-            </div>
-          </div>
-
-          {/* LAYER 4: Settlement Actions */}
-          <div ref={layerSettlementRef} className="pt-2 border-t border-[#E9E4F1] space-y-2">
-            <div className="flex justify-between items-baseline">
-              <span className="text-xs font-bold text-[#1F1B2D]">{t('posFeatures.settlement')}</span>
-              <span className="text-xs font-mono font-bold text-[#17B681]">{t('posFeatures.instantClearing')}</span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-              <div className="p-1.5 rounded-lg bg-[#FAF8FC] border border-[#6D57A5]/30 text-[#6D57A5] font-semibold text-center flex items-center justify-center gap-1">
-                <CreditCard className="w-3 h-3" />
-                <span>{t('simulator.card')}</span>
+          {/* Right: Active Order Ticket & Settlement (5 Cols) */}
+          <div className="lg:col-span-5 p-4 sm:p-5 rounded-2xl bg-[#FAF8FC] border border-[#E9E4F1] flex flex-col justify-between space-y-4">
+            <div className="space-y-3">
+              {/* Order Header */}
+              <div className="flex items-center justify-between pb-2.5 border-b border-[#E9E4F1]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#17B681] animate-pulse" />
+                  <span className="text-xs font-bold text-[#1F1B2D] font-heading">
+                    {t('posFeatures.activeSession')}
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-[#6D57A5] font-semibold">
+                  {t('posFeatures.orderReady')}
+                </span>
               </div>
-              <div className="p-1.5 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
-                <Coins className="w-3 h-3" />
-                <span>{t('simulator.cash')}</span>
-              </div>
-              <div className="p-1.5 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
-                <Layers className="w-3 h-3" />
-                <span>{t('simulator.split')}</span>
+
+              {/* Order Summary */}
+              <div className="space-y-2 text-xs">
+                <div className="flex items-center justify-between text-[#1F1B2D]">
+                  <span className="font-medium">{t('posFeatures.selectedItems')}</span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white border border-[#E9E4F1] text-[#6D57A5]">
+                    {t('posFeatures.itemsCount')}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-[#625D6B] text-[11px]">
+                  <span>{t('simulator.taxVat')}</span>
+                  <span className="text-[#17B681] font-semibold">{t('posFeatures.autoReconciled')}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* LAYER 5: Hardware & Live Inventory Status (Floats to top-start corner) */}
-        <div
-          ref={layerHardwareRef}
-          className="mt-4 sm:mt-0 sm:absolute sm:-top-5 sm:-start-4 rounded-xl bg-white border border-[#17B681]/40 shadow-lg px-4 py-2.5 flex items-center gap-3 will-change-transform z-30"
-        >
-          <div className="w-8 h-8 rounded-lg bg-[#E4F8F0] text-[#129267] flex items-center justify-center shrink-0">
-            <Printer className="w-4 h-4 text-[#17B681]" />
-          </div>
-          <div>
-            <span className="text-xs font-bold text-[#1F1B2D] block leading-tight">
-              {t('posFeatures.thermalPrintReady')}
-            </span>
-            <span className="text-[10px] text-[#129267] font-mono font-medium block">
-              {t('posFeatures.liveStockUpdated')}
-            </span>
+            {/* Payment Settlement Methods */}
+            <div className="space-y-2.5 pt-2 border-t border-[#E9E4F1]">
+              <div className="flex justify-between items-baseline text-xs">
+                <span className="font-bold text-[#1F1B2D]">{t('posFeatures.settlement')}</span>
+                <span className="font-mono font-bold text-[#17B681]">{t('posFeatures.instantClearing')}</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+                <div className="p-2 rounded-lg bg-white border-2 border-[#17B681] text-[#129267] font-semibold text-center flex items-center justify-center gap-1 shadow-2xs">
+                  <CreditCard className="w-3.5 h-3.5" />
+                  <span>{t('simulator.card')}</span>
+                </div>
+                <div className="p-2 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
+                  <Coins className="w-3.5 h-3.5" />
+                  <span>{t('simulator.cash')}</span>
+                </div>
+                <div className="p-2 rounded-lg bg-white border border-[#E9E4F1] text-[#625D6B] font-semibold text-center flex items-center justify-center gap-1">
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>{t('simulator.split')}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Hardware Status Strip */}
+            <div className="p-2.5 rounded-xl bg-white border border-[#17B681]/30 flex items-center gap-2.5 text-xs">
+              <Printer className="w-4 h-4 text-[#17B681] shrink-0" />
+              <div className="text-[11px]">
+                <span className="font-bold text-[#1F1B2D] block leading-tight">
+                  {t('posFeatures.thermalPrintReady')}
+                </span>
+                <span className="text-[#129267] font-medium block">
+                  {t('posFeatures.liveStockUpdated')}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
