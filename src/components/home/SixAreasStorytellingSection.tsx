@@ -315,21 +315,20 @@ export const SixAreasStorytellingSection: React.FC = () => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      // Setup Card Cover / Stack Storytelling on both Desktop & Mobile
-      // Next card covers the current card as user scrolls, with current card receding behind
+      // Setup Reference-Level Card Cover / Stack Storytelling on Desktop & Mobile
       const setupCoverAnimation = (isMobile: boolean) => {
         const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
         if (cards.length < 6) return;
 
         // Base Initial States:
         // Card 0 is 100% visible at scale 1, y: 0
-        // Cards 1-5 begin positioned slightly lower with scale 0.98, ready to cover
+        // Cards 1-5 begin positioned slightly lower with scale 0.975 and physical weight
         cards.forEach((card, i) => {
           gsap.set(card, {
             zIndex: (i + 1) * 10,
             opacity: i === 0 ? 1 : 0,
-            scale: i === 0 ? 1 : 0.98,
-            y: i === 0 ? 0 : isMobile ? 32 : 48,
+            scale: i === 0 ? 1 : 0.975,
+            y: i === 0 ? 0 : isMobile ? 38 : 60,
             pointerEvents: i === 0 ? 'auto' : 'none',
           });
         });
@@ -351,7 +350,6 @@ export const SixAreasStorytellingSection: React.FC = () => {
             invalidateOnRefresh: true,
             onUpdate: (self) => {
               const p = self.progress;
-              // Map progress across 6 discrete operational states (0 through 5)
               const newIndex = Math.min(5, Math.floor(p * 5.999));
 
               if (newIndex !== prevIndexRef.current) {
@@ -367,26 +365,21 @@ export const SixAreasStorytellingSection: React.FC = () => {
 
         scrollTriggerInstanceRef.current = scrubTl.scrollTrigger || null;
 
-        // Build 5 Sequential Cover Transitions:
-        // Card 01 -> Card 02 covers Card 01
-        // Card 02 -> Card 03 covers Card 02
-        // Card 03 -> Card 04 covers Card 03
-        // Card 04 -> Card 05 covers Card 04
-        // Card 05 -> Card 06 covers Card 05
+        // Build 5 Sequential Cover Transitions with Reference-Level Physics & Internal Stagger:
         for (let i = 0; i < 5; i++) {
           const startTime = i * 1.0;
           const curCard = cards[i];
           const nextCard = cards[i + 1];
 
-          // 1. Current card recedes slightly backward and upward
+          // 1. Current card recedes slightly backward and upward (scale: 1 -> 0.96, y: -14, opacity: 0.45)
           scrubTl.to(
             curCard,
             {
-              y: isMobile ? -10 : -14,
-              scale: 0.965,
-              opacity: 0.35,
+              y: isMobile ? -8 : -14,
+              scale: 0.96,
+              opacity: 0.45,
               duration: 0.75,
-              ease: 'power1.inOut',
+              ease: 'power2.inOut',
               onComplete: () => {
                 gsap.set(curCard, { pointerEvents: 'none' });
               },
@@ -397,12 +390,12 @@ export const SixAreasStorytellingSection: React.FC = () => {
             startTime
           );
 
-          // 2. Next card moves up over the previous card (higher z-index covers it)
+          // 2. Next card moves up over the previous card with physical weight (y: 60 -> 0, scale: 0.975 -> 1, opacity: 1)
           scrubTl.fromTo(
             nextCard,
             {
-              y: isMobile ? 32 : 48,
-              scale: 0.98,
+              y: isMobile ? 38 : 60,
+              scale: 0.975,
               opacity: 0,
             },
             {
@@ -413,8 +406,42 @@ export const SixAreasStorytellingSection: React.FC = () => {
               ease: 'power2.out',
               pointerEvents: 'auto',
             },
-            startTime + 0.05
+            startTime + 0.04
           );
+
+          // 3. Coordinated Internal Content Stagger:
+          // Title reveals softly into place
+          const nextTitle = nextCard.querySelector('.card-title-block');
+          if (nextTitle) {
+            scrubTl.fromTo(
+              nextTitle,
+              { y: 10, opacity: 0.3 },
+              { y: 0, opacity: 1, duration: 0.45, ease: 'power2.out' },
+              startTime + 0.12
+            );
+          }
+
+          // Flow pipeline scales in gently
+          const nextFlow = nextCard.querySelector('.card-flow-block');
+          if (nextFlow) {
+            scrubTl.fromTo(
+              nextFlow,
+              { scale: 0.985, opacity: 0.4 },
+              { scale: 1, opacity: 1, duration: 0.45, ease: 'power2.out' },
+              startTime + 0.18
+            );
+          }
+
+          // Capabilities items have a subtle coordinated stagger (0.05s)
+          const nextCaps = nextCard.querySelectorAll('.card-cap-item');
+          if (nextCaps.length > 0) {
+            scrubTl.fromTo(
+              nextCaps,
+              { y: 8, opacity: 0.3 },
+              { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, ease: 'power2.out' },
+              startTime + 0.22
+            );
+          }
 
           // Small quiet plateau between transitions so the active card breathes
           scrubTl.to({}, { duration: 0.25 }, startTime + 0.75);
@@ -544,7 +571,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
                     style={{
                       zIndex: (idx + 1) * 10,
                       opacity: isInitial ? 1 : 0,
-                      transform: isInitial ? 'translate3d(0, 0, 0) scale(1)' : 'translate3d(0, 48px, 0) scale(0.98)',
+                      transform: isInitial ? 'translate3d(0, 0, 0) scale(1)' : 'translate3d(0, 60px, 0) scale(0.975)',
                     }}
                     className={`absolute inset-0 rounded-3xl bg-white border-2 transition-shadow will-change-[transform,opacity] ${
                       p.isClosingPillar
@@ -553,7 +580,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
                     } flex flex-col justify-between overflow-hidden p-5 sm:p-7 xl:p-8`}
                   >
                     {/* Top Window Bar: Number, Chrome, Title, Live Status */}
-                    <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[#E9E4F1]">
+                    <div className="card-title-block flex items-center justify-between pb-3 sm:pb-4 border-b border-[#E9E4F1]">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#FAF8FC] border border-[#E9E4F1] text-[#6D57A5] flex items-center justify-center font-bold shrink-0">
                           <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#6D57A5]" />
@@ -588,7 +615,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
                     </p>
 
                     {/* Operational Transformation Pipeline Flow */}
-                    <div className="p-3 sm:p-3.5 bg-[#FAF8FC] border border-[#E9E4F1] rounded-2xl space-y-1.5 my-1 sm:my-2">
+                    <div className="card-flow-block p-3 sm:p-3.5 bg-[#FAF8FC] border border-[#E9E4F1] rounded-2xl space-y-1.5 my-1 sm:my-2">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D57A5] font-bold">
                           Operational Transformation Flow
@@ -618,7 +645,7 @@ export const SixAreasStorytellingSection: React.FC = () => {
                       {p.capabilities.map((cap, cIdx) => (
                         <div
                           key={cIdx}
-                          className="p-2.5 sm:p-3 rounded-xl bg-white border border-[#E9E4F1] space-y-0.5 sm:space-y-1 shadow-2xs hover:border-[#6D57A5]/30 transition-colors"
+                          className="card-cap-item p-2.5 sm:p-3 rounded-xl bg-white border border-[#E9E4F1] space-y-0.5 sm:space-y-1 shadow-2xs hover:border-[#6D57A5]/30 transition-colors"
                         >
                           <span className="text-xs font-bold text-[#1F1B2D] block truncate">
                             {cap.title}
